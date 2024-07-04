@@ -1,0 +1,307 @@
+[
+    {
+        "platformId": "linux",
+        "platformName": "Linux",
+        "platformAssets": {
+            "new_alerts": [
+                {
+                    "machine_name": "",
+                    "machine_uuid": "",
+                    "group_name": "",
+                    "group_uuid": "",
+                    "group_type": "user"
+                },
+                {
+                    "machine_name": "",
+                    "machine_uuid": "",
+                    "group_name": "",
+                    "group_uuid": "",
+                    "group_type": "user"
+                }
+            ],
+            "aged_alerts": [
+                {
+                    "machine_name": "",
+                    "machine_uuid": "",
+                    "group_name": "",
+                    "group_uuid": "",
+                    "group_type": "user"
+                },
+                {
+                    "machine_name": "",
+                    "machine_uuid": "",
+                    "group_name": "",
+                    "group_uuid": "",
+                    "group_type": "user"
+                },
+                {
+                    "machine_name": "",
+                    "machine_uuid": "",
+                    "group_name": "",
+                    "group_uuid": "",
+                    "group_type": "user"
+                }
+            ],
+            "other_assets": [
+                {
+                    "machine_name": "",
+                    "machine_uuid": "",
+                    "group_name": "",
+                    "group_uuid": "",
+                    "group_type": "user"
+                },
+                {
+                    "machine_name": "",
+                    "machine_uuid": "",
+                    "group_name": "",
+                    "group_uuid": "",
+                    "group_type": "user"
+                }
+            ]
+        }
+    },
+    {
+        "platformId": "windows",
+        "platformName": "Windows",
+        "platformAssets": {
+            "new_alerts": [
+                {
+                    "machine_name": "",
+                    "machine_uuid": "",
+                    "group_name": "",
+                    "group_uuid": "",
+                    "group_type": "user"
+                },
+                {
+                    "machine_name": "",
+                    "machine_uuid": "",
+                    "group_name": "",
+                    "group_uuid": "",
+                    "group_type": "user"
+                }
+            ],
+            "aged_alerts": [
+                {
+                    "machine_name": "",
+                    "machine_uuid": "",
+                    "group_name": "",
+                    "group_uuid": "",
+                    "group_type": "user"
+                },
+                {
+                    "machine_name": "",
+                    "machine_uuid": "",
+                    "group_name": "",
+                    "group_uuid": "",
+                    "group_type": "user"
+                },
+                {
+                    "machine_name": "",
+                    "machine_uuid": "",
+                    "group_name": "",
+                    "group_uuid": "",
+                    "group_type": "user"
+                }
+            ],
+            "other_assets": [
+                {
+                    "machine_name": "",
+                    "machine_uuid": "",
+                    "group_name": "",
+                    "group_uuid": "",
+                    "group_type": "user"
+                },
+                {
+                    "machine_name": "",
+                    "machine_uuid": "",
+                    "group_name": "",
+                    "group_uuid": "",
+                    "group_type": "user"
+                }
+            ]
+        }
+    },
+    {
+        "platformId": "ios",
+        "platformName": "IOS",
+        "platformAssets": {
+            "new_alerts": [
+                {
+                    "machine_name": "",
+                    "machine_uuid": "",
+                    "group_name": "",
+                    "group_uuid": "",
+                    "group_type": "user"
+                },
+                {
+                    "machine_name": "",
+                    "machine_uuid": "",
+                    "group_name": "",
+                    "group_uuid": "",
+                    "group_type": "user"
+                }
+            ],
+            "aged_alerts": [
+                {
+                    "machine_name": "",
+                    "machine_uuid": "",
+                    "group_name": "",
+                    "group_uuid": "",
+                    "group_type": "user"
+                },
+                {
+                    "machine_name": "",
+                    "machine_uuid": "",
+                    "group_name": "",
+                    "group_uuid": "",
+                    "group_type": "user"
+                },
+                {
+                    "machine_name": "",
+                    "machine_uuid": "",
+                    "group_name": "",
+                    "group_uuid": "",
+                    "group_type": "user"
+                }
+            ],
+            "other_assets": [
+                {
+                    "machine_name": "",
+                    "machine_uuid": "",
+                    "group_name": "",
+                    "group_uuid": "",
+                    "group_type": "user"
+                },
+                {
+                    "machine_name": "",
+                    "machine_uuid": "",
+                    "group_name": "",
+                    "group_uuid": "",
+                    "group_type": "user"
+                }
+            ]
+        }
+    },
+    {
+        "platformId": "macos",
+        "platformName": "Mac OS",
+        "platformAssets": {
+            "new_alerts": [
+                {
+                    "machine_name": "",
+                    "machine_uuid": "",
+                    "group_name": "",
+                    "group_uuid": "",
+                    "group_type": "user"
+                },
+                {
+                    "machine_name": "",
+                    "machine_uuid": "",
+                    "group_name": "",
+                    "group_uuid": "",
+                    "group_type": "user"
+                }
+            ],
+            "aged_alerts": [
+                {
+                    "machine_name": "",
+                    "machine_uuid": "",
+                    "group_name": "",
+                    "group_uuid": "",
+                    "group_type": "user"
+                },
+                {
+                    "machine_name": "",
+                    "machine_uuid": "",
+                    "group_name": "",
+                    "group_uuid": "",
+                    "group_type": "user"
+                },
+                {
+                    "machine_name": "",
+                    "machine_uuid": "",
+                    "group_name": "",
+                    "group_uuid": "",
+                    "group_type": "user"
+                }
+            ],
+            "other_assets": [
+                {
+                    "machine_name": "",
+                    "machine_uuid": "",
+                    "group_name": "",
+                    "group_uuid": "",
+                    "group_type": "user"
+                },
+                {
+                    "machine_name": "",
+                    "machine_uuid": "",
+                    "group_name": "",
+                    "group_uuid": "",
+                    "group_type": "user"
+                }
+            ]
+        }
+    },
+    {
+        "platformId": "android",
+        "platformName": "Android",
+        "platformAssets": {
+            "new_alerts": [
+                {
+                    "machine_name": "",
+                    "machine_uuid": "",
+                    "group_name": "",
+                    "group_uuid": "",
+                    "group_type": "user"
+                },
+                {
+                    "machine_name": "",
+                    "machine_uuid": "",
+                    "group_name": "",
+                    "group_uuid": "",
+                    "group_type": "user"
+                }
+            ],
+            "aged_alerts": [
+                {
+                    "machine_name": "",
+                    "machine_uuid": "",
+                    "group_name": "",
+                    "group_uuid": "",
+                    "group_type": "user"
+                },
+                {
+                    "machine_name": "",
+                    "machine_uuid": "",
+                    "group_name": "",
+                    "group_uuid": "",
+                    "group_type": "user"
+                },
+                {
+                    "machine_name": "",
+                    "machine_uuid": "",
+                    "group_name": "",
+                    "group_uuid": "",
+                    "group_type": "user"
+                }
+            ],
+            "other_assets": [
+                {
+                    "machine_name": "",
+                    "machine_uuid": "",
+                    "group_name": "",
+                    "group_uuid": "",
+                    "group_type": "user"
+                },
+                {
+                    "machine_name": "",
+                    "machine_uuid": "",
+                    "group_name": "",
+                    "group_uuid": "",
+                    "group_type": "user"
+                }
+            ]
+        }
+    }
+]

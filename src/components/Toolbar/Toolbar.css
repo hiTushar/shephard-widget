@@ -1,0 +1,125 @@
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.2rem;
+    container-name: toolbar-container;
+    container-type: inline-size;
+    user-select: none;
+}
+
+.toolbar-glance {
+    display: flex;
+    justify-content: space-between;
+    /* align-items: center; */
+    gap: 10%;
+}
+
+.toolbar-glance__icon {
+    @container toolbar-container (min-width: 600px) {
+        height: 1.6cqw;
+        aspect-ratio: 1;
+    }
+
+    &>img {
+        width: 100%;
+    }
+}
+
+.toolbar-glance__text {
+    font-size: 12px;
+
+    @container toolbar-container (min-width: 600px) {
+        font-size: 1.3cqw;
+    }
+
+    color: var(--gray-1);
+    font-weight: 500;
+    flex-shrink: 0;
+}
+
+.toolbar-glance__arrow {
+    @container toolbar-container (min-width: 600px) {
+        height: 1.6cqw;
+        aspect-ratio: 1;
+    }
+
+    &>img {
+        width: 100%;
+    }
+
+    cursor: pointer;
+}
+
+.toolbar-tabs {
+    display: flex;
+    gap: 0.8cqw;
+}
+
+.toolbar-tabs__item {
+    font-size: 12px;
+    text-transform: uppercase;
+    color: var(--gray-3);
+    padding-bottom: 0px 5px 1px;
+
+    @container toolbar-container (min-width: 600px) {
+        font-size: 1.3cqw;
+        padding: 0px 0.5cqw 1cqw;
+    }
+
+    cursor: pointer;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5cqw;
+    position: relative;
+    /* &:not(:last-child)::after {
+        content: '';
+        display: inline-block;
+        height: 1.6cqw;
+        width: 1cqw;
+        background: url('../../assets/divider.svg');
+        background-size: cover;
+        background-size: 5px 5px;
+        background-repeat: no-repeat;
+    } */
+
+    &.active {
+        color: var(--white);
+
+        &::after {
+            content: '';
+            display: inline-block;
+            border: 1px solid var(--white);
+            animation-name: grow-underline;
+            animation-duration: 0.5s;
+            animation-timing-function: ease-in-out;
+            animation-iteration-count: 1;
+            animation-fill-mode: forwards;
+        }
+
+
+    }
+}
+
+@keyframes grow-underline {
+    0% {
+        width: 0%;
+    }
+    100% {
+        width: 120%;
+    }
+}
+
+.toolbar-tabs__divider {
+    height: 12px;
+
+    @container toolbar-container (min-width: 600px) {
+        height: 1.3cqw;
+    }
+
+    &>img {
+        width: 100%;
+        height: 100%;
+    }
+}
