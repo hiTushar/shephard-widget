@@ -1,0 +1,43 @@
+.overview {
+    flex: 1;
+    container-name: overview-container;
+    container-type: inline-size;
+    position: relative;
+    overflow: hidden;
+}
+
+.overview-center {
+    width: 94px;
+    aspect-ratio: 1/1;
+    position: relative;
+    top: 100%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 175, 255, 0.15);
+    border: 1px solid rgba(0, 175, 255, 0.30);
+    border-radius: 50%;
+
+    @container overview-container (min-width: 600px) {
+        width: 16cqw;
+        border: 0.15cqw solid rgba(0, 175, 255, 0.30);
+    }
+}
+
+.overview-center__spoke {
+    width: 245px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 19%, rgba(0, 175, 255, 0.30) 20%, transparent); 
+    transform-origin: 0%;
+    position: absolute;
+    top: 49%;
+    left: 50%;
+
+    @container overview-container (min-width: 600px) {
+        width: 41cqw;
+        height: 0.15cqw;
+    }
+}
+
+.overview-orbit {
+    transform: translateY(-15%);
+}
