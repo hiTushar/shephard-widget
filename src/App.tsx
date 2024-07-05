@@ -13,13 +13,9 @@ function App() {
       <Toolbar data={data} section={section} setSection={setSection} />
       {
         section === 'all' ? (
-          <div className="widget-overview">
-            <Overview data={data} />
-          </div>
+          <Overview data={data} section={section} />
         ) : (
-          <div className="widget-expanded">
-            <Expanded data={data}/>
-          </div>
+          <Expanded data={data}/>
         )
       }
     </div>

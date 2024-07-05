@@ -5,6 +5,7 @@
     container-name: toolbar-container;
     container-type: inline-size;
     user-select: none;
+    padding: 1% 1% 0px;
 }
 
 .toolbar-glance {
@@ -15,9 +16,10 @@
 }
 
 .toolbar-glance__icon {
+    height: 16px;
+    aspect-ratio: 1/1;
     @container toolbar-container (min-width: 600px) {
         height: 1.6cqw;
-        aspect-ratio: 1;
     }
 
     &>img {
@@ -38,9 +40,10 @@
 }
 
 .toolbar-glance__arrow {
+    height: 14px;
+    aspect-ratio: 1/1;
     @container toolbar-container (min-width: 600px) {
         height: 1.6cqw;
-        aspect-ratio: 1;
     }
 
     &>img {
