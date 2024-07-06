@@ -8,6 +8,26 @@ interface Props {
   setSection: Function;
 }
 
+interface Platform {
+  platformId: string;
+  platformName: string;
+  platformAssets: PlatformAssets;
+}
+
+interface PlatformAssets {
+  new_alerts: Array<Asset>;
+  aged_alerts: Array<Asset>;
+  other_assets: Array<Asset>;
+}
+
+interface Asset {
+  machine_name: string;
+  machine_uuid: string;
+  group_name: string;
+  group_uuid: string;
+  group_type: string;
+}
+
 const CENTER_CIRCLE_RADIUS_PERCENTAGE = 8;
 const LAST_ORBIT_RADIUS_PERCENTAGE = 45;
 const ORBIT_CENTER_OFFSET = 50;
@@ -39,7 +59,7 @@ const Overview: React.FC<Props> = ({ data, setSection }) => {
     return data.map((_, idx) => minAngle + angleIncrement * (idx)).concat(PLOT_END_ANGLE);
   }, [data])
 
-  const getSpokes: Array<JSX.Element> = (totalDivisions: number) => { 
+  const getSpokes: Array<JSX.Element> = (totalDivisions: number) => {
     let spokeArray: Array<JSX.Element> = [];
     for (let idx = 0; idx <= totalDivisions; idx++) {
       spokeArray.push(
@@ -81,6 +101,12 @@ const Overview: React.FC<Props> = ({ data, setSection }) => {
     )
   }
 
+  const getAlertCount: num = (data: Array<object>, platformId: string) => {
+    let assets = data.find(platform => platform.platformId === platformId).platformAssets;
+    let total = Object.keys(assets).reduce((acc, assetType) => acc + assets[assetType].length, 0);
+    return total;
+  }
+
   // TODO: x y offsets change to give revolving effect
   // TODO: assign sectors such that icons in consecutive orbits are not assigned consecutive sectors 
   const getPlatformIcons: Array<JSX.Element> = (data: Array<object>) => {
@@ -89,43 +115,55 @@ const Overview: React.FC<Props> = ({ data, setSection }) => {
 
       let xPositionLowerbound = orbitRadius * Math.cos(inRadians(sectionAngleArray[idx + 1]));
       let xPositionUpperbound = orbitRadius * Math.cos(inRadians(sectionAngleArray[idx]));
-      
+
       let xOffset = xPositionLowerbound + Math.random() * (xPositionUpperbound - xPositionLowerbound);
-      console.log({idx, xPositionLowerbound, xPositionUpperbound, xOffset});
+      console.log({ idx, xPositionLowerbound, xPositionUpperbound, xOffset });
 
 
-      if(xOffset + ORBIT_EDGE_ICON_GAP >= orbitRadius) {
+      if (xOffset + ORBIT_EDGE_ICON_GAP >= orbitRadius) {
         xOffset -= ORBIT_EDGE_ICON_GAP;
       }
-      else if(xOffset - ORBIT_EDGE_ICON_GAP <= -orbitRadius) {
+      else if (xOffset - ORBIT_EDGE_ICON_GAP <= -orbitRadius) {
         xOffset += ORBIT_EDGE_ICON_GAP;
       }
 
       let yOffset = Math.sqrt(Math.pow(orbitRadius, 2) - Math.pow(xOffset, 2));
       return (
-        <div 
+        <div
           className="overview-orbit__points"
           key={platform.platformId}
-          style={{ 
-            left: `${ORBIT_CENTER_OFFSET + xOffset}%`, 
-            top: `${ORBIT_CENTER_OFFSET - yOffset}%`, 
+          style={{
+            left: `${ORBIT_CENTER_OFFSET + xOffset}%`,
+            top: `${ORBIT_CENTER_OFFSET - yOffset}%`,
           }}
           onClick={() => setSection(platform.platformId)}
         >
           <img src={PLATFORMS_ICON_MAP[platform.platformId]} alt={platform.platformName} />
-          <div className="overview-points__val">{kbmFormatter(2346655)}</div>
+          <div className="overview-points__val">{kbmFormatter(getAlertCount(data, platform.platformId))}</div>
         </div>
-      )  
+      )
     })
   }
 
   console.log(sectionAngleArray, radiiArray);
+
+  const getTotalAlertCount: string = (data: Array<object>) => {
+    return data.reduce((acc, platform) => acc + getAlertCount(data, platform.platformId), 0).toString();
+  }
+
   return (
     <div className="overview">
       <div className="overview-center">
         {
           getSpokes(data.length)
         }
+        <div className='overview-center__total'>
+          {
+            kbmFormatter(getTotalAlertCount(data))
+          }
+          <br/>
+          ASSETS
+        </div>
       </div>
       <div className="overview-orbit">
         {

@@ -23,6 +23,20 @@
     }
 }
 
+.overview-center__total {
+    display: flex;
+    justify-content: center;
+    padding-top: 12px;
+    text-align: center;
+    color: var(--white);
+
+    font-size: 15px;
+    @container overview-container (min-width: 600px) {
+        font-size: 2.5cqw;
+        padding-top: 2cqw;
+    }
+}
+
 .overview-center__spoke {
     width: 245px;
     height: 1px;
