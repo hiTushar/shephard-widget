@@ -15,4 +15,13 @@ const kbmFormatter: String = (num: number) => {
     else return `${num}`;
 }
 
-export { commaFormatter, inRadians, kbmFormatter }
+const jumbleArray: Array<any> = (arr: Array<any>) => {
+    let jumbled = [];
+    while(arr.length) {
+        let idx = Math.floor(Math.random() * arr.length);
+        jumbled.push(arr.splice(idx, 1)[0]);
+    }
+    return jumbled;
+}
+
+export { commaFormatter, inRadians, kbmFormatter, jumbleArray }

@@ -1,7 +1,7 @@
 import './Overview.css';
 import { appleSvg, androidSvg, windowsSvg, linuxSvg } from '../../assets/assets';
 import { useMemo } from 'react';
-import { inRadians, kbmFormatter } from '../../Utils/Utils';
+import { inRadians, jumbleArray, kbmFormatter } from '../../Utils/Utils';
 
 interface Props {
   data: Array<object>;
@@ -107,34 +107,32 @@ const Overview: React.FC<Props> = ({ data, setSection }) => {
     return total;
   }
 
-  // TODO: x y offsets change to give revolving effect
-  // TODO: assign sectors such that icons in consecutive orbits are not assigned consecutive sectors 
+  // TODO: x y offsets change to give revolving effect 
   const getPlatformIcons: Array<JSX.Element> = (data: Array<object>) => {
+    let jumbledRadiiArray = jumbleArray([...radiiArray]); // to assign random orbit to platform icons, but the sector is still the same
     return data.map((platform, idx) => {
-      let orbitRadius = radiiArray[idx];
+      let orbitRadius = jumbledRadiiArray[idx];
 
       let xPositionLowerbound = orbitRadius * Math.cos(inRadians(sectionAngleArray[idx + 1]));
       let xPositionUpperbound = orbitRadius * Math.cos(inRadians(sectionAngleArray[idx]));
 
-      let xOffset = xPositionLowerbound + Math.random() * (xPositionUpperbound - xPositionLowerbound);
-      console.log({ idx, xPositionLowerbound, xPositionUpperbound, xOffset });
+      let xPosition = xPositionLowerbound + Math.random() * (xPositionUpperbound - xPositionLowerbound);
 
-
-      if (xOffset + ORBIT_EDGE_ICON_GAP >= orbitRadius) {
-        xOffset -= ORBIT_EDGE_ICON_GAP;
+      if (xPosition + ORBIT_EDGE_ICON_GAP >= orbitRadius) {
+        xPosition -= ORBIT_EDGE_ICON_GAP;
       }
-      else if (xOffset - ORBIT_EDGE_ICON_GAP <= -orbitRadius) {
-        xOffset += ORBIT_EDGE_ICON_GAP;
+      else if (xPosition - ORBIT_EDGE_ICON_GAP <= -orbitRadius) {
+        xPosition += ORBIT_EDGE_ICON_GAP;
       }
 
-      let yOffset = Math.sqrt(Math.pow(orbitRadius, 2) - Math.pow(xOffset, 2));
+      let yPosition = Math.sqrt(Math.pow(orbitRadius, 2) - Math.pow(xPosition, 2));
       return (
         <div
           className="overview-orbit__points"
           key={platform.platformId}
           style={{
-            left: `${ORBIT_CENTER_OFFSET + xOffset}%`,
-            top: `${ORBIT_CENTER_OFFSET - yOffset}%`,
+            left: `${ORBIT_CENTER_OFFSET + xPosition}%`,
+            top: `${ORBIT_CENTER_OFFSET - yPosition}%`,
           }}
           onClick={() => setSection(platform.platformId)}
         >
@@ -144,8 +142,6 @@ const Overview: React.FC<Props> = ({ data, setSection }) => {
       )
     })
   }
-
-  console.log(sectionAngleArray, radiiArray);
 
   const getTotalAlertCount: string = (data: Array<object>) => {
     return data.reduce((acc, platform) => acc + getAlertCount(data, platform.platformId), 0).toString();
@@ -161,7 +157,7 @@ const Overview: React.FC<Props> = ({ data, setSection }) => {
           {
             kbmFormatter(getTotalAlertCount(data))
           }
-          <br/>
+          <br />
           ASSETS
         </div>
       </div>
