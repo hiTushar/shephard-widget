@@ -1,13 +1,33 @@
 import './Overview.css';
+import { appleSvg, androidSvg, windowsSvg, linuxSvg } from '../../assets/assets';
+import { useMemo } from 'react';
 
 interface Props {
   data: Array<object>;
-  section: string;
+  setSection: Function;
 }
 
-const Overview: React.FC<Props> = ({ data, section }) => {
+const CENTER_CIRCLE_RADIUS_PERCENTAGE = 8;
+const LAST_ORBIT_RADIUS_PERCENTAGE = 45;
+const CENTER_OFFSET = 50;
+const PLATFORMS_ICON_MAP: object = {
+  'macos': appleSvg,
+  'ios': appleSvg,
+  'android': androidSvg,
+  'windows': windowsSvg,
+  'linux': linuxSvg
+}
 
-  const getSpokes: Array<JSX.Element> = (totalDivisions: number) => {
+const Overview: React.FC<Props> = ({ data, setSection }) => {
+
+  const radiiArray: Array<number> = useMemo(() => {
+    let minRadius = CENTER_CIRCLE_RADIUS_PERCENTAGE;
+    let maxRadius = LAST_ORBIT_RADIUS_PERCENTAGE;
+    let radiusIncrement = (maxRadius - minRadius) / data.length;
+    return data.map((_, idx) => minRadius + radiusIncrement * (idx + 1));
+  }, [data]);
+
+  const getSpokes: Array<JSX.Element> = (totalDivisions: number) => { 
     let spokeArray: Array<JSX.Element> = [];
     for (let idx = 0; idx <= totalDivisions; idx++) {
       spokeArray.push(
@@ -24,20 +44,17 @@ const Overview: React.FC<Props> = ({ data, section }) => {
 
   const getOrbits: Array<JSX.Element> = (totalDivisions: number) => {
     let orbitArray: Array<JSX.Element> = [];
-    let maxRadius = 45;
-    let minRadius = 8;
-    let radiusIncrement = (maxRadius - minRadius) / totalDivisions;
 
     let maxOpacity = 1;
     let minOpacity = 0.1;
     let opacityDecrement = (maxOpacity - minOpacity) / totalDivisions;
 
-    for (let idx = 1; idx <= totalDivisions; idx++) {
+    for (let idx = 0; idx <= totalDivisions; idx++) {
       orbitArray.push(
         <circle
           cx="50"
           cy="50"
-          r={minRadius + radiusIncrement * idx}
+          r={radiiArray[idx]}
           stroke={`rgba(255, 255, 255, ${maxOpacity - opacityDecrement * idx})`}
           stroke-width="0.3"
           stroke-dasharray="0.65 0.75"
@@ -46,10 +63,32 @@ const Overview: React.FC<Props> = ({ data, section }) => {
       )
     }
     return (
-      <svg viewBox='0 0 100 100'>
+      <svg viewBox='0 0 100 100' style={{ outline: '1px solid red' }}>
         {orbitArray}
       </svg>
     )
+  }
+
+  // TODO: x y offsets change to give revolving effect
+  const getPlatformIcons: Array<JSX.Element> = (data: Array<object>) => {
+    return data.map((platform, idx) => {
+      let orbitRadius = radiiArray[idx];
+      let xOffset = -orbitRadius + Math.random() * orbitRadius * 2;
+      let yOffset = Math.sqrt(Math.pow(orbitRadius, 2) - Math.pow(xOffset, 2));
+      return (
+        <div 
+          className="overview-orbit__points"
+          key={platform.platformId}
+          style={{ 
+            left: `${50 + xOffset}%`, 
+            top: `${50 - yOffset}%`, 
+          }}
+          onClick={() => setSection(platform.platformId)}
+        >
+          <img src={PLATFORMS_ICON_MAP[platform.platformId]} alt={platform.platformName} />
+        </div>
+      )  
+    })
   }
 
   return (
@@ -57,12 +96,14 @@ const Overview: React.FC<Props> = ({ data, section }) => {
       <div className="overview-center">
         {
           getSpokes(data.length)
-
         }
       </div>
       <div className="overview-orbit">
         {
           getOrbits(data.length)
+        }
+        {
+          getPlatformIcons(data)
         }
       </div>
     </div>

@@ -13,7 +13,7 @@ function App() {
       <Toolbar data={data} section={section} setSection={setSection} />
       {
         section === 'all' ? (
-          <Overview data={data} section={section} />
+          <Overview data={data} setSection={setSection} />
         ) : (
           <Expanded data={data}/>
         )

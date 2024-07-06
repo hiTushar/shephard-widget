@@ -4,8 +4,8 @@
   aspect-ratio: 20 / 11;
   display: flex;
   flex-direction: column;
-  background-image: radial-gradient(rgba(255, 255, 255, 0.1) 7%, transparent 7%);
-  background-color: #161616;
+  background-image: radial-gradient(var(--gray-4) 7%, transparent 7%);
+  background-color: var(--bg-1);
   background-position: 10px 10px;
   background-size: 20px 20px;
   font-size: 1rem;

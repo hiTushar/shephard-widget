@@ -11,4 +11,9 @@
   --gray-1: #DBDBDB;
   --gray-2: #ACB9AC;
   --gray-3: #6E6E6E;
+  --gray-4: rgba(255, 255, 255, 0.1);
+  --blue-1: rgba(0, 175, 255, 0.30);
+  --blue-2: rgba(0, 175, 255, 0.15);
+  --blue-2-opaque: rgba(19, 45, 57, 1);
+  --bg-1: #161616;
 }
