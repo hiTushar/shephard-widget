@@ -1,7 +1,7 @@
 import './Overview.css';
 import { appleSvg, androidSvg, windowsSvg, linuxSvg } from '../../assets/assets';
 import { useMemo } from 'react';
-import { inRadians } from '../../Utils/Utils';
+import { inRadians, kbmFormatter } from '../../Utils/Utils';
 
 interface Props {
   data: Array<object>;
@@ -82,6 +82,7 @@ const Overview: React.FC<Props> = ({ data, setSection }) => {
   }
 
   // TODO: x y offsets change to give revolving effect
+  // TODO: assign sectors such that icons in consecutive orbits are not assigned consecutive sectors 
   const getPlatformIcons: Array<JSX.Element> = (data: Array<object>) => {
     return data.map((platform, idx) => {
       let orbitRadius = radiiArray[idx];
@@ -112,7 +113,7 @@ const Overview: React.FC<Props> = ({ data, setSection }) => {
           onClick={() => setSection(platform.platformId)}
         >
           <img src={PLATFORMS_ICON_MAP[platform.platformId]} alt={platform.platformName} />
-          <div className="overview-points__val">31231234</div>
+          <div className="overview-points__val">{kbmFormatter(2346655)}</div>
         </div>
       )  
     })
