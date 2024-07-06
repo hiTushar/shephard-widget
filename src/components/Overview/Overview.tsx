@@ -9,7 +9,9 @@ interface Props {
 
 const CENTER_CIRCLE_RADIUS_PERCENTAGE = 8;
 const LAST_ORBIT_RADIUS_PERCENTAGE = 45;
-const CENTER_OFFSET = 50;
+const ORBIT_CENTER_OFFSET = 50;
+const ORBIT_EDGE_ICON_GAP = 5;
+
 const PLATFORMS_ICON_MAP: object = {
   'macos': appleSvg,
   'ios': appleSvg,
@@ -74,18 +76,27 @@ const Overview: React.FC<Props> = ({ data, setSection }) => {
     return data.map((platform, idx) => {
       let orbitRadius = radiiArray[idx];
       let xOffset = -orbitRadius + Math.random() * orbitRadius * 2;
+      console.log(xOffset);
+      if(xOffset + ORBIT_EDGE_ICON_GAP >= orbitRadius) {
+        xOffset -= ORBIT_EDGE_ICON_GAP;
+      }
+      else if(xOffset - ORBIT_EDGE_ICON_GAP <= -orbitRadius) {
+        xOffset += ORBIT_EDGE_ICON_GAP;
+      }
+
       let yOffset = Math.sqrt(Math.pow(orbitRadius, 2) - Math.pow(xOffset, 2));
       return (
         <div 
           className="overview-orbit__points"
           key={platform.platformId}
           style={{ 
-            left: `${50 + xOffset}%`, 
-            top: `${50 - yOffset}%`, 
+            left: `${ORBIT_CENTER_OFFSET + xOffset}%`, 
+            top: `${ORBIT_CENTER_OFFSET - yOffset}%`, 
           }}
           onClick={() => setSection(platform.platformId)}
         >
           <img src={PLATFORMS_ICON_MAP[platform.platformId]} alt={platform.platformName} />
+          <div className="overview-points__val">31231234</div>
         </div>
       )  
     })
