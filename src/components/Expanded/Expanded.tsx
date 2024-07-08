@@ -27,9 +27,15 @@ const LEGEND_DATA:  Array<object> = [
 
 const CENTER_CIRCLE_RADIUS_PERCENTAGE = 10;
 const LAST_ORBIT_RADIUS_PERCENTAGE = 65;
+const PLOT_START_ANGLE = 0;
+const PLOT_END_ANGLE = 360;
 
 const Expanded:React.FC<Props> = ({ data, section }) => {
-  
+
+  const sectionData = useMemo(() => {
+    return data.find(platform => platform.platformId === section);
+  }, [data, section])
+
   const radiiArray: Array<number> = useMemo(() => {
     let minRadius = CENTER_CIRCLE_RADIUS_PERCENTAGE;
     let maxRadius = LAST_ORBIT_RADIUS_PERCENTAGE;
@@ -37,8 +43,8 @@ const Expanded:React.FC<Props> = ({ data, section }) => {
     return LEGEND_DATA.map((_, idx) => minRadius + radiusIncrement * (idx + 1));
   }, [data]);
 
-  const getLegend: Array<JSX.Element> = (data: Array<object>) => {
-    return data.map((asset, idx) => {
+  const getLegend: Array<JSX.Element> = (legendData: Array<object>) => {
+    return legendData.map((asset, idx) => {
       return (
         <div
           className="expanded-legend__item"
@@ -85,6 +91,22 @@ const Expanded:React.FC<Props> = ({ data, section }) => {
     )
   }
   
+  const getSpokes: Array<JSX.Element> = (total: number) => {
+    let spokeArray: Array<JSX.Element> = [];
+    for (let idx = 0; idx < total; idx++) {
+      if(idx === 0 || idx === 4) continue
+      spokeArray.push(
+        <div
+          className="expanded-spokes__item"
+          key={idx}
+          style={{ transform: `rotate(-${PLOT_END_ANGLE / total * idx}deg)` }}
+        >
+        </div>
+      )
+    }
+    return spokeArray;
+  }
+
   return (
     <div className="expanded">
         <div className="expanded-orbit">
@@ -106,6 +128,14 @@ const Expanded:React.FC<Props> = ({ data, section }) => {
             {
               getOrbits(LEGEND_DATA.length)
             }
+          </div>
+          <div className="expanded-system__spokes">
+            {
+              getSpokes(8)
+            }
+          </div>
+          <div className="expanded-system__dataPts">
+
           </div>
         </div>
         <div className="expanded-legend">

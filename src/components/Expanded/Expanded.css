@@ -22,6 +22,7 @@
 
 .expanded-system__centre {
     position: absolute;
+    z-index: 2;
     left: 50%;
     top: 52%;
     transform: translate(-50%, -50%);
@@ -45,13 +46,34 @@
 }
 
 .expanded-system__orbits {
+    width: 50%;
     position: absolute;
-    z-index: -1;
     left: 50%;
     top: 51%;
     transform: translate(-50%, -50%);
     background: radial-gradient(circle at 50% 50%, var(--bg-1) 60%, transparent);
     border-radius: 50%;
+}
+
+.expanded-system__spokes {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.expanded-spokes__item {
+    background: linear-gradient(90deg, transparent 12%, var(--blue-1) 20%, transparent);
+    transform-origin: 0%;
+    position: absolute;
+    z-index: 1;
+    top: 51%;
+    left: 50%;
+
+    @container expanded-container (min-width: 1px) {
+        width: 22cqw;
+        height: 0.15cqw;
+    }
 }
 
 .expanded-legend {
