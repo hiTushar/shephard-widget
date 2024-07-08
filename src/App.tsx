@@ -21,7 +21,7 @@ function App() {
         section === 'all' ? (
           <Overview data={data} setSection={setSection} />
         ) : (
-          <Expanded data={data}/>
+          <Expanded data={data} section={section} />
         )
       }
     </div>

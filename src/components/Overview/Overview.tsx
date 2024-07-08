@@ -1,5 +1,5 @@
 import './Overview.css';
-import { appleSvg, androidSvg, windowsSvg, linuxSvg } from '../../assets/assets';
+import { PLATFORMS_ICON_MAP } from '../../assets/assets';
 import { useMemo } from 'react';
 import { inRadians, jumbleArray, kbmFormatter } from '../../Utils/Utils';
 
@@ -34,14 +34,6 @@ const ORBIT_CENTER_OFFSET = 50;
 const ORBIT_EDGE_ICON_GAP = 2;
 const PLOT_START_ANGLE = 0;
 const PLOT_END_ANGLE = 180;
-
-const PLATFORMS_ICON_MAP: object = {
-  'macos': appleSvg,
-  'ios': appleSvg,
-  'android': androidSvg,
-  'windows': windowsSvg,
-  'linux': linuxSvg
-}
 
 const Overview: React.FC<Props> = ({ data, setSection }) => {
 

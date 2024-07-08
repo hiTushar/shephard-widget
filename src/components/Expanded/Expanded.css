@@ -12,6 +12,48 @@
     outline: 1px solid red;
 }
 
+.expanded-system {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border: 1px dashed red;
+    overflow: hidden;
+}
+
+.expanded-system__centre {
+    position: absolute;
+    left: 50%;
+    top: 52%;
+    transform: translate(-50%, -50%);
+    aspect-ratio: 1/1;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 50%;
+    border: 1px solid var(--blue-1);
+    background: var(--blue-2-opaque);
+
+    @container expanded-container (min-width: 1px) {
+        width: 10cqw;
+    }
+
+    & > img {
+        width: 25%;
+    }
+}
+
+.expanded-system__orbits {
+    position: absolute;
+    z-index: -1;
+    left: 50%;
+    top: 51%;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle at 50% 50%, var(--bg-1) 60%, transparent);
+    border-radius: 50%;
+}
+
 .expanded-legend {
     position: absolute;
     bottom: 0px;

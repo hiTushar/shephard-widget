@@ -6,6 +6,14 @@ import androidSvg from './android.svg';
 import windowsSvg from './windows.svg';
 import linuxSvg from './linux.svg';
 
+const PLATFORMS_ICON_MAP: object = {
+    'macos': appleSvg,
+    'ios': appleSvg,
+    'android': androidSvg,
+    'windows': windowsSvg,
+    'linux': linuxSvg
+}
+
 export {
     spokeSvg,
     rightSvg,
@@ -13,5 +21,6 @@ export {
     appleSvg,
     androidSvg,
     windowsSvg,
-    linuxSvg
+    linuxSvg,
+    PLATFORMS_ICON_MAP
 }
