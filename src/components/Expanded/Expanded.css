@@ -62,12 +62,48 @@
     z-index: 1;
 }
 
+.expanded-system__dataPts {
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    z-index: 2;
+    left: 50%;
+    /* top: 2%; */
+    transform: translate(-50%, 0);
+}
+
+.expanded-dataPts__item {
+    position: absolute;
+    z-index: 2;
+    transform: translate(-50%, -50%);
+
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+
+    cursor: pointer;
+
+    @container expanded-container (min-width: 600px) {
+        width: 1.5cqw;
+    }
+}
+
+[data-asset-type="new_alerts"] {
+    background: var(--red-1);
+    filter: drop-shadow(0 0 0.5cqw var(--red-1));
+}
+[data-asset-type="aged_alerts"] {
+    background: var(--red-2);
+}
+[data-asset-type="other_assets"] {
+    background: var(--blue-1-opaque);
+}
+
 .expanded-spokes__item {
     background: linear-gradient(90deg, transparent 12%, var(--blue-1) 20%, transparent);
     transform-origin: 0%;
     position: absolute;
     z-index: 1;
-    top: 51%;
+    top: 52%;
     left: 50%;
 
     @container expanded-container (min-width: 1px) {
@@ -83,7 +119,7 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-
+    z-index: 2;
     @container expanded-container (min-width: 1px) {
         padding: 2cqw;
         gap: 1.5cqw;
