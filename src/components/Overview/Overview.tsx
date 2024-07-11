@@ -104,20 +104,17 @@ const Overview: React.FC<Props> = ({ data, setSection }) => {
     let jumbledRadiiArray = jumbleArray([...radiiArray]); // to assign random orbit to platform icons, but the sector is still the same
     return data.map((platform, idx) => {
       let orbitRadius = jumbledRadiiArray[idx];
+      let angularPosition = (sectionAngleArray[idx + 1] + sectionAngleArray[idx]) / 2;
+      let xPosition = orbitRadius * Math.cos(inRadians(angularPosition));
 
-      let xPositionLowerbound = orbitRadius * Math.cos(inRadians(sectionAngleArray[idx + 1]));
-      let xPositionUpperbound = orbitRadius * Math.cos(inRadians(sectionAngleArray[idx]));
+      // if (xPosition + ORBIT_EDGE_ICON_GAP >= orbitRadius) {
+      //   xPosition -= ORBIT_EDGE_ICON_GAP;
+      // }
+      // else if (xPosition - ORBIT_EDGE_ICON_GAP <= -orbitRadius) {
+      //   xPosition += ORBIT_EDGE_ICON_GAP;
+      // }
 
-      let xPosition = xPositionLowerbound + Math.random() * (xPositionUpperbound - xPositionLowerbound);
-
-      if (xPosition + ORBIT_EDGE_ICON_GAP >= orbitRadius) {
-        xPosition -= ORBIT_EDGE_ICON_GAP;
-      }
-      else if (xPosition - ORBIT_EDGE_ICON_GAP <= -orbitRadius) {
-        xPosition += ORBIT_EDGE_ICON_GAP;
-      }
-
-      let yPosition = Math.sqrt(Math.pow(orbitRadius, 2) - Math.pow(xPosition, 2));
+      let yPosition = orbitRadius * Math.sin(inRadians(angularPosition));
       return (
         <div
           className="overview-orbit__points"
