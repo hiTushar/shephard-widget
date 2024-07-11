@@ -34,6 +34,8 @@ const ORBIT_CENTER_OFFSET = 50;
 const ORBIT_EDGE_ICON_GAP = 2;
 const PLOT_START_ANGLE = 0;
 const PLOT_END_ANGLE = 180;
+const MIN_ICON_SIZE = 4;
+const MAX_ICON_SIZE = 8;
 
 const Overview: React.FC<Props> = ({ data, setSection }) => {
 
@@ -87,26 +89,47 @@ const Overview: React.FC<Props> = ({ data, setSection }) => {
       )
     }
     return (
-      <svg viewBox='0 0 100 100' style={{ outline: '1px solid red' }}>
+      <svg viewBox='0 0 100 100' style={{ /* outline: '1px solid red' */ }}>
         {orbitArray}
       </svg>
     )
   }
 
-  const getAlertCount: num = (data: Array<object>, platformId: string) => {
+  const getAlertCount: number = (data: Array<object>, platformId: string) => {
     let assets = data.find(platform => platform.platformId === platformId).platformAssets;
     let total = Object.keys(assets).reduce((acc, assetType) => acc + assets[assetType].length, 0);
     return total;
   }
 
-  // TODO: x y offsets change to give revolving effect 
   const getPlatformIcons: Array<JSX.Element> = (data: Array<object>) => {
-    let jumbledRadiiArray = jumbleArray([...radiiArray]); // to assign random orbit to platform icons, but the sector is still the same
-    return data.map((platform, idx) => {
-      let orbitRadius = jumbledRadiiArray[idx];
-      let angularPosition = (sectionAngleArray[idx + 1] + sectionAngleArray[idx]) / 2;
-      let xPosition = orbitRadius * Math.cos(inRadians(angularPosition));
+    // let jumbledRadiiArray = jumbleArray([...radiiArray]); // to assign random orbit to platform icons, but the sector is still the same
+    let alertCountArray = data.map((platform) => ({
+      platformId: platform.platformId,
+      assetCount: getAlertCount(data, platform.platformId)
+    })).sort((a, b) => a.assetCount - b.assetCount);
 
+    let minAssetCount = alertCountArray[0].assetCount;
+    let maxAssetCount = alertCountArray[alertCountArray.length - 1].assetCount;
+    let minOrbitRadiusIndex = 0;
+    let maxOrbitRadiusIndex = data.length - 1;
+
+    return data.map((platform, idx) => {
+      let assetCount = alertCountArray.find(alert => alert.platformId === platform.platformId).assetCount;
+
+      /**
+       * Basic formula: 
+       * (val - minVal) / (maxVal - minVal) = relativeVal
+       */
+      let relativeAssetCount = (assetCount - minAssetCount) / (maxAssetCount - minAssetCount);
+
+      let iconSize = MIN_ICON_SIZE + (MAX_ICON_SIZE - MIN_ICON_SIZE) * relativeAssetCount;
+      let orbitRadiusIndex = Math.round(minOrbitRadiusIndex + (maxOrbitRadiusIndex - minOrbitRadiusIndex) * relativeAssetCount);
+
+
+      let orbitRadius = radiiArray[orbitRadiusIndex];
+      let angularPosition = (sectionAngleArray[idx + 1] + sectionAngleArray[idx]) / 2;
+      
+      let xPosition = orbitRadius * Math.cos(inRadians(angularPosition));
       // if (xPosition + ORBIT_EDGE_ICON_GAP >= orbitRadius) {
       //   xPosition -= ORBIT_EDGE_ICON_GAP;
       // }
@@ -122,6 +145,7 @@ const Overview: React.FC<Props> = ({ data, setSection }) => {
           style={{
             left: `${ORBIT_CENTER_OFFSET + xPosition}%`,
             top: `${ORBIT_CENTER_OFFSET - yPosition}%`,
+            width: `${iconSize}cqw`,
           }}
           onClick={() => setSection(platform.platformId)}
         >
@@ -152,10 +176,14 @@ const Overview: React.FC<Props> = ({ data, setSection }) => {
       </div>
       <div className="overview-orbit">
         {
-          getOrbits(data.length)
+          data.length && (
+            getOrbits(data.length)
+          )
         }
         {
-          getPlatformIcons(data)
+          data.length && (
+            getPlatformIcons(data)
+          )
         }
       </div>
     </div>

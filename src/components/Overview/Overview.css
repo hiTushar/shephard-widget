@@ -81,7 +81,6 @@
     }
 
     @container overview-container (min-width: 600px) {
-        min-width: 4cqw;
         border: 0.17cqw solid var(--blue-1);
 
         &>img {
@@ -93,10 +92,9 @@
 .overview-points__val {
     position: absolute;
     color: var(--white);
-    font-size: 10px;
     background-color: var(--bg-1);
     top: 110%;
     @container overview-container (min-width: 600px) {
-        font-size: 1.7cqw;
+        font-size: 1.5cqw;
     }
 }
