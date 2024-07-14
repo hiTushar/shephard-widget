@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { spokeSvg, rightSvg, dividerSvg } from '../../assets/assets.jsx';
+import { spokeSvg, rightSvg, dividerSvg } from '../../assets/assets';
 import './Toolbar.css';
 import { ToolbarProps } from '../../Types';
 
