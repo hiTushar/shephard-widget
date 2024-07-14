@@ -1,3 +1,9 @@
+interface ToolbarProps {
+    data: Array<Platform>;
+    section: string;
+    setSection: Function;
+}
+
 interface OverviewProps {
     data: Array<Platform>;
     setSection: Function;
@@ -45,4 +51,4 @@ interface AlertCountArray {
 
 type AssetType = 'new_alerts' | 'aged_alerts' | 'other_assets';
 
-export type { ExpandedProps, OverviewProps, LegendData, Platform, PlatformAssets, Asset, AssetType, AlertCountArray };
+export type { ToolbarProps, ExpandedProps, OverviewProps, LegendData, Platform, PlatformAssets, Asset, AssetType, AlertCountArray };

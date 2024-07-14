@@ -1,20 +1,9 @@
 import { useMemo } from 'react';
 import { spokeSvg, rightSvg, dividerSvg } from '../../assets/assets.jsx';
 import './Toolbar.css';
+import { ToolbarProps } from '../../Types.js';
 
-interface Props {
-    data: Array<object>;
-    section: string;
-    setSection: Function;
-}
-
-interface Platform {
-    platformId: string;
-    platformName: string;
-    platformAssets: Array<object>;
-}
-
-export const Toolbar: React.FC<Props> = ({ data, section, setSection }) => {
+export const Toolbar: React.FC<ToolbarProps> = ({ data, section, setSection }) => {
 
     const platforms = useMemo(() => {
         let temp = data.map((platformData) => ({

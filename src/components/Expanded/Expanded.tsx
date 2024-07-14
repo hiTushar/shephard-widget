@@ -128,7 +128,7 @@ const Expanded: React.FC<ExpandedProps> = ({ data, section }) => {
 
     let minAngle = PLOT_START_ANGLE;
     // let maxAngle = PLOT_END_ANGLE;
-    let angleIncrementArrayForAllOrbits: { [key: string]: Array<number> } = Object.keys(angleIncrementForAllOrbits).reduce((acc, dataType, idx) => {
+    let angleIncrementArrayForAllOrbits: { [key: string]: Array<number> } = Object.keys(angleIncrementForAllOrbits).reduce((acc, dataType) => {
       let angleIncrement = angleIncrementForAllOrbits[dataType];
       let angleIncrementArray = [];
       for (let idx = 0; idx < sectionData.platformAssets[dataType].length; idx++) {
