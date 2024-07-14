@@ -2,13 +2,9 @@ import './Expanded.css';
 import { PLATFORMS_ICON_MAP } from '../../assets/assets';
 import { useMemo, useState } from 'react';
 import { inRadians } from '../../Utils/Utils';
+import type { ExpandedProps, LegendData, Platform } from '../../Types';
 
-interface Props {
-  data: Array<object>;
-  section: string;
-}
-
-const LEGEND_DATA:  Array<object> = [
+const LEGEND_DATA: Array<LegendData> = [
   {
     id: 'new_alerts',
     name: 'Assets with Alerts',
@@ -38,8 +34,8 @@ const DATA_PT_MARGIN = 0.001; // percentage
 const ORBIT_CENTER_OFFSET_LEFT = 50;
 const ORBIT_CENTER_OFFSET_TOP = 52;
 
-const Expanded:React.FC<Props> = ({ data, section }) => {
-  const [dataPts, setDataPts] = useState([]);
+const Expanded: React.FC<ExpandedProps> = ({ data, section }) => {
+  const [dataPts, setDataPts] = useState<Array<JSX.Element>>([]);
 
   const sectionData = useMemo(() => {
     return data.find(platform => platform.platformId === section);
@@ -52,15 +48,15 @@ const Expanded:React.FC<Props> = ({ data, section }) => {
     return LEGEND_DATA.map((_, idx) => minRadius + radiusIncrement * (idx + 1));
   }, [data]);
 
-  const getLegend: Array<JSX.Element> = (legendData: Array<object>) => {
+  const getLegend = (legendData: Array<LegendData>): Array<JSX.Element> => {
     return legendData.map((asset, idx) => {
       return (
         <div
           className="expanded-legend__item"
           key={idx}
         >
-          <div 
-            className="expanded-item__color" 
+          <div
+            className="expanded-item__color"
             style={{ backgroundColor: asset.color }}
           ></div>
           <div className="expanded-item__label">
@@ -74,7 +70,7 @@ const Expanded:React.FC<Props> = ({ data, section }) => {
     })
   }
 
-  const getOrbits: Array<JSX.Element> = (totalDivisions: number) => {
+  const getOrbits = (totalDivisions: number): JSX.Element => {
     let orbitArray: Array<JSX.Element> = [];
 
     let maxOpacity = 0.5;
@@ -99,8 +95,8 @@ const Expanded:React.FC<Props> = ({ data, section }) => {
       </svg>
     )
   }
-  
-  const getSpokes: Array<JSX.Element> = (total: number) => {
+
+  const getSpokes = (total: number): Array<JSX.Element> => {
     let spokeArray: Array<JSX.Element> = [];
     for (let idx = 0; idx < total; idx++) {
       // if(idx === 0 || idx === 4) continue
@@ -116,26 +112,26 @@ const Expanded:React.FC<Props> = ({ data, section }) => {
     return spokeArray;
   }
 
-  const getDataPoints: Array<JSX.Element> = (sectionData: object) => { 
-    let containerSize = document.querySelector('.expanded').clientWidth;
+  const getDataPoints = (sectionData: Platform): void => {
+    let containerSize = document.querySelector('.expanded')?.clientWidth;
     let dataPtSize = 3 / 100 + 2 * DATA_PT_MARGIN;
 
-    let angleIncrementForAllOrbits = LEGEND_DATA.reduce((acc, dataType, idx) => {
+    let angleIncrementForAllOrbits: { [key: string]: number } = LEGEND_DATA.reduce((acc, dataType, idx) => {
       let orbitRadius = radiiArray[idx];
       let orbitSize = 2 * Math.PI * orbitRadius; // relative to the container
       let sectionSize = orbitSize / sectionData.platformAssets[dataType.id].length;
       sectionSize = sectionSize < dataPtSize ? dataPtSize : sectionSize;
-      return { ...acc,[dataType.id]: sectionSize / orbitSize * 360 };
+      return { ...acc, [dataType.id]: sectionSize / orbitSize * 360 };
     }, {})
-    
+
     console.log(containerSize, dataPtSize, angleIncrementForAllOrbits);
 
     let minAngle = PLOT_START_ANGLE;
-    let maxAngle = PLOT_END_ANGLE;
-    let angleIncrementArrayForAllOrbits = Object.keys(angleIncrementForAllOrbits).reduce((acc, dataType, idx) => { 
+    // let maxAngle = PLOT_END_ANGLE;
+    let angleIncrementArrayForAllOrbits: { [key: string]: Array<number> } = Object.keys(angleIncrementForAllOrbits).reduce((acc, dataType, idx) => {
       let angleIncrement = angleIncrementForAllOrbits[dataType];
       let angleIncrementArray = [];
-      for(let idx = 0; idx < sectionData.platformAssets[dataType].length; idx++) {
+      for (let idx = 0; idx < sectionData.platformAssets[dataType].length; idx++) {
         angleIncrementArray.push(minAngle + angleIncrement * idx);
       }
       return { ...acc, [dataType]: angleIncrementArray };
@@ -144,11 +140,11 @@ const Expanded:React.FC<Props> = ({ data, section }) => {
     console.log(angleIncrementArrayForAllOrbits);
 
     let allAssets = sectionData.platformAssets;
-    let dataPtArray = Object.keys(allAssets).reduce((acc, dataType, idx) => {
+    let dataPtArray: Array<JSX.Element> = Object.keys(allAssets).reduce((acc: Array<JSX.Element>, dataType, idx) => {
       let assets = allAssets[dataType]
       let assetsDivArray = [];
-      for(let jdx = 0; jdx < assets.length; jdx++) {
-        let asset = assets[jdx];
+      for (let jdx = 0; jdx < assets.length; jdx++) {
+        // let asset = assets[jdx];
         let radialDistance = radiiArray[idx];
         let angularPos = angleIncrementArrayForAllOrbits[dataType][jdx];
         console.log(radialDistance, angularPos);
@@ -156,16 +152,16 @@ const Expanded:React.FC<Props> = ({ data, section }) => {
         let xPos = radialDistance * Math.cos(inRadians(angularPos));
         let yPos = radialDistance * Math.sin(inRadians(angularPos));
         assetsDivArray.push(
-          <div 
+          <div
             className='expanded-dataPts__item'
-            data-asset-type={dataType} 
-            onMouseOver={() => {}}
+            data-asset-type={dataType}
+            onMouseOver={() => { }}
             key={`${dataType}${jdx}`}
             style={{
               left: `${ORBIT_CENTER_OFFSET_LEFT + xPos}%`,
               top: `${ORBIT_CENTER_OFFSET_TOP + yPos}%`,
             }}
-            onMouseEnter={() => {}}
+            onMouseEnter={() => { }}
           >
 
           </div>
@@ -177,43 +173,43 @@ const Expanded:React.FC<Props> = ({ data, section }) => {
   }
 
   return (
-    <div className="expanded" onLoad={() => getDataPoints(sectionData)}>
-        <div className="expanded-orbit">
-          <svg height="100%" width="100%" viewBox="0 0 100 100">
-            <path 
-              d="M-50,70 Q50,35 150,70"
-              stroke="rgba(255, 255, 255, 0.3)"
-              stroke-width="0.5"
-              stroke-dasharray="1.15 1.5"
-              fill="none"
-            />
-          </svg>
+    <div className="expanded" onLoad={() => getDataPoints(sectionData!)}>
+      <div className="expanded-orbit">
+        <svg height="100%" width="100%" viewBox="0 0 100 100">
+          <path
+            d="M-50,70 Q50,35 150,70"
+            stroke="rgba(255, 255, 255, 0.3)"
+            stroke-width="0.5"
+            stroke-dasharray="1.15 1.5"
+            fill="none"
+          />
+        </svg>
+      </div>
+      <div className="expanded-system">
+        <div className="expanded-system__centre">
+          <img src={PLATFORMS_ICON_MAP[section]} alt={section} />
         </div>
-        <div className="expanded-system">
-          <div className="expanded-system__centre">
-            <img src={PLATFORMS_ICON_MAP[section]} alt={section} />
-          </div>
-          <div className='expanded-system__orbits'>
-            {
-              getOrbits(LEGEND_DATA.length)
-            }
-          </div>
-          <div className="expanded-system__spokes">
-            {
-              getSpokes(DIVISIONS)
-            }
-          </div>
-          <div className="expanded-system__dataPts">
-            {
-              dataPts
-            }
-          </div>
-        </div>
-        <div className="expanded-legend">
+        <div className='expanded-system__orbits'>
           {
-            getLegend(LEGEND_DATA)
+            getOrbits(LEGEND_DATA.length)
           }
         </div>
+        <div className="expanded-system__spokes">
+          {
+            getSpokes(DIVISIONS)
+          }
+        </div>
+        <div className="expanded-system__dataPts">
+          {
+            dataPts
+          }
+        </div>
+      </div>
+      <div className="expanded-legend">
+        {
+          getLegend(LEGEND_DATA)
+        }
+      </div>
     </div>
   )
 }

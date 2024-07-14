@@ -6,7 +6,11 @@ import androidSvg from './android.svg';
 import windowsSvg from './windows.svg';
 import linuxSvg from './linux.svg';
 
-const PLATFORMS_ICON_MAP: object = {
+interface PlatformIconMap {
+    [key: string]: string;
+}
+
+const PLATFORMS_ICON_MAP: PlatformIconMap = {
     'macos': appleSvg,
     'ios': appleSvg,
     'android': androidSvg,

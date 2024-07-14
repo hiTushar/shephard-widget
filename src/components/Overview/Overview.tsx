@@ -1,43 +1,19 @@
 import './Overview.css';
 import { PLATFORMS_ICON_MAP } from '../../assets/assets';
 import { useMemo } from 'react';
-import { inRadians, jumbleArray, kbmFormatter } from '../../Utils/Utils';
-
-interface Props {
-  data: Array<object>;
-  setSection: Function;
-}
-
-interface Platform {
-  platformId: string;
-  platformName: string;
-  platformAssets: PlatformAssets;
-}
-
-interface PlatformAssets {
-  new_alerts: Array<Asset>;
-  aged_alerts: Array<Asset>;
-  other_assets: Array<Asset>;
-}
-
-interface Asset {
-  machine_name: string;
-  machine_uuid: string;
-  group_name: string;
-  group_uuid: string;
-  group_type: string;
-}
+import { inRadians, kbmFormatter } from '../../Utils/Utils';
+import { OverviewProps, Platform, PlatformAssets, AlertCountArray } from '../../Types';
 
 const CENTER_CIRCLE_RADIUS_PERCENTAGE = 8;
 const LAST_ORBIT_RADIUS_PERCENTAGE = 45;
 const ORBIT_CENTER_OFFSET = 50;
-const ORBIT_EDGE_ICON_GAP = 2;
+// const ORBIT_EDGE_ICON_GAP = 2;
 const PLOT_START_ANGLE = 0;
 const PLOT_END_ANGLE = 180;
 const MIN_ICON_SIZE = 4;
 const MAX_ICON_SIZE = 8;
 
-const Overview: React.FC<Props> = ({ data, setSection }) => {
+const Overview: React.FC<OverviewProps> = ({ data, setSection }) => {
 
   const radiiArray: Array<number> = useMemo(() => {
     let minRadius = CENTER_CIRCLE_RADIUS_PERCENTAGE;
@@ -53,7 +29,7 @@ const Overview: React.FC<Props> = ({ data, setSection }) => {
     return data.map((_, idx) => minAngle + angleIncrement * (idx)).concat(PLOT_END_ANGLE);
   }, [data])
 
-  const getSpokes: Array<JSX.Element> = (totalDivisions: number) => {
+  const getSpokes = (totalDivisions: number): Array<JSX.Element> => {
     let spokeArray: Array<JSX.Element> = [];
     for (let idx = 0; idx <= totalDivisions; idx++) {
       spokeArray.push(
@@ -68,7 +44,7 @@ const Overview: React.FC<Props> = ({ data, setSection }) => {
     return spokeArray;
   }
 
-  const getOrbits: Array<JSX.Element> = (totalDivisions: number) => {
+  const getOrbits = (totalDivisions: number): JSX.Element => {
     let orbitArray: Array<JSX.Element> = [];
 
     let maxOpacity = 1;
@@ -95,17 +71,16 @@ const Overview: React.FC<Props> = ({ data, setSection }) => {
     )
   }
 
-  const getAlertCount: number = (data: Array<object>, platformId: string) => {
-    let assets = data.find(platform => platform.platformId === platformId).platformAssets;
+  const getAlertCount = (assets: PlatformAssets): number => {
     let total = Object.keys(assets).reduce((acc, assetType) => acc + assets[assetType].length, 0);
     return total;
   }
 
-  const getPlatformIcons: Array<JSX.Element> = (data: Array<object>) => {
+  const getPlatformIcons = (data: Array<Platform>): Array<JSX.Element> => {
     // let jumbledRadiiArray = jumbleArray([...radiiArray]); // to assign random orbit to platform icons, but the sector is still the same
-    let alertCountArray = data.map((platform) => ({
+    let alertCountArray: Array<AlertCountArray> = data.map((platform) => ({
       platformId: platform.platformId,
-      assetCount: getAlertCount(data, platform.platformId)
+      assetCount: getAlertCount(platform.platformAssets)
     })).sort((a, b) => a.assetCount - b.assetCount);
 
     let minAssetCount = alertCountArray[0].assetCount;
@@ -113,8 +88,9 @@ const Overview: React.FC<Props> = ({ data, setSection }) => {
     let minOrbitRadiusIndex = 0;
     let maxOrbitRadiusIndex = data.length - 1;
 
-    return data.map((platform, idx) => {
-      let assetCount = alertCountArray.find(alert => alert.platformId === platform.platformId).assetCount;
+    return data.map((platform: Platform, idx: number) => {
+      const { platformId, platformName, platformAssets } = platform;
+      let assetCount = alertCountArray.find(alert => alert.platformId === platformId)!.assetCount;
 
       /**
        * Basic formula: 
@@ -128,7 +104,7 @@ const Overview: React.FC<Props> = ({ data, setSection }) => {
 
       let orbitRadius = radiiArray[orbitRadiusIndex];
       let angularPosition = (sectionAngleArray[idx + 1] + sectionAngleArray[idx]) / 2;
-      
+
       let xPosition = orbitRadius * Math.cos(inRadians(angularPosition));
       // if (xPosition + ORBIT_EDGE_ICON_GAP >= orbitRadius) {
       //   xPosition -= ORBIT_EDGE_ICON_GAP;
@@ -147,17 +123,17 @@ const Overview: React.FC<Props> = ({ data, setSection }) => {
             top: `${ORBIT_CENTER_OFFSET - yPosition}%`,
             width: `${iconSize}cqw`,
           }}
-          onClick={() => setSection(platform.platformId)}
+          onClick={() => setSection(platformId)}
         >
-          <img src={PLATFORMS_ICON_MAP[platform.platformId]} alt={platform.platformName} />
-          <div className="overview-points__val">{kbmFormatter(getAlertCount(data, platform.platformId))}</div>
+          <img src={PLATFORMS_ICON_MAP[platformId]} alt={platformName} />
+          <div className="overview-points__val">{kbmFormatter(getAlertCount(platformAssets))}</div>
         </div>
       )
     })
   }
 
-  const getTotalAlertCount: string = (data: Array<object>) => {
-    return data.reduce((acc, platform) => acc + getAlertCount(data, platform.platformId), 0).toString();
+  const getTotalAlertCount = (data: Array<Platform>): number => {
+    return data.reduce((acc, platform) => acc + getAlertCount(platform.platformAssets), 0);
   }
 
   return (
