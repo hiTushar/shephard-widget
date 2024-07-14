@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { spokeSvg, rightSvg, dividerSvg } from '../../assets/assets.jsx';
 import './Toolbar.css';
-import { ToolbarProps } from '../../Types.js';
+import { ToolbarProps } from '../../Types';
 
 export const Toolbar: React.FC<ToolbarProps> = ({ data, section, setSection }) => {
 
