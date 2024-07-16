@@ -62,4 +62,10 @@ interface AlertCountArray {
 
 type AssetType = 'new_alerts' | 'aged_alerts' | 'other_assets';
 
-export type { ToolbarProps, ExpandedProps, OverviewProps, OverviewIconProps, LegendData, Platform, PlatformAssets, Asset, AssetType, AlertCountArray };
+interface SpotObject {
+    x: number;
+    y: number;
+    radius: number;
+}
+
+export type { ToolbarProps, ExpandedProps, OverviewProps, OverviewIconProps, LegendData, Platform, PlatformAssets, Asset, AssetType, AlertCountArray, SpotObject };
