@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import { OverviewIconProps, SpotObject } from "../../Types"
-import { jumbleArray, kbmFormatter } from "../../Utils/Utils";
+import { debounce, jumbleArray, kbmFormatter } from "../../Utils/Utils";
 import './OverviewIcon.css';
 
 const OverviewIcon: React.FC<OverviewIconProps> = (props) => {
@@ -8,6 +8,11 @@ const OverviewIcon: React.FC<OverviewIconProps> = (props) => {
   const spotsRef = useRef<Array<SpotObject>>([]);
   const iconRef = useRef<HTMLDivElement>(null);
   const angleRange = useMemo(() => jumbleArray(Array.from({ length: 36 }, (_, i) => i * 10).filter(angle => angle > 315 || angle < 225)), []); // provide only finite angles to choose from. This reduces search effort for non-overlapping position
+
+  useEffect(() => {
+    window.addEventListener('resize', debouncedGenerateSpots);
+    () => window.removeEventListener('resize', debouncedGenerateSpots);
+  }, []);
 
   const generateSpots = () => {
     const canvas: HTMLCanvasElement = iconRef.current!.querySelector('.overview-icon__canvas canvas')!;
@@ -39,6 +44,9 @@ const OverviewIcon: React.FC<OverviewIconProps> = (props) => {
     console.log(spotsRef.current);
   }
 
+  // const throttledGenerateSpots = useCallback(throttle(generateSpots, 5000), []);
+  const debouncedGenerateSpots = useCallback(debounce(generateSpots, 1000), []); // to re-calculate spots when window resizing settles
+
   const drawCircle = (ctx: CanvasRenderingContext2D, x: number, y: number, radius: number) => {
     ctx.beginPath();
     ctx.moveTo(x, y);
@@ -57,11 +65,6 @@ const OverviewIcon: React.FC<OverviewIconProps> = (props) => {
     }
     return overlap;
   }
-
-  useEffect(() => {
-    window.addEventListener('resize', generateSpots);
-    () => window.removeEventListener('resize', generateSpots);
-  }, []);
 
   return (
     <div
