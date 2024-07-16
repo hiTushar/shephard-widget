@@ -3,6 +3,7 @@ import { PLATFORMS_ICON_MAP } from '../../assets/assets';
 import { useMemo } from 'react';
 import { inRadians, kbmFormatter } from '../../Utils/Utils';
 import { OverviewProps, Platform, PlatformAssets, AlertCountArray } from '../../Types';
+import OverviewIcon from './OverviewIcon';
 
 const CENTER_CIRCLE_RADIUS_PERCENTAGE = 8;
 const LAST_ORBIT_RADIUS_PERCENTAGE = 45;
@@ -115,19 +116,17 @@ const Overview: React.FC<OverviewProps> = ({ data, setSection }) => {
 
       let yPosition = orbitRadius * Math.sin(inRadians(angularPosition));
       return (
-        <div
-          className="overview-orbit__points"
+        <OverviewIcon
+          leftOffset={ORBIT_CENTER_OFFSET + xPosition}
+          topOffset={ORBIT_CENTER_OFFSET - yPosition}
+          iconSize={iconSize}
+          openIcon={() =>setSection(platformId)}
+          imgSrc={PLATFORMS_ICON_MAP[platformId]}
+          platformId={platformId}
+          platformName={platformName}
+          assetCount={getAlertCount(platformAssets)}
           key={platform.platformId}
-          style={{
-            left: `${ORBIT_CENTER_OFFSET + xPosition}%`,
-            top: `${ORBIT_CENTER_OFFSET - yPosition}%`,
-            width: `${iconSize}cqw`,
-          }}
-          onClick={() => setSection(platformId)}
-        >
-          <img src={PLATFORMS_ICON_MAP[platformId]} alt={platformName} />
-          <div className="overview-points__val">{kbmFormatter(getAlertCount(platformAssets))}</div>
-        </div>
+        />
       )
     })
   }

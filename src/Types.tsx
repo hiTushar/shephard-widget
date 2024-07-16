@@ -9,6 +9,17 @@ interface OverviewProps {
     setSection: Function;
 }
 
+interface OverviewIconProps {
+    leftOffset: number;
+    topOffset: number;
+    iconSize: number;
+    openIcon: Function;
+    imgSrc: string;
+    platformId: string;
+    platformName: string;
+    assetCount: number;
+}
+
 interface LegendData {
     id: string;
     name: string;
@@ -51,4 +62,4 @@ interface AlertCountArray {
 
 type AssetType = 'new_alerts' | 'aged_alerts' | 'other_assets';
 
-export type { ToolbarProps, ExpandedProps, OverviewProps, LegendData, Platform, PlatformAssets, Asset, AssetType, AlertCountArray };
+export type { ToolbarProps, ExpandedProps, OverviewProps, OverviewIconProps, LegendData, Platform, PlatformAssets, Asset, AssetType, AlertCountArray };
