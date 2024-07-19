@@ -32,7 +32,7 @@
 
     font-size: 15px;
     @container overview-container (min-width: 600px) {
-        font-size: 2.5cqw;
+        font-size: 2cqw;
         padding-top: 2cqw;
     }
 }
@@ -59,42 +59,5 @@
 
     @container overview-container (min-width: 1px) {
         height: 100cqw;
-    }
-}
-
-.overview-orbit__points {
-    position: absolute;
-    transform: translate(-50%, -50%);
-    aspect-ratio: 1/1;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%;
-    border: 1px solid var(--blue-1);
-    background: var(--blue-2-opaque);
-
-    cursor: pointer;
-
-    &>img {
-        width: 12px;
-    }
-
-    @container overview-container (min-width: 600px) {
-        border: 0.17cqw solid var(--blue-1);
-
-        &>img {
-            width: 2cqw;
-        }
-    }
-}
-
-.overview-points__val {
-    position: absolute;
-    color: var(--white);
-    background-color: var(--bg-1);
-    top: 110%;
-    @container overview-container (min-width: 600px) {
-        font-size: 1.5cqw;
     }
 }

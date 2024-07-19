@@ -18,6 +18,7 @@ interface OverviewIconProps {
     platformId: string;
     platformName: string;
     assetCount: number;
+    assetDistribution: { [key: string]: number };
 }
 
 interface LegendData {
@@ -68,4 +69,11 @@ interface SpotObject {
     radius: number;
 }
 
-export type { ToolbarProps, ExpandedProps, OverviewProps, OverviewIconProps, LegendData, Platform, PlatformAssets, Asset, AssetType, AlertCountArray, SpotObject };
+interface AssetSpotUIInterface {
+    [key: string]: {
+        color: string;
+        sizeFactor: number;
+    }
+}
+
+export type { ToolbarProps, ExpandedProps, OverviewProps, OverviewIconProps, LegendData, Platform, PlatformAssets, Asset, AssetType, AlertCountArray, SpotObject, AssetSpotUIInterface };

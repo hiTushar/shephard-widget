@@ -77,6 +77,14 @@ const Overview: React.FC<OverviewProps> = ({ data, setSection }) => {
     return total;
   }
 
+  const getAssetDistribution = (assets: PlatformAssets): { [key: string]: number } => {
+    return {
+      "new_alerts": assets.new_alerts.length,
+      "aged_alerts": assets.aged_alerts.length,
+      "other_assets": assets.other_assets.length
+    }
+  }
+
   const getPlatformIcons = (data: Array<Platform>): Array<JSX.Element> => {
     // let jumbledRadiiArray = jumbleArray([...radiiArray]); // to assign random orbit to platform icons, but the sector is still the same
     let alertCountArray: Array<AlertCountArray> = data.map((platform) => ({
@@ -120,11 +128,12 @@ const Overview: React.FC<OverviewProps> = ({ data, setSection }) => {
           leftOffset={ORBIT_CENTER_OFFSET + xPosition}
           topOffset={ORBIT_CENTER_OFFSET - yPosition}
           iconSize={iconSize}
-          openIcon={() =>setSection(platformId)}
+          openIcon={() => setSection(platformId)}
           imgSrc={PLATFORMS_ICON_MAP[platformId]}
           platformId={platformId}
           platformName={platformName}
           assetCount={getAlertCount(platformAssets)}
+          assetDistribution={getAssetDistribution(platformAssets)}
           key={platform.platformId}
         />
       )
