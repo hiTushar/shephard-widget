@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 import Overview from './components/Overview/Overview';
+import Grouped from './components/Grouped/Grouped';
 import Expanded from './components/Expanded/Expanded';
 import { Toolbar } from './components/Toolbar/Toolbar';
 import hardCodedData from './data.json';
@@ -22,7 +23,8 @@ function App() {
         section === 'all' ? (
           <Overview data={data} setSection={setSection} />
         ) : (
-          <Expanded data={data} section={section} />
+          // <Expanded data={data} section={section} />
+          <Grouped section={section} />
         )
       }
     </div>

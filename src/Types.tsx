@@ -28,6 +28,10 @@ interface LegendData {
     color: string;
 }
 
+interface GroupedProps {
+    section: string;
+}
+
 interface ExpandedProps {
     data: Array<Platform>;
     section: string;
@@ -76,4 +80,4 @@ interface AssetSpotUIInterface {
     }
 }
 
-export type { ToolbarProps, ExpandedProps, OverviewProps, OverviewIconProps, LegendData, Platform, PlatformAssets, Asset, AssetType, AlertCountArray, SpotObject, AssetSpotUIInterface };
+export type { ToolbarProps, OverviewProps, GroupedProps, ExpandedProps, OverviewIconProps, LegendData, Platform, PlatformAssets, Asset, AssetType, AlertCountArray, SpotObject, AssetSpotUIInterface };
