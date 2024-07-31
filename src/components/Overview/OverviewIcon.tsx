@@ -19,7 +19,7 @@ const ASSET_SPOT_UI: AssetSpotUIInterface = {
 }
 
 const OverviewIcon: React.FC<OverviewIconProps> = (props) => {
-  const { leftOffset, topOffset, iconSize, openIcon, imgSrc, platformName, assetCount, assetDistribution } = props;
+  const { leftOffset, topOffset, iconSize, openIcon, imgSrc, platformName, assetCount } = props;
   const spotsRef = useRef<Array<SpotObject>>([]);
   const iconRef = useRef<HTMLDivElement>(null);
   const angleRange = useMemo(() => jumbleArray(Array.from({ length: 18 }, (_, i) => i * 20).filter(angle => angle > 300 || angle < 240)), []); // provide only finite angles to choose from. This reduces search effort for non-overlapping position
@@ -46,7 +46,7 @@ const OverviewIcon: React.FC<OverviewIconProps> = (props) => {
     //   }
     //   return acc;
     // }, {});
-    console.log(platformName);
+    // console.log(platformName);
     let temp = ["new_alerts", "new_alerts", "new_alerts", "aged_alerts", "aged_alerts", "aged_alerts", "other_assets", "other_assets", "other_assets", "other_assets"]; // till I figure out how to generate this on the fly... 3:3:4 when all three, 5:5 when only 2 and 10 when only 1
     for (let i = 0; i < 9; i++) {
       let fillStyle = ASSET_SPOT_UI[temp[i]]!.color;
@@ -56,17 +56,14 @@ const OverviewIcon: React.FC<OverviewIconProps> = (props) => {
       let x = 0, y = 0, theta = 0;
       let radialDistance = Math.random() * (maxDistance - minDistance) + minDistance;
       do {
-        console.log('spot ' + i +  ' loop')
         theta = angleRange[Math.floor(Math.random() * angleRange.length)] * Math.PI / 180;
         x = canvas.width / 2 - radialDistance * Math.cos(theta);
         y = canvas.height / 2 - radialDistance * Math.sin(theta);
       } while (overlapExists(x, y, circleRadius));
 
       spotsRef.current.push({ x, y, radius: circleRadius });
-      // spotsRemaining--;
       drawCircle(ctx, x, y, circleRadius, fillStyle);
     }
-    console.log(spotsRef.current);
   }
 
   // const throttledGenerateSpots = useCallback(throttle(generateSpots, 5000), []);

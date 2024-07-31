@@ -59,9 +59,10 @@ const Overview: React.FC<OverviewProps> = ({ data, setSection }) => {
           cy="50"
           r={radiiArray[idx]}
           stroke={`rgba(255, 255, 255, ${maxOpacity - opacityDecrement * idx})`}
-          stroke-width="0.3"
-          stroke-dasharray="0.65 0.75"
+          strokeWidth="0.3"
+          strokeDasharray="0.65 0.75"
           fill="none"
+          key={idx}
         />
       )
     }

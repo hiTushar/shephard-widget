@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { spokeSvg, rightSvg, dividerSvg } from '../../assets/assets';
 import './Toolbar.css';
 import { ToolbarProps } from '../../Types';
@@ -35,11 +35,10 @@ export const Toolbar: React.FC<ToolbarProps> = ({ data, section, setSection }) =
                     platforms.map((platformName, index) => {
                         const platformId = Object.keys(platformName)[0];
                         return (
-                            <>
+                            <React.Fragment key={platformId}>
                                 <div
                                     className={`toolbar-tabs__item ${section === platformId ? 'active' : ''}`}
                                     onClick={() => changeTab(platformId)}
-                                    key={platformId}
                                 >
                                     {platformName[platformId]}
                                 </div>
@@ -50,7 +49,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({ data, section, setSection }) =
                                         </div>
                                     )
                                 }
-                            </>
+                            </React.Fragment>
                         )
                     })
                 }
