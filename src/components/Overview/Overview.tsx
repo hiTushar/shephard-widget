@@ -1,6 +1,7 @@
+import { useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Overview.css';
 import { PLATFORMS_ICON_MAP } from '../../assets/assets';
-import { useMemo } from 'react';
 import { inRadians, kbmFormatter } from '../../Utils/Utils';
 import { OverviewProps, Platform, PlatformAssets, AlertCountArray } from '../../Types';
 import OverviewIcon from './OverviewIcon';
@@ -15,7 +16,7 @@ const MIN_ICON_SIZE = 4;
 const MAX_ICON_SIZE = 8;
 
 const Overview: React.FC<OverviewProps> = ({ data, setSection }) => {
-
+  const navigate = useNavigate();
   const radiiArray: Array<number> = useMemo(() => {
     let minRadius = CENTER_CIRCLE_RADIUS_PERCENTAGE;
     let maxRadius = LAST_ORBIT_RADIUS_PERCENTAGE;
@@ -129,7 +130,7 @@ const Overview: React.FC<OverviewProps> = ({ data, setSection }) => {
           leftOffset={ORBIT_CENTER_OFFSET + xPosition}
           topOffset={ORBIT_CENTER_OFFSET - yPosition}
           iconSize={iconSize}
-          openIcon={() => setSection(platformId)}
+          openIcon={() => openIcon(platformId)}
           imgSrc={PLATFORMS_ICON_MAP[platformId]}
           platformId={platformId}
           platformName={platformName}
@@ -143,6 +144,11 @@ const Overview: React.FC<OverviewProps> = ({ data, setSection }) => {
 
   const getTotalAlertCount = (data: Array<Platform>): number => {
     return data.reduce((acc, platform) => acc + getAlertCount(platform.platformAssets), 0);
+  }
+
+  const openIcon = (platformId: string) => {
+    setSection(platformId);
+    navigate(`/${platformId}`);
   }
 
   return (

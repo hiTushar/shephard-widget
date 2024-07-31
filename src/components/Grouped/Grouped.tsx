@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import _ from 'lodash';
 import './Grouped.css';
 import { alertInterface, DataPtsInterface, GroupAsset, GroupedInterface, GroupedProps, LegendData, metaInterface } from "../../Types";
@@ -42,14 +43,17 @@ const NEW_ALERT_LIMIT_PER_ORBIT = 10;
 const AGED_ALERT_LIMIT_PER_ORBIT = 18;
 const NO_ALERT_LIMIT_PER_ORBIT = 30;
 
-const Grouped: React.FC<GroupedProps> = ({ section }) => {
+const Grouped: React.FC = () => {
     const [dataPts, setDataPts] = useState<DataPtsInterface>({ 'new_alerts': [], 'aged_alerts': [], 'no_alerts': [] });
     const [groupedData, setGroupedData] = useState<GroupedInterface>({ 'new_alerts': { 'data': [], 'meta': {} }, 'aged_alerts': { 'data': [], 'meta': {} }, 'no_alerts': { 'data': [], 'meta': {} } });
     const [pageControl, setPageControl] = useState<{[key: string]: Boolean}>({ forward: true, backward: false });
 
+    const { platformId } = useParams();
+    const navigate = useNavigate();
+
     useEffect(() => {
         fetchData();
-    }, [section]);
+    }, [platformId]);
 
     const fetchData = (): void => {
         let currentNewAlertJson: alertInterface = groupedData.new_alerts, 
@@ -143,7 +147,7 @@ const Grouped: React.FC<GroupedProps> = ({ section }) => {
                         top: `${ORBIT_CENTER_OFFSET_TOP + yPos}%`,
                     }}
                     onMouseEnter={() => { }}
-                    onClick={() => { }}
+                    onClick={() => openExpandedView(alertId, groupedAssets[idx].group_uuid!)}
                 >
                     {+groupedAssets[idx].asset_count! > 1 && kbmFormatter(+groupedAssets[idx].asset_count!)}
                 </div>
@@ -153,6 +157,10 @@ const Grouped: React.FC<GroupedProps> = ({ section }) => {
         setDataPts(prev => ({ ...prev, [alertId]: assetsDivArray }));
     }
 
+    const openExpandedView = (alertId: string, groupId: string) => {
+        navigate(`/${platformId}/${alertId}/${groupId}`);
+    }
+
     return (
         <div className="grouped">
             <div className="grouped-orbit">
@@ -160,15 +168,15 @@ const Grouped: React.FC<GroupedProps> = ({ section }) => {
                     <path
                         d="M-50,70 Q50,35 150,70"
                         stroke="rgba(255, 255, 255, 0.3)"
-                        stroke-width="0.5"
-                        stroke-dasharray="1.15 1.5"
+                        strokeWidth="0.5"
+                        strokeDasharray="1.15 1.5"
                         fill="none"
                     />
                 </svg>
             </div>
             <div className="grouped-system">
                 <div className="grouped-system__centre">
-                    <img src={PLATFORMS_ICON_MAP[section]} alt={section} />
+                    <img src={PLATFORMS_ICON_MAP[platformId]} alt={platformId} />
                 </div>
                 <div className='grouped-system__orbits'>
                     {
