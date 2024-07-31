@@ -1,10 +1,13 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import _ from 'lodash';
 import './Grouped.css';
-import { GroupedProps, LegendData } from "../../Types";
-import newAlertDataJson from "./Data/newAlertData.json";
-import agedAlertDataJson from "./Data/agedAlertData.json";
-import noAlertDataJson from "./Data/noAlertData.json";
-import { PLATFORMS_ICON_MAP } from "../../assets/assets";
+import { alertInterface, DataPtsInterface, GroupAsset, GroupedInterface, GroupedProps, LegendData, metaInterface } from "../../Types";
+import newAlertJson from "./Data/newAlertData.json";
+import agedAlertJson from "./Data/agedAlertData.json";
+import noAlertJson from "./Data/noAlertData.json";
+import { addSvg, minusSvg, PLATFORMS_ICON_MAP } from "../../assets/assets";
+import { inRadians, kbmFormatter } from "../../Utils/Utils";
+import { getLegend, getOrbits, getSpokes } from "./Utils/render";
 
 const LEGEND_DATA: Array<LegendData> = [
     {
@@ -20,105 +23,138 @@ const LEGEND_DATA: Array<LegendData> = [
         color: 'rgb(125, 17, 17)'
     },
     {
-        id: 'other_assets',
-        name: 'Other Assets',
+        id: 'no_alerts',
+        name: 'No Alerts',
         desc: '',
         color: 'rgb(15, 68, 92)'
     }
 ]
 
 const CENTER_CIRCLE_RADIUS_PERCENTAGE = 10;
-const LAST_ORBIT_RADIUS_PERCENTAGE = 40;
-const PLOT_START_ANGLE = 0;
+const LAST_ORBIT_RADIUS_PERCENTAGE = 43;
+const PLOT_START_ANGLE: { [key: string]: number } = { 'new_alerts': 0, 'aged_alerts': 20, 'no_alerts': 38 };
 const PLOT_END_ANGLE = 360;
 const DIVISIONS = 8;
 const DATA_PT_MARGIN = 0.001; // percentage
 const ORBIT_CENTER_OFFSET_LEFT = 50;
 const ORBIT_CENTER_OFFSET_TOP = 52;
+const NEW_ALERT_LIMIT_PER_ORBIT = 10;
+const AGED_ALERT_LIMIT_PER_ORBIT = 18;
+const NO_ALERT_LIMIT_PER_ORBIT = 30;
 
 const Grouped: React.FC<GroupedProps> = ({ section }) => {
-    const [dataPts, setDataPts] = useState<Array<JSX.Element>>([]);
-    const [newAlertData, setNewAlertData] = useState(newAlertDataJson);
-    const [agedAlertData, setAgedAlertData] = useState(agedAlertDataJson);
-    const [noAlertData, setNoAlertData] = useState(noAlertDataJson);
+    const [dataPts, setDataPts] = useState<DataPtsInterface>({ 'new_alerts': [], 'aged_alerts': [], 'no_alerts': [] });
+    const [groupedData, setGroupedData] = useState<GroupedInterface>({ 'new_alerts': { 'data': [], 'meta': {} }, 'aged_alerts': { 'data': [], 'meta': {} }, 'no_alerts': { 'data': [], 'meta': {} } });
+    const [pageControl, setPageControl] = useState<{[key: string]: Boolean}>({ forward: true, backward: false });
 
-    const radiiArray: Array<number> = useMemo(() => {
+    useEffect(() => {
+        fetchData();
+    }, [section]);
+
+    const fetchData = (): void => {
+        let currentNewAlertJson: alertInterface = groupedData.new_alerts, 
+        currentAgedAlertJson: alertInterface  = groupedData.aged_alerts,  
+        currentNoAlertJson: alertInterface = groupedData.no_alerts;
+
+        if (_.isEmpty(currentNewAlertJson.data) || groupedData.new_alerts.meta.currentPage! < groupedData.new_alerts.meta.totalPages!) {   
+            currentNewAlertJson = {...newAlertJson}; 
+        }
+        if (_.isEmpty(currentAgedAlertJson.data) || groupedData.aged_alerts.meta.currentPage! < groupedData.aged_alerts.meta.totalPages!) {
+            currentAgedAlertJson = {...agedAlertJson};
+        }
+        if (_.isEmpty(currentNoAlertJson.data) || groupedData.no_alerts.meta.currentPage! < groupedData.no_alerts.meta.totalPages!) {
+            currentNoAlertJson = {...noAlertJson};
+        }
+
+        if(currentNewAlertJson.meta.currentPage === currentNewAlertJson.meta.totalPages && currentAgedAlertJson.meta.currentPage === currentAgedAlertJson.meta.totalPages && currentNoAlertJson.meta.currentPage === currentNoAlertJson.meta.totalPages) {
+            setPageControl({ forward: false, backward: true });
+        }
+        else if(currentNewAlertJson.meta.currentPage === 1 && currentAgedAlertJson.meta.currentPage === 1 && currentNoAlertJson.meta.currentPage === 1) {
+            setPageControl({ forward: true, backward: false });
+        }
+        else if(currentNewAlertJson.meta.totalPages === 1 && currentAgedAlertJson.meta.totalPages === 1 && currentNoAlertJson.meta.totalPages === 1) {
+            setPageControl({ forward: false, backward: false });
+        }
+        else {
+            setPageControl({ forward: true, backward: true });
+        }
+
+        setGroupedData({
+            'new_alerts': currentNewAlertJson,
+            'aged_alerts': currentAgedAlertJson,
+            'no_alerts': currentNoAlertJson
+        })
+
+        renderData({
+            'new_alerts': currentNewAlertJson,
+            'aged_alerts': currentAgedAlertJson,
+            'no_alerts': currentNoAlertJson
+        });
+    }
+
+    const radiiArray: { [key: string]: number } = useMemo(() => {
         let minRadius = CENTER_CIRCLE_RADIUS_PERCENTAGE;
         let maxRadius = LAST_ORBIT_RADIUS_PERCENTAGE;
         let radiusIncrement = (maxRadius - minRadius) / LEGEND_DATA.length;
-        return LEGEND_DATA.map((_, idx) => minRadius + radiusIncrement * (idx + 1));
+        return LEGEND_DATA.reduce((all, current, idx) => {
+            return { ...all, [current.id]: minRadius + radiusIncrement * (idx + 1) }
+        }, {})
     }, []);
 
-    const getOrbits = (totalDivisions: number): JSX.Element => {
-        let orbitArray: Array<JSX.Element> = [];
-
-        let maxOpacity = 0.5;
-        let minOpacity = 0.1;
-        let opacityDecrement = (maxOpacity - minOpacity) / totalDivisions;
-
-        for (let idx = 0; idx <= totalDivisions; idx++) {
-            orbitArray.push(
-                <circle
-                    cx="50"
-                    cy="51.5"
-                    r={radiiArray[idx]}
-                    stroke={`rgba(255, 255, 255, ${maxOpacity - opacityDecrement * idx})`}
-                    stroke-width="0.2"
-                    fill="none"
-                />
-            )
-        }
-        return (
-            <svg width="100%" height="100%" viewBox='0 0 100 100' style={{ outline: '1px solid red' }}>
-                {orbitArray}
-            </svg>
-        )
-    }
-
-    const getSpokes = (total: number): Array<JSX.Element> => {
-        let spokeArray: Array<JSX.Element> = [];
-        for (let idx = 0; idx < total; idx++) {
-          // if(idx === 0 || idx === 4) continue
-          spokeArray.push(
-            <div
-              className="grouped-spokes__item"
-              key={idx}
-              style={{ transform: `rotate(-${PLOT_END_ANGLE / total * idx}deg)` }}
-            >
-            </div>
-          )
-        }
-        return spokeArray;
-    }
-
-    const getLegend = (legendData: Array<LegendData>): Array<JSX.Element> => {
-        return legendData.map((asset, idx) => {
-            return (
-                <div
-                    className="grouped-legend__item"
-                    key={idx}
-                >
-                    <div
-                        className="grouped-item__color"
-                        style={{ backgroundColor: asset.color }}
-                    ></div>
-                    <div className="grouped-item__label">
-                        <div className="grouped-label__name">{asset.name}</div>
-                        {
-                            asset.desc && <div className="grouped-label__desc">{asset.desc}</div>
-                        }
-                    </div>
-                </div>
-            )
+    const renderData = ( groupedDataJson: GroupedInterface ): void => {
+        LEGEND_DATA.forEach(alertType => {
+            getDataPoints(alertType.id, groupedDataJson[alertType.id].data);
         })
     }
 
-    const getDataPoints = (): void => {
+    const getDataPoints = (alertId: string, groupedData: Array<GroupAsset>): void => {
+        let groupedAssets = groupedData;
+        let dataPtSize = 3 / 100 + 2 * DATA_PT_MARGIN;
 
+        let orbitRadius = radiiArray[alertId];
+        let orbitSize = 2 * Math.PI * orbitRadius; // relative to the container
+        let sectionSize = orbitSize / groupedAssets.length;
+        sectionSize = sectionSize < dataPtSize ? dataPtSize : sectionSize;
+        let angleIncrement = sectionSize / orbitSize * 360
+
+        let minAngle = PLOT_START_ANGLE[alertId];
+        let angleIncrementArray = [];
+        for (let idx = 0; idx < groupedAssets.length; idx++) {
+            angleIncrementArray.push(minAngle + angleIncrement * idx);
+        }
+
+
+        let assetsDivArray = [];
+        for (let idx = 0; idx < groupedAssets.length; idx++) {
+            let radialDistance = radiiArray[alertId];
+            let angularPos = angleIncrementArray[idx];
+
+            let xPos = radialDistance * Math.cos(inRadians(angularPos));
+            let yPos = radialDistance * Math.sin(inRadians(angularPos));
+
+            assetsDivArray.push(
+                <div
+                    className={`grouped-dataPts__item ${+groupedAssets[idx].asset_count! === 1 ? 'single' : ''}`}
+                    data-asset-type={alertId}
+                    onMouseOver={() => { }}
+                    key={`${alertId}${idx}`}
+                    style={{
+                        left: `${ORBIT_CENTER_OFFSET_LEFT + xPos}%`,
+                        top: `${ORBIT_CENTER_OFFSET_TOP + yPos}%`,
+                    }}
+                    onMouseEnter={() => { }}
+                    onClick={() => { }}
+                >
+                    {+groupedAssets[idx].asset_count! > 1 && kbmFormatter(+groupedAssets[idx].asset_count!)}
+                </div>
+            )
+        }
+
+        setDataPts(prev => ({ ...prev, [alertId]: assetsDivArray }));
     }
 
     return (
-        <div className="grouped" onLoad={() => getDataPoints()}>
+        <div className="grouped">
             <div className="grouped-orbit">
                 <svg height="100%" width="100%" viewBox="0 0 100 100">
                     <path
@@ -136,17 +172,23 @@ const Grouped: React.FC<GroupedProps> = ({ section }) => {
                 </div>
                 <div className='grouped-system__orbits'>
                     {
-                        getOrbits(LEGEND_DATA.length)
+                        getOrbits(LEGEND_DATA, radiiArray)
                     }
                 </div>
                 <div className="grouped-system__spokes">
                     {
-                        getSpokes(DIVISIONS)
+                        getSpokes(DIVISIONS, PLOT_END_ANGLE)
                     }
                 </div>
                 <div className="grouped-system__dataPts">
                     {
-                        dataPts
+                        dataPts.new_alerts
+                    }
+                    {
+                        dataPts.aged_alerts
+                    }
+                    {
+                        dataPts.no_alerts
                     }
                 </div>
             </div>
@@ -154,6 +196,14 @@ const Grouped: React.FC<GroupedProps> = ({ section }) => {
                 {
                     getLegend(LEGEND_DATA)
                 }
+            </div>
+            <div className="grouped-pagination">
+                <div className="grouped-pagination__button" onClick={() => { }}>
+                    <img src={addSvg} alt="add" />
+                </div>
+                <div className="grouped-pagination__button">
+                    <img src={minusSvg} alt="minus" />
+                </div>
             </div>
         </div>
     )

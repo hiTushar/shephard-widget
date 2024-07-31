@@ -32,6 +32,38 @@ interface GroupedProps {
     section: string;
 }
 
+interface DataPtsInterface {
+    'new_alerts': Array<JSX.Element>;
+    'aged_alerts': Array<JSX.Element>;
+    'no_alerts': Array<JSX.Element>;
+    [key: string]: Array<JSX.Element>;
+}
+
+interface GroupedInterface {
+    'new_alerts': alertInterface;
+    'aged_alerts': alertInterface;
+    'no_alerts': alertInterface;
+    [key: string]: alertInterface;
+};
+
+interface alertInterface {
+    data: Array<GroupAsset>;
+    meta: metaInterface;
+}
+
+interface metaInterface {
+    "currentPage"?: number;
+    "itemsPerPage"?: number;
+    "totalItems"?: number;
+    "totalPages"?: number;
+    [key: string]: any;
+}
+interface GroupAsset {
+    group_name?: string;
+    group_uuid?: string;
+    group_type?: string;
+    asset_count?: string;
+}
 interface ExpandedProps {
     data: Array<Platform>;
     section: string;
@@ -80,4 +112,23 @@ interface AssetSpotUIInterface {
     }
 }
 
-export type { ToolbarProps, OverviewProps, GroupedProps, ExpandedProps, OverviewIconProps, LegendData, Platform, PlatformAssets, Asset, AssetType, AlertCountArray, SpotObject, AssetSpotUIInterface };
+export type {
+    ToolbarProps,
+    OverviewProps, 
+    GroupedProps, 
+    DataPtsInterface, 
+    GroupedInterface,
+    alertInterface,
+    GroupAsset, 
+    metaInterface, 
+    ExpandedProps, 
+    OverviewIconProps, 
+    LegendData, 
+    Platform, 
+    PlatformAssets, 
+    Asset, 
+    AssetType, 
+    AlertCountArray, 
+    SpotObject, 
+    AssetSpotUIInterface
+};
