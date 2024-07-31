@@ -9,9 +9,9 @@ const commaFormatter = (num: string): string => {
 const inRadians = (degrees: number): number => degrees * Math.PI / 180;
 
 const kbmFormatter = (num: number): string => {
-    if (num >= BILLION) return `${(num / BILLION).toFixed(2)}B`;
-    else if (num >= MILLION) return `${(num / MILLION).toFixed(2)}M`;
-    else if (num >= THOUSAND) return `${(num / THOUSAND).toFixed(2)}K`;
+    if (num >= BILLION) return `${(num / BILLION).toFixed(1)}B`;
+    else if (num >= MILLION) return `${(num / MILLION).toFixed(1)}M`;
+    else if (num >= THOUSAND) return `${(num / THOUSAND).toFixed(1)}K`;
     else return `${num}`;
 }
 
