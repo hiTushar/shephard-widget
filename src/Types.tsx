@@ -25,14 +25,13 @@ interface LegendData {
     id: string;
     name: string;
     desc: string;
-    color: string;
 }
 
 interface GroupedProps {
     section: string;
 }
 
-interface DataPtsInterface {
+interface GroupPtsInterface {
     'new_alerts': Array<JSX.Element>;
     'aged_alerts': Array<JSX.Element>;
     'no_alerts': Array<JSX.Element>;
@@ -40,13 +39,13 @@ interface DataPtsInterface {
 }
 
 interface GroupedInterface {
-    'new_alerts': alertInterface;
-    'aged_alerts': alertInterface;
-    'no_alerts': alertInterface;
-    [key: string]: alertInterface;
+    'new_alerts': alertGroupInterface;
+    'aged_alerts': alertGroupInterface;
+    'no_alerts': alertGroupInterface;
+    [key: string]: alertGroupInterface;
 };
 
-interface alertInterface {
+interface alertGroupInterface {
     data: Array<GroupAsset>;
     meta: metaInterface;
 }
@@ -69,6 +68,21 @@ interface ExpandedProps {
     section: string;
 }
 
+interface AlertTypeData {
+    id: string;
+    name: string;
+    desc: string;
+    dataPtStyle: {
+        backgroundColor: string;
+        filter?: string;
+    };
+    spokeStyle: {
+        background: string;
+    };
+    originStyle: {
+        background: string;
+    };
+}
 
 interface Platform {
     platformId: string;
@@ -116,12 +130,13 @@ export type {
     ToolbarProps,
     OverviewProps, 
     GroupedProps, 
-    DataPtsInterface, 
+    GroupPtsInterface, 
     GroupedInterface,
-    alertInterface,
+    alertGroupInterface,
     GroupAsset, 
     metaInterface, 
-    ExpandedProps, 
+    ExpandedProps,
+    AlertTypeData,
     OverviewIconProps, 
     LegendData, 
     Platform, 

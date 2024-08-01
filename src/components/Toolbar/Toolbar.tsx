@@ -1,11 +1,14 @@
 import React, { useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { spokeSvg, rightSvg, dividerSvg } from '../../assets/assets';
 import './Toolbar.css';
 import { ToolbarProps } from '../../Types';
 
 export const Toolbar: React.FC<ToolbarProps> = ({ data, section, setSection }) => {
     const navigate = useNavigate();
+    const { platformId, alertId, groupId } = useParams();
+  
+    console.log(platformId, alertId, groupId);
 
     const platforms = useMemo(() => {
         let temp = data.map((platformData) => ({

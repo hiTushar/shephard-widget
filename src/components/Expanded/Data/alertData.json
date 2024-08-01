@@ -1,0 +1,52 @@
+{
+    "data": [
+        {
+            "machine_name": "machine1",
+            "machine_uuid": "machine1_uuid",
+            "group_name": "group1",
+            "group_uuid": "group1_uuid",
+            "group_type": "user"
+        },
+        {
+            "machine_name": "machine2",
+            "machine_uuid": "machine2_uuid",
+            "group_name": "group2",
+            "group_uuid": "group2_uuid",
+            "group_type": "user"
+        },
+        {
+            "machine_name": "machine3",
+            "machine_uuid": "machine3_uuid",
+            "group_name": "group3",
+            "group_uuid": "group3_uuid",
+            "group_type": "user"
+        },
+        {
+            "machine_name": "machine4",
+            "machine_uuid": "machine4_uuid",
+            "group_name": "group4",
+            "group_uuid": "group4_uuid",
+            "group_type": "user"
+        },
+        {
+            "machine_name": "machine5",
+            "machine_uuid": "machine5_uuid",
+            "group_name": "group5",
+            "group_uuid": "group5_uuid",
+            "group_type": "user"
+        },
+        {
+            "machine_name": "machine6",
+            "machine_uuid": "machine6_uuid",
+            "group_name": "group6",
+            "group_uuid": "group6_uuid",
+            "group_type": "user"
+        }
+    ],
+    "meta": {
+        "currentPage": 1,
+        "itemsPerPage": 10,
+        "totalItems": 100,
+        "totalPages": 10
+    }
+}

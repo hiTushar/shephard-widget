@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import _ from 'lodash';
 import './Grouped.css';
-import { alertInterface, DataPtsInterface, GroupAsset, GroupedInterface, GroupedProps, LegendData, metaInterface } from "../../Types";
+import { alertGroupInterface, GroupPtsInterface, GroupAsset, GroupedInterface, GroupedProps, LegendData, metaInterface } from "../../Types";
 import newAlertJson from "./Data/newAlertData.json";
 import agedAlertJson from "./Data/agedAlertData.json";
 import noAlertJson from "./Data/noAlertData.json";
@@ -25,7 +25,7 @@ const LEGEND_DATA: Array<LegendData> = [
     },
     {
         id: 'no_alerts',
-        name: 'No Alerts',
+        name: 'Assets with No Alerts',
         desc: '',
         color: 'rgb(15, 68, 92)'
     }
@@ -44,7 +44,7 @@ const AGED_ALERT_LIMIT_PER_ORBIT = 18;
 const NO_ALERT_LIMIT_PER_ORBIT = 30;
 
 const Grouped: React.FC = () => {
-    const [dataPts, setDataPts] = useState<DataPtsInterface>({ 'new_alerts': [], 'aged_alerts': [], 'no_alerts': [] });
+    const [dataPts, setDataPts] = useState<GroupPtsInterface>({ 'new_alerts': [], 'aged_alerts': [], 'no_alerts': [] });
     const [groupedData, setGroupedData] = useState<GroupedInterface>({ 'new_alerts': { 'data': [], 'meta': {} }, 'aged_alerts': { 'data': [], 'meta': {} }, 'no_alerts': { 'data': [], 'meta': {} } });
     const [pageControl, setPageControl] = useState<{[key: string]: Boolean}>({ forward: true, backward: false });
 
@@ -56,9 +56,9 @@ const Grouped: React.FC = () => {
     }, [platformId]);
 
     const fetchData = (): void => {
-        let currentNewAlertJson: alertInterface = groupedData.new_alerts, 
-        currentAgedAlertJson: alertInterface  = groupedData.aged_alerts,  
-        currentNoAlertJson: alertInterface = groupedData.no_alerts;
+        let currentNewAlertJson: alertGroupInterface = groupedData.new_alerts, 
+        currentAgedAlertJson: alertGroupInterface  = groupedData.aged_alerts,  
+        currentNoAlertJson: alertGroupInterface = groupedData.no_alerts;
 
         if (_.isEmpty(currentNewAlertJson.data) || groupedData.new_alerts.meta.currentPage! < groupedData.new_alerts.meta.totalPages!) {   
             currentNewAlertJson = {...newAlertJson}; 
@@ -145,6 +145,7 @@ const Grouped: React.FC = () => {
                     style={{
                         left: `${ORBIT_CENTER_OFFSET_LEFT + xPos}%`,
                         top: `${ORBIT_CENTER_OFFSET_TOP + yPos}%`,
+                        animationDelay: `${Math.random() * 2}s`,
                     }}
                     onMouseEnter={() => { }}
                     onClick={() => openExpandedView(alertId, groupedAssets[idx].group_uuid!)}
@@ -176,7 +177,7 @@ const Grouped: React.FC = () => {
             </div>
             <div className="grouped-system">
                 <div className="grouped-system__centre">
-                    <img src={PLATFORMS_ICON_MAP[platformId]} alt={platformId} />
+                    <img src={PLATFORMS_ICON_MAP[platformId || '']} alt={platformId} />
                 </div>
                 <div className='grouped-system__orbits'>
                     {

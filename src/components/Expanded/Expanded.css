@@ -33,8 +33,8 @@
     align-items: center;
 
     border-radius: 50%;
-    border: 1px solid var(--blue-1);
-    background: var(--blue-2-opaque);
+    /* border: 1px solid var(--blue-1);
+    background: var(--blue-2-opaque); */
 
     @container expanded-container (min-width: 1px) {
         width: 10cqw;
@@ -75,15 +75,31 @@
 .expanded-dataPts__item {
     position: absolute;
     z-index: 2;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) scale(0);
 
     aspect-ratio: 1/1;
     border-radius: 50%;
 
     cursor: pointer;
 
+    transition: transform 0.2s linear;
+    animation: popup 1s cubic-bezier(0.68, -0.55, 0.27, 1.55) 1s 1 forwards;
+
     @container expanded-container (min-width: 600px) {
         width: 1.5cqw;
+    }
+
+    &:hover  {
+        transform: translate(-50%, -50%) scale(1.1)!important;
+    }
+}
+
+@keyframes popup {
+    0% {
+        transform: translate(-50%, -50%) scale(0);
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1);
     }
 }
 
@@ -163,5 +179,31 @@
     @container expanded-container (min-width: 600px) {
         width: 1.4cqw;
         height: 1.4cqw;
+    }
+}
+
+.expanded-pagination {
+    position: absolute;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    @container expanded-container (min-width: 1px) {
+        gap: 0.5cqw;
+        bottom: 2cqw;
+        right: 2cqw;
+    }
+}
+
+.expanded-pagination__button {
+    color: var(--gray-2);
+    border: 1px solid var(--blue-1);
+    background: var(--blue-1-opaque);
+    cursor: pointer;
+    @container expanded-container (min-width: 1px) {
+        padding: 0.5cqw 0.6cqw 0.4cqw;
+        
+        & > img {
+            width: 2cqw;
+        }
     }
 }
