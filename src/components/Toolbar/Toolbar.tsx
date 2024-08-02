@@ -1,41 +1,71 @@
-import React, { useMemo } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { spokeSvg, rightSvg, dividerSvg } from '../../assets/assets';
 import './Toolbar.css';
-import { ToolbarProps } from '../../Types';
 
-export const Toolbar: React.FC<ToolbarProps> = ({ data, section, setSection }) => {
+const PLATFORM_DATA = [
+    { platformId: 'linux', platformName: 'Linux' },
+    { platformId: 'windows', platformName: 'Windows' },
+    { platformId: 'macos', platformName: 'Mac' },
+    { platformId: 'ios', platformName: 'iOS' },
+    { platformId: 'android', platformName: 'Android' }
+]
+
+export const Toolbar: React.FC = () => {
+    const [ tab, setTab ] = useState({ type: 'platform', platformId: 'all', alertId: '' });
     const navigate = useNavigate();
-    const { platformId, alertId, groupId } = useParams();
-  
-    console.log(platformId, alertId, groupId);
+    const location = useLocation();
+
+    useEffect(() => {
+        let pathArray = location.pathname.split('/').slice(1);
+        if (pathArray.length === 1) {
+            setTab({ type: 'platform', platformId: pathArray[0], alertId: '' });
+        }
+        else if (pathArray.length > 1) {
+            setTab({ type: 'alert', platformId: pathArray[0], alertId: pathArray[1] });
+        }
+    }, [location.pathname])
 
     const platforms = useMemo(() => {
-        let temp = data.map((platformData) => ({
+        let temp = PLATFORM_DATA.map((platformData) => ({
             [platformData.platformId]: platformData.platformName
         }));
 
         return [{ '': 'All' }, ...temp]
-    }, [data])
+    }, [])
 
     const changeTab = (platformId: string) => {
-        setSection(platformId);
         navigate(`/${platformId}`);
     }
 
+    console.log('toolbar', tab);
     return (
         <div className="toolbar">
             <div className="toolbar-glance">
-                <div className="toolbar-glance__icon">
-                    <img src={spokeSvg} alt="spoke" />
-                </div>
-                <div className='toolbar-glance__text'>
-                    Assets at a glance
-                </div>
-                <div className="toolbar-glance__arrow">
-                    <img src={rightSvg} alt="right" />
-                </div>
+                {
+                    tab.type === 'platform' && (
+                        <>
+                            <div className="toolbar-glance__icon">
+                                <img src={spokeSvg} alt="spoke" />
+                            </div>
+                            <div className='toolbar-glance__text'>
+                                Assets at a glance
+                            </div>
+                            <div className="toolbar-glance__arrow">
+                                <img src={rightSvg} alt="right" />
+                            </div>
+                        </>
+                    )
+                }
+                {
+                    tab.type === 'alert' && (
+                        <>
+
+                        </>
+                    )
+                }
             </div>
+
             <div className="toolbar-tabs">
                 {
                     platforms.map((platformName, index) => {
@@ -43,7 +73,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({ data, section, setSection }) =
                         return (
                             <React.Fragment key={platformId}>
                                 <div
-                                    className={`toolbar-tabs__item ${section === platformId ? 'active' : ''}`}
+                                    className={`toolbar-tabs__item ${tab.platformId === platformId ? 'active' : ''}`}
                                     onClick={() => changeTab(platformId)}
                                 >
                                     {platformName[platformId]}

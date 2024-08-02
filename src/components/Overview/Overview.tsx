@@ -1,22 +1,28 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Overview.css';
 import { PLATFORMS_ICON_MAP } from '../../assets/assets';
 import { inRadians, kbmFormatter } from '../../Utils/Utils';
-import { OverviewProps, Platform, PlatformAssets, AlertCountArray } from '../../Types';
+import { Platform, PlatformAssets, AlertCountArray } from '../../Types';
 import OverviewIcon from './OverviewIcon';
+import overviewData from './Data/Data.json';
 
 const CENTER_CIRCLE_RADIUS_PERCENTAGE = 8;
 const LAST_ORBIT_RADIUS_PERCENTAGE = 45;
 const ORBIT_CENTER_OFFSET = 50;
-// const ORBIT_EDGE_ICON_GAP = 2;
 const PLOT_START_ANGLE = 0;
 const PLOT_END_ANGLE = 180;
 const MIN_ICON_SIZE = 4;
 const MAX_ICON_SIZE = 8;
 
-const Overview: React.FC<OverviewProps> = ({ data, setSection }) => {
+const Overview: React.FC = () => {
+  const [data, setData] = useState<Array<Platform>>([]);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setData(overviewData);
+  }, [])
+
   const radiiArray: Array<number> = useMemo(() => {
     let minRadius = CENTER_CIRCLE_RADIUS_PERCENTAGE;
     let maxRadius = LAST_ORBIT_RADIUS_PERCENTAGE;
@@ -88,7 +94,6 @@ const Overview: React.FC<OverviewProps> = ({ data, setSection }) => {
   }
 
   const getPlatformIcons = (data: Array<Platform>): Array<JSX.Element> => {
-    // let jumbledRadiiArray = jumbleArray([...radiiArray]); // to assign random orbit to platform icons, but the sector is still the same
     let alertCountArray: Array<AlertCountArray> = data.map((platform) => ({
       platformId: platform.platformId,
       assetCount: getAlertCount(platform.platformAssets)
@@ -147,7 +152,6 @@ const Overview: React.FC<OverviewProps> = ({ data, setSection }) => {
   }
 
   const openIcon = (platformId: string) => {
-    setSection(platformId);
     navigate(`/${platformId}`);
   }
 
