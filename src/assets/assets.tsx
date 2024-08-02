@@ -7,6 +7,7 @@ import windowsSvg from './windows.svg';
 import linuxSvg from './linux.svg';
 import addSvg from './add.svg';
 import minusSvg from './minus.svg';
+import leftSvg from './chevron_left.svg';
 
 interface PlatformIconMap {
     [key: string]: string;
@@ -30,5 +31,6 @@ export {
     linuxSvg,
     PLATFORMS_ICON_MAP,
     addSvg,
-    minusSvg
+    minusSvg,
+    leftSvg
 }

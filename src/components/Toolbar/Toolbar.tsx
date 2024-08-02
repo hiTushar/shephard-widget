@@ -1,7 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { spokeSvg, rightSvg, dividerSvg } from '../../assets/assets';
+import { spokeSvg, rightSvg, leftSvg, dividerSvg } from '../../assets/assets';
 import './Toolbar.css';
+import alertTypeData from '../alertTypeData.json';
 
 const PLATFORM_DATA = [
     { platformId: 'linux', platformName: 'Linux' },
@@ -12,7 +13,7 @@ const PLATFORM_DATA = [
 ]
 
 export const Toolbar: React.FC = () => {
-    const [ tab, setTab ] = useState({ type: 'platform', platformId: 'all', alertId: '' });
+    const [tab, setTab] = useState({ type: 'platform', platformId: 'all', alertId: '' });
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -59,9 +60,16 @@ export const Toolbar: React.FC = () => {
                 }
                 {
                     tab.type === 'alert' && (
-                        <>
-
-                        </>
+                        <div className="toolbar-glance__alert-lvl" onClick={() => navigate(-1)}>
+                            <div className="toolbar-alert-lvl__arrow">
+                                <img src={leftSvg} alt="left" />
+                            </div>
+                            <div className="toolbar-alert-lvl__text">
+                                <div className="toolbar-text__title">
+                                    {alertTypeData.find(alert => alert.id === tab.alertId)!.name}
+                                </div>
+                            </div>
+                        </div>
                     )
                 }
             </div>

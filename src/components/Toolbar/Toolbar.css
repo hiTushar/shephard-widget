@@ -5,7 +5,7 @@
     container-name: toolbar-container;
     container-type: inline-size;
     user-select: none;
-    padding: 2% 2% 0px; 
+    padding-inline: 2cqw; 
 }
 
 .toolbar-glance {
@@ -14,6 +14,7 @@
     /* align-items: center; */
     gap: 10%;
     min-height: 3cqw;
+    padding-top: 2cqw;
 }
 
 .toolbar-glance__icon {
@@ -29,10 +30,8 @@
 }
 
 .toolbar-glance__text {
-    font-size: 12px;
-
     @container toolbar-container (min-width: 600px) {
-        font-size: 1.3cqw;
+        font-size: 1.5cqw;
     }
 
     color: var(--gray-1);
@@ -54,9 +53,39 @@
     cursor: pointer;
 }
 
+.toolbar-glance__alert-lvl {
+    display: flex;
+    gap: 5cqw;
+    min-height: 3cqw;
+    min-width: 18cqw;
+    cursor: pointer;
+}
+
+.toolbar-alert-lvl__text {
+    display: flex;
+    flex-direction: column;
+}
+
+.toolbar-text__title {
+    color: var(--white);
+    font-weight: 500;
+    @container toolbar-container (min-width: 600px) {
+        font-size: 1.5cqw;
+    }
+}
+
+.toolbar-text__desc {
+    color: var(--gray-3);
+    font-weight: 400;
+    @container toolbar-container (min-width: 600px) {
+        font-size: 1.2cqw;
+    }
+}
+
 .toolbar-tabs {
     display: flex;
     gap: 0.8cqw;
+    padding-top: 2cqw;
 }
 
 .toolbar-tabs__item {
