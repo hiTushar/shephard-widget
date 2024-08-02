@@ -3,55 +3,9 @@ import { useParams } from 'react-router-dom';
 import './Expanded.css';
 import { addSvg, minusSvg } from '../../assets/assets';
 import { inRadians, kbmFormatter } from '../../Utils/Utils';
-import type { AlertTypeData } from '../../Types';
 import alertData from './Data/alertData.json';
 import _ from 'lodash';
-
-const ALERT_TYPE_DATA: Array<AlertTypeData> = [
-  {
-    id: 'new_alerts',
-    name: 'Assets with Alerts',
-    desc: '',
-    dataPtStyle: {
-      backgroundColor: 'var(--red-1)',
-      filter: 'drop-shadow(0 0 0.5cqw var(--red-1))'
-    },
-    spokeStyle: {
-      background: `linear-gradient(90deg, transparent 12%, var(--red-2) 12%, transparent)`,
-    },
-    originStyle: {
-      background: 'var(--red-2)'
-    }
-  },
-  {
-    id: 'aged_alerts',
-    name: 'Assets with Aged Alerts',
-    desc: '> 14 days',
-    dataPtStyle: {
-      backgroundColor: 'var(--red-2)'
-    },
-    spokeStyle: {
-      background: `linear-gradient(90deg, transparent 12%, var(--red-3) 10%, transparent)`,
-    },
-    originStyle: {
-      background: 'var(--red-3)'
-    }
-  },
-  {
-    id: 'no_alerts',
-    name: 'Assets withNo Alerts',
-    desc: '',
-    dataPtStyle: {
-      backgroundColor: 'var(--blue-1-opaque)'
-    },
-    spokeStyle: {
-      background: `linear-gradient(90deg, transparent 12%, var(--blue-2-opaque) 20%, transparent)`,
-    },
-    originStyle: {
-      background: 'var(--blue-2-opaque)'
-    }
-  }
-]
+import AlertTypeData from '../alertTypeData.json';
 
 const CENTER_CIRCLE_RADIUS_PERCENTAGE = 10;
 const LAST_ORBIT_RADIUS_PERCENTAGE = 43;
@@ -136,7 +90,7 @@ const Expanded: React.FC = () => {
             left: `${ORBIT_CENTER_OFFSET_LEFT + xPos}%`,
             top: `${ORBIT_CENTER_OFFSET_TOP + yPos}%`,
             animationDelay: `${Math.random() * 2}s`,
-            ...ALERT_TYPE_DATA.find(alert => alert.id === alertId)!.dataPtStyle
+            ...AlertTypeData.find(alert => alert.id === alertId)!.dataPtStyle
           }}
           onMouseEnter={() => { }}
           onClick={() => { }}
@@ -149,7 +103,7 @@ const Expanded: React.FC = () => {
   }
 
   const getLegend = (alertId: string): JSX.Element => {
-    let alert = ALERT_TYPE_DATA.find(asset => asset.id === alertId);
+    let alert = AlertTypeData.find(asset => asset.id === alertId);
     return (
       <div
         className="expanded-legend__item"
@@ -178,7 +132,7 @@ const Expanded: React.FC = () => {
           key={idx}
           style={{
             transform: `rotate(-${plotEndAngle / total * idx}deg)`,
-            ...ALERT_TYPE_DATA.find(alert => alert.id === alertId)!.spokeStyle
+            ...AlertTypeData.find(alert => alert.id === alertId)!.spokeStyle
           }}
         >
         </div>
@@ -209,14 +163,14 @@ const Expanded: React.FC = () => {
       )
     }
     return (
-      <svg width="100%" height="100%" viewBox='0 0 100 100' style={{ outline: '1px solid red' }}>
+      <svg width="100%" height="100%" viewBox='0 0 100 100'>
         {orbitArray}
       </svg>
     )
   }
 
   const getOrigin = () => {
-    let alert = ALERT_TYPE_DATA.find(asset => asset.id === alertId);
+    let alert = AlertTypeData.find(asset => asset.id === alertId);
     return (
       <div className="expanded-system__centre"
         style={{

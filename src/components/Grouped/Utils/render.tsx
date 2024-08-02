@@ -21,7 +21,7 @@ const getOrbits = (legendData: Array<LegendData>, radiiArray: { [key: string]: n
         )
     }
     return (
-        <svg width="100%" height="100%" viewBox='0 0 100 100' style={{ outline: '1px solid red' }}>
+        <svg width="100%" height="100%" viewBox='0 0 100 100'>
             {orbitArray}
         </svg>
     )
@@ -44,7 +44,7 @@ const getSpokes = (total: number, plotEndAngle: number): Array<JSX.Element> => {
 }
 
 const getLegend = (legendData: Array<LegendData>): Array<JSX.Element> => {
-    return legendData.map((asset, idx) => {
+    return legendData.map((alert, idx) => {
         return (
             <div
                 className="grouped-legend__item"
@@ -52,12 +52,12 @@ const getLegend = (legendData: Array<LegendData>): Array<JSX.Element> => {
             >
                 <div
                     className="grouped-item__color"
-                    style={{ backgroundColor: asset.color }}
+                    style={{ ...alert.dataPtStyle }}
                 ></div>
                 <div className="grouped-item__label">
-                    <div className="grouped-label__name">{asset.name}</div>
+                    <div className="grouped-label__name">{alert.name}</div>
                     {
-                        asset.desc && <div className="grouped-label__desc">{asset.desc}</div>
+                        alert.desc && <div className="grouped-label__desc">{alert.desc}</div>
                     }
                 </div>
             </div>

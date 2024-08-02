@@ -9,27 +9,28 @@ import noAlertJson from "./Data/noAlertData.json";
 import { addSvg, minusSvg, PLATFORMS_ICON_MAP } from "../../assets/assets";
 import { inRadians, kbmFormatter } from "../../Utils/Utils";
 import { getLegend, getOrbits, getSpokes } from "./Utils/render";
+import AlertTypeData from '../alertTypeData.json';
 
-const LEGEND_DATA: Array<LegendData> = [
-    {
-        id: 'new_alerts',
-        name: 'Assets with Alerts',
-        desc: '',
-        color: 'rgb(208, 6, 6)'
-    },
-    {
-        id: 'aged_alerts',
-        name: 'Assets with Aged Alerts',
-        desc: '> 14 days',
-        color: 'rgb(125, 17, 17)'
-    },
-    {
-        id: 'no_alerts',
-        name: 'Assets with No Alerts',
-        desc: '',
-        color: 'rgb(15, 68, 92)'
-    }
-]
+// const AlertTypeData: Array<LegendData> = [
+//     {
+//         id: 'new_alerts',
+//         name: 'Assets with Alerts',
+//         desc: '',
+//         color: 'rgb(208, 6, 6)'
+//     },
+//     {
+//         id: 'aged_alerts',
+//         name: 'Assets with Aged Alerts',
+//         desc: '> 14 days',
+//         color: 'rgb(125, 17, 17)'
+//     },
+//     {
+//         id: 'no_alerts',
+//         name: 'Assets with No Alerts',
+//         desc: '',
+//         color: 'rgb(15, 68, 92)'
+//     }
+// ]
 
 const CENTER_CIRCLE_RADIUS_PERCENTAGE = 10;
 const LAST_ORBIT_RADIUS_PERCENTAGE = 43;
@@ -99,14 +100,14 @@ const Grouped: React.FC = () => {
     const radiiArray: { [key: string]: number } = useMemo(() => {
         let minRadius = CENTER_CIRCLE_RADIUS_PERCENTAGE;
         let maxRadius = LAST_ORBIT_RADIUS_PERCENTAGE;
-        let radiusIncrement = (maxRadius - minRadius) / LEGEND_DATA.length;
-        return LEGEND_DATA.reduce((all, current, idx) => {
+        let radiusIncrement = (maxRadius - minRadius) / AlertTypeData.length;
+        return AlertTypeData.reduce((all, current, idx) => {
             return { ...all, [current.id]: minRadius + radiusIncrement * (idx + 1) }
         }, {})
     }, []);
 
     const renderData = ( groupedDataJson: GroupedInterface ): void => {
-        LEGEND_DATA.forEach(alertType => {
+        AlertTypeData.forEach(alertType => {
             getDataPoints(alertType.id, groupedDataJson[alertType.id].data);
         })
     }
@@ -181,7 +182,7 @@ const Grouped: React.FC = () => {
                 </div>
                 <div className='grouped-system__orbits'>
                     {
-                        getOrbits(LEGEND_DATA, radiiArray)
+                        getOrbits(AlertTypeData, radiiArray)
                     }
                 </div>
                 <div className="grouped-system__spokes">
@@ -203,7 +204,7 @@ const Grouped: React.FC = () => {
             </div>
             <div className="grouped-legend">
                 {
-                    getLegend(LEGEND_DATA)
+                    getLegend(AlertTypeData)
                 }
             </div>
             <div className="grouped-pagination">

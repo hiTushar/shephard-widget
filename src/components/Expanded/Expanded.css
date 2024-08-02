@@ -9,14 +9,12 @@
 .expanded-orbit {
     position: absolute;
     inset: 0;
-    outline: 1px solid red;
 }
 
 .expanded-system {
     position: absolute;
     inset: 0;
     z-index: 1;
-    border: 1px dashed red;
     overflow: hidden;
 }
 

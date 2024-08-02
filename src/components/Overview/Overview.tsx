@@ -74,7 +74,7 @@ const Overview: React.FC = () => {
       )
     }
     return (
-      <svg viewBox='0 0 100 100' style={{ /* outline: '1px solid red' */ }}>
+      <svg viewBox='0 0 100 100'>
         {orbitArray}
       </svg>
     )
