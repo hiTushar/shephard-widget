@@ -17,11 +17,11 @@ const ORBIT_CENTER_OFFSET_LEFT = 50;
 const ORBIT_CENTER_OFFSET_TOP = 52;
 
 const Expanded: React.FC = () => {
-  const { platformId, alertId, groupId } = useParams();
+  const { alertId, groupId } = useParams();
 
   // console.log(platformId, alertId, groupId);
   const [dataPts, setDataPts] = useState<{ [key: string]: Array<JSX.Element> }>({ 'orbit_a': [], 'orbit_b': [], 'orbit_c': [] });
-  const [assetData, setAssetData] = useState({ 'orbit_a': { 'data': [], 'meta': {} }, 'orbit_b': { 'data': [], 'meta': {} }, 'orbit_c': { 'data': [], 'meta': {} } });
+  const [assetData, setAssetData] = useState<any>({ 'orbit_a': { 'data': [], 'meta': {} }, 'orbit_b': { 'data': [], 'meta': {} }, 'orbit_c': { 'data': [], 'meta': {} } });
 
   const radiiArray = useMemo(() => {
     let minRadius = CENTER_CIRCLE_RADIUS_PERCENTAGE;
@@ -35,10 +35,7 @@ const Expanded: React.FC = () => {
   }, [alertId, groupId])
 
   const fetchData = () => {
-    let currentOrbitAJson = assetData.orbit_a,
-      currentOrbitBJson = assetData.orbit_b,
-      currentOrbitCJson = assetData.orbit_c;
-
+    
     setAssetData({
       'orbit_a': alertData,
       'orbit_b': alertData,
@@ -52,7 +49,7 @@ const Expanded: React.FC = () => {
     })
   }
 
-  const renderData = (datajson) => {
+  const renderData = (datajson: any) => {
     console.log(datajson);
     Object.keys(dataPts).forEach((orbit, idx) => {
       getDataPoints(idx, orbit, datajson[orbit].data);
@@ -102,8 +99,8 @@ const Expanded: React.FC = () => {
     setDataPts(prev => ({ ...prev, [orbit]: assetsDivArray }));
   }
 
-  const getLegend = (alertId: string): JSX.Element => {
-    let alert = AlertTypeData.find(asset => asset.id === alertId);
+  const getLegend = (alertId: string | undefined): JSX.Element => {
+    let alert = AlertTypeData.find(asset => asset.id === alertId)!;
     return (
       <div
         className="expanded-legend__item"
