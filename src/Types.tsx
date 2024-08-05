@@ -126,6 +126,13 @@ interface AssetSpotUIInterface {
     }
 }
 
+interface ViewReducerInterface {
+    type: string;
+    platformId: string;
+    alertId: string;
+    groupId: string;
+}
+
 export type {
     ToolbarProps,
     OverviewProps, 
@@ -145,5 +152,6 @@ export type {
     AssetType, 
     AlertCountArray, 
     SpotObject, 
-    AssetSpotUIInterface
+    AssetSpotUIInterface,
+    ViewReducerInterface
 };

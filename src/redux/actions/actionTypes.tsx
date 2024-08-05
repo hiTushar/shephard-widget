@@ -1,1 +1,1 @@
-export const TOOLBAR_CHANGE = 'TOOLBAR_CHANGE';
+export const VIEW_CHANGE = 'VIEW_CHANGE';

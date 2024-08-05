@@ -1,11 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import './Overview.css';
 import { PLATFORMS_ICON_MAP } from '../../assets/assets';
 import { inRadians, kbmFormatter } from '../../Utils/Utils';
-import { Platform, PlatformAssets, AlertCountArray } from '../../Types';
+import { Platform, PlatformAssets, AlertCountArray, ViewReducerInterface } from '../../Types';
 import OverviewIcon from './OverviewIcon';
 import overviewData from './Data/Data.json';
+import { useDispatch, useSelector } from 'react-redux';
+import { viewChange } from '../../redux/actions/viewActions';
 
 const CENTER_CIRCLE_RADIUS_PERCENTAGE = 8;
 const LAST_ORBIT_RADIUS_PERCENTAGE = 45;
@@ -17,7 +18,9 @@ const MAX_ICON_SIZE = 8;
 
 const Overview: React.FC = () => {
   const [data, setData] = useState<Array<Platform>>([]);
-  const navigate = useNavigate();
+  
+  const dispatch = useDispatch();
+  const view = useSelector((state: { viewReducer: ViewReducerInterface }) => state.viewReducer);
 
   useEffect(() => {
     setData(overviewData);
@@ -152,7 +155,7 @@ const Overview: React.FC = () => {
   }
 
   const openIcon = (platformId: string) => {
-    navigate(`/${platformId}`);
+    dispatch(viewChange({ ...view, type: 'platform', platformId: platformId }));
   }
 
   return (

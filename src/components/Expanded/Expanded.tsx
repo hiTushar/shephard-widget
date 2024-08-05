@@ -1,11 +1,12 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import {  useSelector } from 'react-redux';
 import './Expanded.css';
 import { addSvg, minusSvg } from '../../assets/assets';
 import { inRadians, kbmFormatter } from '../../Utils/Utils';
 import alertData from './Data/alertData.json';
 import _ from 'lodash';
 import AlertTypeData from '../alertTypeData.json';
+import { ViewReducerInterface } from '../../Types';
 
 const CENTER_CIRCLE_RADIUS_PERCENTAGE = 10;
 const LAST_ORBIT_RADIUS_PERCENTAGE = 43;
@@ -17,9 +18,8 @@ const ORBIT_CENTER_OFFSET_LEFT = 50;
 const ORBIT_CENTER_OFFSET_TOP = 52;
 
 const Expanded: React.FC = () => {
-  const { alertId, groupId } = useParams();
+  const view = useSelector((state: { viewReducer: ViewReducerInterface }) => state.viewReducer);
 
-  // console.log(platformId, alertId, groupId);
   const [dataPts, setDataPts] = useState<{ [key: string]: Array<JSX.Element> }>({ 'orbit_a': [], 'orbit_b': [], 'orbit_c': [] });
   const [assetData, setAssetData] = useState<any>({ 'orbit_a': { 'data': [], 'meta': {} }, 'orbit_b': { 'data': [], 'meta': {} }, 'orbit_c': { 'data': [], 'meta': {} } });
 
@@ -32,7 +32,7 @@ const Expanded: React.FC = () => {
 
   useEffect(() => {
     fetchData();
-  }, [alertId, groupId])
+  }, [view.alertId, view.groupId])
 
   const fetchData = () => {
     
@@ -87,7 +87,7 @@ const Expanded: React.FC = () => {
             left: `${ORBIT_CENTER_OFFSET_LEFT + xPos}%`,
             top: `${ORBIT_CENTER_OFFSET_TOP + yPos}%`,
             animationDelay: `${Math.random() * 2}s`,
-            ...AlertTypeData.find(alert => alert.id === alertId)!.dataPtStyle
+            ...AlertTypeData.find(alert => alert.id === view.alertId)!.dataPtStyle
           }}
           onMouseEnter={() => { }}
           onClick={() => { }}
@@ -129,7 +129,7 @@ const Expanded: React.FC = () => {
           key={idx}
           style={{
             transform: `rotate(-${plotEndAngle / total * idx}deg)`,
-            ...AlertTypeData.find(alert => alert.id === alertId)!.spokeStyle
+            ...AlertTypeData.find(alert => alert.id === view.alertId)!.spokeStyle
           }}
         >
         </div>
@@ -167,7 +167,7 @@ const Expanded: React.FC = () => {
   }
 
   const getOrigin = () => {
-    let alert = AlertTypeData.find(asset => asset.id === alertId);
+    let alert = AlertTypeData.find(asset => asset.id === view.alertId);
     return (
       <div className="expanded-system__centre"
         style={{
@@ -215,7 +215,7 @@ const Expanded: React.FC = () => {
         <div 
           className="expanded-system__dataPts"
           style={{
-            ...AlertTypeData.find(alert => alert.id === alertId)!.haloStyle
+            ...AlertTypeData.find(alert => alert.id === view.alertId)!.haloStyle
           }}
         >
           {
@@ -231,7 +231,7 @@ const Expanded: React.FC = () => {
       </div>
       <div className="expanded-legend">
         {
-          getLegend(alertId)
+          getLegend(view.alertId)
         }
       </div>
       <div className="expanded-pagination">

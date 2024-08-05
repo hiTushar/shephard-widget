@@ -1,8 +1,8 @@
 import { combineReducers } from "redux";
-import toolbarReducer from "./reducers/toolbarReducer";
+import viewReducer from "./reducers/viewReducer";
 
 const rootReducer = combineReducers({
-    toolbarReducer
+    viewReducer
 })
 
 export default rootReducer;

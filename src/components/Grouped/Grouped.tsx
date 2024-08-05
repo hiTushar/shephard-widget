@@ -1,8 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
 import _ from 'lodash';
 import './Grouped.css';
-import { alertGroupInterface, GroupPtsInterface, GroupAsset, GroupedInterface } from "../../Types";
+import { alertGroupInterface, GroupPtsInterface, GroupAsset, GroupedInterface, ViewReducerInterface } from "../../Types";
 import newAlertJson from "./Data/newAlertData.json";
 import agedAlertJson from "./Data/agedAlertData.json";
 import noAlertJson from "./Data/noAlertData.json";
@@ -10,6 +9,8 @@ import { addSvg, minusSvg, PLATFORMS_ICON_MAP } from "../../assets/assets";
 import { inRadians, kbmFormatter } from "../../Utils/Utils";
 import { getLegend, getOrbits, getSpokes } from "./Utils/render";
 import AlertTypeData from '../alertTypeData.json';
+import { useDispatch, useSelector } from "react-redux";
+import { viewChange } from "../../redux/actions/viewActions";
 
 const CENTER_CIRCLE_RADIUS_PERCENTAGE = 10;
 const LAST_ORBIT_RADIUS_PERCENTAGE = 43;
@@ -28,12 +29,12 @@ const Grouped: React.FC = () => {
     const [groupedData, setGroupedData] = useState<GroupedInterface>({ 'aged_alerts': { 'data': [], 'meta': {} }, 'new_alerts': { 'data': [], 'meta': {} }, 'no_alerts': { 'data': [], 'meta': {} } });
     const [pageControl, setPageControl] = useState<{ [key: string]: Boolean }>({ forward: true, backward: false });
 
-    const { platformId } = useParams();
-    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const view = useSelector((state: { viewReducer: ViewReducerInterface }) => state.viewReducer);
 
     useEffect(() => {
         fetchData();
-    }, [platformId]);
+    }, [view.platformId]);
 
     const fetchData = (): void => {
         let currentNewAlertJson: alertGroupInterface = groupedData.new_alerts,
@@ -139,7 +140,7 @@ const Grouped: React.FC = () => {
     }
 
     const openExpandedView = (alertId: string, groupId: string) => {
-        navigate(`/${platformId}/${alertId}/${groupId}`);
+        dispatch(viewChange({ ...view, type: 'alert', alertId: alertId, groupId: groupId }));
     }
 
     return (
@@ -157,7 +158,7 @@ const Grouped: React.FC = () => {
             </div>
             <div className="grouped-system">
                 <div className="grouped-system__centre">
-                    <img src={PLATFORMS_ICON_MAP[platformId || '']} alt={platformId} />
+                    <img src={PLATFORMS_ICON_MAP[view.platformId || '']} alt={view.platformId} />
                 </div>
                 <div className='grouped-system__orbits'>
                     {
