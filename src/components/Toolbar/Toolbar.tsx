@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { spokeSvg, rightSvg, leftSvg, dividerSvg } from '../../assets/assets';
 import './Toolbar.css';
 import alertTypeData from '../alertTypeData.json';

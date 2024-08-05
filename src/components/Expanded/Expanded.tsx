@@ -1,12 +1,12 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import {  useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import './Expanded.css';
 import { addSvg, minusSvg } from '../../assets/assets';
 import { inRadians, kbmFormatter } from '../../Utils/Utils';
 import alertData from './Data/alertData.json';
 import _ from 'lodash';
 import AlertTypeData from '../alertTypeData.json';
-import { ViewReducerInterface } from '../../Types';
+import { Asset, metaInterface, ViewReducerInterface } from '../../Types';
 
 const CENTER_CIRCLE_RADIUS_PERCENTAGE = 10;
 const LAST_ORBIT_RADIUS_PERCENTAGE = 43;
@@ -17,11 +17,17 @@ const DATA_PT_MARGIN = 0.001; // percentage
 const ORBIT_CENTER_OFFSET_LEFT = 50;
 const ORBIT_CENTER_OFFSET_TOP = 52;
 
+const ORBIT_A = 12;
+const ORBIT_B = 24;
+const ORBIT_C = 36;
+
 const Expanded: React.FC = () => {
   const view = useSelector((state: { viewReducer: ViewReducerInterface }) => state.viewReducer);
 
   const [dataPts, setDataPts] = useState<{ [key: string]: Array<JSX.Element> }>({ 'orbit_a': [], 'orbit_b': [], 'orbit_c': [] });
-  const [assetData, setAssetData] = useState<any>({ 'orbit_a': { 'data': [], 'meta': {} }, 'orbit_b': { 'data': [], 'meta': {} }, 'orbit_c': { 'data': [], 'meta': {} } });
+  const [assetData, setAssetData] = useState<{ data: Array<Asset>, meta: metaInterface }>({ data: [], meta: {} });
+  const [pageControl, setPageControl] = useState<{ [key: string]: Boolean }>({ forward: true, backward: false });
+
 
   const radiiArray = useMemo(() => {
     let minRadius = CENTER_CIRCLE_RADIUS_PERCENTAGE;
@@ -35,24 +41,50 @@ const Expanded: React.FC = () => {
   }, [view.alertId, view.groupId])
 
   const fetchData = () => {
-    
+    let currentAssetData: Array<Asset> = assetData.data;
+    let currentMetaData: metaInterface = assetData.meta;
+
+    if (_.isEmpty(currentAssetData) || assetData.meta.currentPage! < assetData.meta.totalPages!) {
+      currentAssetData = _.cloneDeep(alertData.data);
+      currentMetaData = _.cloneDeep(alertData.meta);
+    }
+
+    if (currentMetaData.currentPage === currentMetaData.totalPages) {
+      if (currentMetaData.currentPage === 1) {
+        setPageControl({ forward: false, backward: false });
+      }
+      else {
+        setPageControl({ forward: false, backward: true });
+      }
+    }
+    else {
+      if (currentMetaData.currentPage === 1) {
+        setPageControl({ forward: true, backward: false });
+      }
+      else {
+        setPageControl({ forward: true, backward: true });
+      }
+    }
+
     setAssetData({
-      'orbit_a': alertData,
-      'orbit_b': alertData,
-      'orbit_c': alertData
-    })
+      data: [ ...currentAssetData ],
+      meta: { ...currentMetaData }
+    });
 
     renderData({
-      'orbit_a': alertData,
-      'orbit_b': alertData,
-      'orbit_c': alertData
+      data: [ ...currentAssetData ],
+      meta: { ...currentMetaData }
     })
   }
 
   const renderData = (datajson: any) => {
-    console.log(datajson);
+    let orbitDataDistribution: { [key: string]: Array<Asset> } = { 'orbit_a': [], 'orbit_b': [], 'orbit_c': [] };
+    orbitDataDistribution.orbit_a = datajson.data.splice(0, ORBIT_A);
+    orbitDataDistribution.orbit_b = datajson.data.splice(0, ORBIT_B);
+    orbitDataDistribution.orbit_c = datajson.data.splice(0, ORBIT_C);
+
     Object.keys(dataPts).forEach((orbit, idx) => {
-      getDataPoints(idx, orbit, datajson[orbit].data);
+      getDataPoints(idx, orbit, orbitDataDistribution[orbit]);
     })
   }
 
@@ -95,7 +127,7 @@ const Expanded: React.FC = () => {
         </div>
       )
     }
-    console.log(assetsDivArray);
+
     setDataPts(prev => ({ ...prev, [orbit]: assetsDivArray }));
   }
 
@@ -184,7 +216,6 @@ const Expanded: React.FC = () => {
 
   }
 
-  console.log(dataPts);
   return (
     <div className="expanded">
       <div className="expanded-orbit">
@@ -212,7 +243,7 @@ const Expanded: React.FC = () => {
             getSpokes(DIVISIONS, PLOT_END_ANGLE)
           }
         </div>
-        <div 
+        <div
           className="expanded-system__dataPts"
           style={{
             ...AlertTypeData.find(alert => alert.id === view.alertId)!.haloStyle
@@ -235,10 +266,10 @@ const Expanded: React.FC = () => {
         }
       </div>
       <div className="expanded-pagination">
-        <div className="expanded-pagination__button" onClick={() => { }}>
+        <div className={`expanded-pagination__button ${pageControl.forward ? '' : 'disabled'}`} onClick={() => {}}>
           <img src={addSvg} alt="add" />
         </div>
-        <div className="expanded-pagination__button">
+        <div className={`expanded-pagination__button ${pageControl.backward ? '' : 'disabled'}`} onClick={() => {}}>
           <img src={minusSvg} alt="minus" />
         </div>
       </div>

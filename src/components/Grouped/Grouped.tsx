@@ -188,10 +188,10 @@ const Grouped: React.FC = () => {
                 }
             </div>
             <div className="grouped-pagination">
-                <div className="grouped-pagination__button" onClick={() => { }}>
+                <div className={`grouped-pagination__button ${pageControl.forward ? '' : 'disabled'}`} onClick={() => { }}>
                     <img src={addSvg} alt="add" />
                 </div>
-                <div className="grouped-pagination__button">
+                <div className={`grouped-pagination__button ${pageControl.backward ? '' : 'disabled'}`} onClick={() => { }}>
                     <img src={minusSvg} alt="minus" />
                 </div>
             </div>
