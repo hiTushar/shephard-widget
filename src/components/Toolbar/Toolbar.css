@@ -12,7 +12,7 @@
     display: flex;
     justify-content: space-between;
     /* align-items: center; */
-    gap: 10%;
+    gap: 8%;
     min-height: 3cqw;
     padding-top: 2cqw;
 }
@@ -21,7 +21,7 @@
     height: 16px;
     aspect-ratio: 1/1;
     @container toolbar-container (min-width: 600px) {
-        height: 1.6cqw;
+        height: 2cqw;
     }
 
     &>img {
@@ -43,7 +43,7 @@
     height: 14px;
     aspect-ratio: 1/1;
     @container toolbar-container (min-width: 600px) {
-        height: 1.6cqw;
+        height: 2cqw;
     }
 
     &>img {
@@ -55,10 +55,19 @@
 
 .toolbar-glance__alert-lvl {
     display: flex;
-    gap: 5cqw;
+    gap: 1cqw;
     min-height: 3cqw;
     min-width: 18cqw;
     cursor: pointer;
+}
+
+.toolbar-alert-lvl__arrow {
+    width: 2cqw;
+    aspect-ratio: 1/1;
+
+    & > img {
+        width: 100%;
+    }
 }
 
 .toolbar-alert-lvl__text {
