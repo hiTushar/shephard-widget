@@ -48,7 +48,7 @@
       "background": "var(--blue-2-opaque)"
     },
     "haloStyle": {
-      "background": "radial-gradient(circle at 50% 52%, var(--blue-2-halo) 1%, transparent 50%)"
+      "background": "radial-gradient(circle at 50% 52%, var(--blue-2-halo) 10%, transparent 60%)"
     }
   }
 ]
