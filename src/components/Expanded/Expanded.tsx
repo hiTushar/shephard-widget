@@ -107,7 +107,7 @@ const Expanded: React.FC = () => {
       >
         <div
           className="expanded-item__color"
-          data-asset-type={alertId}
+          style={{ ...AlertTypeData.find(alert => alert.id === alertId)!.dataPtStyle }}
         ></div>
         <div className="expanded-item__label">
           <div className="expanded-label__name">{alert.name}</div>

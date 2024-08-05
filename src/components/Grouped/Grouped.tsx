@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import _ from 'lodash';
 import './Grouped.css';
-import { alertGroupInterface, GroupPtsInterface, GroupAsset, GroupedInterface, GroupedProps, LegendData, metaInterface } from "../../Types";
+import { alertGroupInterface, GroupPtsInterface, GroupAsset, GroupedInterface } from "../../Types";
 import newAlertJson from "./Data/newAlertData.json";
 import agedAlertJson from "./Data/agedAlertData.json";
 import noAlertJson from "./Data/noAlertData.json";
@@ -11,43 +11,22 @@ import { inRadians, kbmFormatter } from "../../Utils/Utils";
 import { getLegend, getOrbits, getSpokes } from "./Utils/render";
 import AlertTypeData from '../alertTypeData.json';
 
-// const AlertTypeData: Array<LegendData> = [
-//     {
-//         id: 'new_alerts',
-//         name: 'Assets with Alerts',
-//         desc: '',
-//         color: 'rgb(208, 6, 6)'
-//     },
-//     {
-//         id: 'aged_alerts',
-//         name: 'Assets with Aged Alerts',
-//         desc: '> 14 days',
-//         color: 'rgb(125, 17, 17)'
-//     },
-//     {
-//         id: 'no_alerts',
-//         name: 'Assets with No Alerts',
-//         desc: '',
-//         color: 'rgb(15, 68, 92)'
-//     }
-// ]
-
 const CENTER_CIRCLE_RADIUS_PERCENTAGE = 10;
 const LAST_ORBIT_RADIUS_PERCENTAGE = 43;
-const PLOT_START_ANGLE: { [key: string]: number } = { 'new_alerts': 0, 'aged_alerts': 20, 'no_alerts': 38 };
+const PLOT_START_ANGLE: { [key: string]: number } = { 'aged_alerts': 0, 'new_alerts': 20, 'no_alerts': 38 };
 const PLOT_END_ANGLE = 360;
 const DIVISIONS = 8;
 const DATA_PT_MARGIN = 0.001; // percentage
 const ORBIT_CENTER_OFFSET_LEFT = 50;
 const ORBIT_CENTER_OFFSET_TOP = 52;
-const NEW_ALERT_LIMIT_PER_ORBIT = 10;
-const AGED_ALERT_LIMIT_PER_ORBIT = 18;
-const NO_ALERT_LIMIT_PER_ORBIT = 30;
+// const NEW_ALERT_LIMIT_PER_ORBIT = 10;
+// const AGED_ALERT_LIMIT_PER_ORBIT = 18;
+// const NO_ALERT_LIMIT_PER_ORBIT = 30;
 
 const Grouped: React.FC = () => {
-    const [dataPts, setDataPts] = useState<GroupPtsInterface>({ 'new_alerts': [], 'aged_alerts': [], 'no_alerts': [] });
-    const [groupedData, setGroupedData] = useState<GroupedInterface>({ 'new_alerts': { 'data': [], 'meta': {} }, 'aged_alerts': { 'data': [], 'meta': {} }, 'no_alerts': { 'data': [], 'meta': {} } });
-    const [pageControl, setPageControl] = useState<{[key: string]: Boolean}>({ forward: true, backward: false });
+    const [dataPts, setDataPts] = useState<GroupPtsInterface>({ 'aged_alerts': [], 'new_alerts': [], 'no_alerts': [] });
+    const [groupedData, setGroupedData] = useState<GroupedInterface>({ 'aged_alerts': { 'data': [], 'meta': {} }, 'new_alerts': { 'data': [], 'meta': {} }, 'no_alerts': { 'data': [], 'meta': {} } });
+    const [pageControl, setPageControl] = useState<{ [key: string]: Boolean }>({ forward: true, backward: false });
 
     const { platformId } = useParams();
     const navigate = useNavigate();
@@ -57,27 +36,27 @@ const Grouped: React.FC = () => {
     }, [platformId]);
 
     const fetchData = (): void => {
-        let currentNewAlertJson: alertGroupInterface = groupedData.new_alerts, 
-        currentAgedAlertJson: alertGroupInterface  = groupedData.aged_alerts,  
-        currentNoAlertJson: alertGroupInterface = groupedData.no_alerts;
+        let currentNewAlertJson: alertGroupInterface = groupedData.new_alerts,
+            currentAgedAlertJson: alertGroupInterface = groupedData.aged_alerts,
+            currentNoAlertJson: alertGroupInterface = groupedData.no_alerts;
 
-        if (_.isEmpty(currentNewAlertJson.data) || groupedData.new_alerts.meta.currentPage! < groupedData.new_alerts.meta.totalPages!) {   
-            currentNewAlertJson = {...newAlertJson}; 
+        if (_.isEmpty(currentNewAlertJson.data) || groupedData.new_alerts.meta.currentPage! < groupedData.new_alerts.meta.totalPages!) {
+            currentNewAlertJson = { ...newAlertJson };
         }
         if (_.isEmpty(currentAgedAlertJson.data) || groupedData.aged_alerts.meta.currentPage! < groupedData.aged_alerts.meta.totalPages!) {
-            currentAgedAlertJson = {...agedAlertJson};
+            currentAgedAlertJson = { ...agedAlertJson };
         }
         if (_.isEmpty(currentNoAlertJson.data) || groupedData.no_alerts.meta.currentPage! < groupedData.no_alerts.meta.totalPages!) {
-            currentNoAlertJson = {...noAlertJson};
+            currentNoAlertJson = { ...noAlertJson };
         }
 
-        if(currentNewAlertJson.meta.currentPage === currentNewAlertJson.meta.totalPages && currentAgedAlertJson.meta.currentPage === currentAgedAlertJson.meta.totalPages && currentNoAlertJson.meta.currentPage === currentNoAlertJson.meta.totalPages) {
+        if (currentNewAlertJson.meta.currentPage === currentNewAlertJson.meta.totalPages && currentAgedAlertJson.meta.currentPage === currentAgedAlertJson.meta.totalPages && currentNoAlertJson.meta.currentPage === currentNoAlertJson.meta.totalPages) {
             setPageControl({ forward: false, backward: true });
         }
-        else if(currentNewAlertJson.meta.currentPage === 1 && currentAgedAlertJson.meta.currentPage === 1 && currentNoAlertJson.meta.currentPage === 1) {
+        else if (currentNewAlertJson.meta.currentPage === 1 && currentAgedAlertJson.meta.currentPage === 1 && currentNoAlertJson.meta.currentPage === 1) {
             setPageControl({ forward: true, backward: false });
         }
-        else if(currentNewAlertJson.meta.totalPages === 1 && currentAgedAlertJson.meta.totalPages === 1 && currentNoAlertJson.meta.totalPages === 1) {
+        else if (currentNewAlertJson.meta.totalPages === 1 && currentAgedAlertJson.meta.totalPages === 1 && currentNoAlertJson.meta.totalPages === 1) {
             setPageControl({ forward: false, backward: false });
         }
         else {
@@ -85,14 +64,14 @@ const Grouped: React.FC = () => {
         }
 
         setGroupedData({
-            'new_alerts': currentNewAlertJson,
             'aged_alerts': currentAgedAlertJson,
+            'new_alerts': currentNewAlertJson,
             'no_alerts': currentNoAlertJson
         })
 
         renderData({
-            'new_alerts': currentNewAlertJson,
             'aged_alerts': currentAgedAlertJson,
+            'new_alerts': currentNewAlertJson,
             'no_alerts': currentNoAlertJson
         });
     }
@@ -140,13 +119,13 @@ const Grouped: React.FC = () => {
             assetsDivArray.push(
                 <div
                     className={`grouped-dataPts__item ${+groupedAssets[idx].asset_count! === 1 ? 'single' : ''}`}
-                    data-asset-type={alertId}
                     onMouseOver={() => { }}
                     key={`${alertId}${idx}`}
                     style={{
                         left: `${ORBIT_CENTER_OFFSET_LEFT + xPos}%`,
                         top: `${ORBIT_CENTER_OFFSET_TOP + yPos}%`,
                         animationDelay: `${Math.random() * 2}s`,
+                        ...AlertTypeData.find(alert => alert.id === alertId)!.dataPtStyle
                     }}
                     onMouseEnter={() => { }}
                     onClick={() => openExpandedView(alertId, groupedAssets[idx].group_uuid!)}
@@ -192,10 +171,10 @@ const Grouped: React.FC = () => {
                 </div>
                 <div className="grouped-system__dataPts">
                     {
-                        dataPts.new_alerts
+                        dataPts.aged_alerts
                     }
                     {
-                        dataPts.aged_alerts
+                        dataPts.new_alerts
                     }
                     {
                         dataPts.no_alerts

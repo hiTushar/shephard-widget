@@ -1,4 +1,4 @@
-import { LegendData } from "../../../Types";
+import { AlertTypeData, LegendData } from "../../../Types";
 
 const getOrbits = (legendData: Array<LegendData>, radiiArray: { [key: string]: number }): JSX.Element => {
     let orbitArray: Array<JSX.Element> = [];
@@ -43,8 +43,8 @@ const getSpokes = (total: number, plotEndAngle: number): Array<JSX.Element> => {
     return spokeArray;
 }
 
-const getLegend = (legendData: Array<LegendData>): Array<JSX.Element> => {
-    return legendData.map((alert, idx) => {
+const getLegend = (legendData: Array<AlertTypeData>): Array<JSX.Element> => {
+    return legendData.map((alert: AlertTypeData, idx: number) => {
         return (
             <div
                 className="grouped-legend__item"

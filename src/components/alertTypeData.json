@@ -1,45 +1,45 @@
 [
-    {
-      "id": "new_alerts",
-      "name": "Assets with Alerts",
-      "desc": "",
-      "dataPtStyle": {
-        "backgroundColor": "var(--red-1)",
-        "filter": "drop-shadow(0 0 0.5cqw var(--red-1))"
-      },
-      "spokeStyle": {
-        "background": "linear-gradient(90deg, transparent 12%, var(--red-2) 12%, transparent)"
-      },
-      "originStyle": {
-        "background": "var(--red-2)"
-      }
+  {
+    "id": "aged_alerts",
+    "name": "Assets with Aged Alerts",
+    "desc": "> 14 days",
+    "dataPtStyle": {
+      "backgroundColor": "var(--red-1)",
+      "filter": "drop-shadow(0 0 0.5cqw var(--red-1))"
     },
-    {
-      "id": "aged_alerts",
-      "name": "Assets with Aged Alerts",
-      "desc": "> 14 days",
-      "dataPtStyle": {
-        "backgroundColor": "var(--red-2)"
-      },
-      "spokeStyle": {
-        "background": "linear-gradient(90deg, transparent 12%, var(--red-3) 10%, transparent)"
-      },
-      "originStyle": {
-        "background": "var(--red-3)"
-      }
+    "spokeStyle": {
+      "background": "linear-gradient(90deg, transparent 12%, var(--red-2) 12%, transparent)"
     },
-    {
-      "id": "no_alerts",
-      "name": "Assets with No Alerts",
-      "desc": "",
-      "dataPtStyle": {
-        "backgroundColor": "var(--blue-1-opaque)"
-      },
-      "spokeStyle": {
-        "background": "linear-gradient(90deg, transparent 12%, var(--blue-2-opaque) 20%, transparent)"
-      },
-      "originStyle": {
-        "background": "var(--blue-2-opaque)"
-      }
+    "originStyle": {
+      "background": "var(--red-2)"
     }
-  ]
+  },
+  {
+    "id": "new_alerts",
+    "name": "Assets with Alerts",
+    "desc": "",
+    "dataPtStyle": {
+      "backgroundColor": "var(--red-2)"
+    },
+    "spokeStyle": {
+      "background": "linear-gradient(90deg, transparent 12%, var(--red-3) 10%, transparent)"
+    },
+    "originStyle": {
+      "background": "var(--red-3)"
+    }
+  },
+  {
+    "id": "no_alerts",
+    "name": "Assets with No Alerts",
+    "desc": "",
+    "dataPtStyle": {
+      "backgroundColor": "var(--blue-1-opaque)"
+    },
+    "spokeStyle": {
+      "background": "linear-gradient(90deg, transparent 12%, var(--blue-2-opaque) 20%, transparent)"
+    },
+    "originStyle": {
+      "background": "var(--blue-2-opaque)"
+    }
+  }
+]
