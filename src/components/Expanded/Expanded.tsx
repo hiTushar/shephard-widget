@@ -212,7 +212,12 @@ const Expanded: React.FC = () => {
             getSpokes(DIVISIONS, PLOT_END_ANGLE)
           }
         </div>
-        <div className="expanded-system__dataPts">
+        <div 
+          className="expanded-system__dataPts"
+          style={{
+            ...AlertTypeData.find(alert => alert.id === alertId)!.haloStyle
+          }}
+        >
           {
             dataPts.orbit_a
           }

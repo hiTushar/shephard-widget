@@ -15,10 +15,14 @@
   --gray-5: #9B9B9B;
   --blue-1: rgba(0, 175, 255, 0.30);
   --blue-1-opaque: rgb(15, 68, 92);
+  --blue-1-halo: rgb(15, 68, 92, 0.3);
   --blue-2: rgba(0, 175, 255, 0.15);
   --blue-2-opaque: rgba(19, 45, 57, 1);
+  --blue-2-halo: rgba(19, 45, 57, 0.5);
   --red-1: rgb(208, 6, 6);
+  --red-1-halo: rgba(208, 6, 6, 0.3);
   --red-2: rgb(125, 17, 17);
   --red-3: rgb(103, 17, 17);
+  --red-3-halo: rgba(103, 17, 17, 0.5);
   --bg-1: rgb(22, 22, 22);
 }

@@ -46,7 +46,7 @@
 .overview-icon__val {
     position: absolute;
     color: var(--white);
-    background-color: var(--bg-1);
+    text-shadow: 0cqw 0.1cqw 0.25cqw var(--bg-1);
     top: 110%;
     @container overview-container (min-width: 600px) {
         font-size: 1.5cqw;

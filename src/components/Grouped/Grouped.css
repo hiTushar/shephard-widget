@@ -76,6 +76,7 @@
     left: 50%;
     /* top: 2%; */
     transform: translate(-50%, 0);
+    background: radial-gradient(circle at 50% 53%, var(--blue-1-halo) 1%, transparent 60%);
 }
 
 .grouped-dataPts__item {

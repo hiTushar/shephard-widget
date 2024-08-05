@@ -20,7 +20,7 @@
 
 .expanded-system__centre {
     position: absolute;
-    z-index: 2;
+    z-index: 3;
     left: 50%;
     top: 52%;
     transform: translate(-50%, -50%);
