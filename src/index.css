@@ -4,7 +4,7 @@
   margin: 0;
 }
 
-:root {
+.center-widget {
   font-family: "Roboto", sans-serif;
   font-size: 62.5%; /* 1rem = 10px */
   --white: #FFF;
@@ -25,4 +25,5 @@
   --red-3: rgb(103, 17, 17);
   --red-3-halo: rgba(103, 17, 17, 0.5);
   --bg-1: rgb(22, 22, 22);
+  --bg-2: rgb(59, 35, 35); 
 }

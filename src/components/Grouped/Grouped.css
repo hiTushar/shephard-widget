@@ -20,7 +20,7 @@
 
 .grouped-system__centre {
     position: absolute;
-    z-index: 2;
+    z-index: 3;
     left: 50%;
     top: 52%;
     transform: translate(-50%, -50%);
@@ -54,6 +54,7 @@
 .grouped-system__orbits {
     width: 50%;
     position: absolute;
+    z-index: 1;
     left: 50%;
     top: 51%;
     transform: translate(-50%, -50%);
@@ -63,16 +64,16 @@
 
 .grouped-system__spokes {
     position: absolute;
+    z-index: 2;
     width: 100%;
     height: 100%;
-    z-index: 1;
 }
 
 .grouped-system__dataPts {
     position: absolute;
     width: 50%;
     height: 100%;
-    z-index: 2;
+    z-index: 5;
     left: 50%;
     /* top: 2%; */
     transform: translate(-50%, 0);
@@ -81,7 +82,7 @@
 
 .grouped-dataPts__item {
     position: absolute;
-    z-index: 2;
+    z-index: 4;
     transform: translate(-50%, -50%) scale(0);
 
     aspect-ratio: 1;
@@ -96,7 +97,7 @@
     line-height: 1;
     font-weight: 700;
     
-    transition: transform 0.2s linear;
+    transition: all 2s cubic-bezier(0.075, 0.82, 0.165, 1);
     animation: popup 1s cubic-bezier(0.68, -0.55, 0.27, 1.55) 1s 1 forwards;
 
     @container grouped-container (min-width: 1px) {

@@ -11,6 +11,7 @@ import { getLegend, getOrbits, getSpokes } from "./Utils/render";
 import AlertTypeData from '../alertTypeData.json';
 import { useDispatch, useSelector } from "react-redux";
 import { viewChange } from "../../redux/actions/viewActions";
+import DetailModal from "./DetailModal";
 
 const CENTER_CIRCLE_RADIUS_PERCENTAGE = 10;
 const LAST_ORBIT_RADIUS_PERCENTAGE = 43;
@@ -28,6 +29,7 @@ const Grouped: React.FC = () => {
     const [dataPts, setDataPts] = useState<GroupPtsInterface>({ 'aged_alerts': [], 'new_alerts': [], 'no_alerts': [] });
     const [groupedData, setGroupedData] = useState<GroupedInterface>({ 'aged_alerts': { 'data': [], 'meta': {} }, 'new_alerts': { 'data': [], 'meta': {} }, 'no_alerts': { 'data': [], 'meta': {} } });
     const [pageControl, setPageControl] = useState<{ [key: string]: Boolean }>({ forward: true, backward: false });
+    const [detailModal, setDetailModal] = useState<GroupAsset & { target?: HTMLDivElement, alertId?: string }>();
 
     const dispatch = useDispatch();
     const view = useSelector((state: { viewReducer: ViewReducerInterface }) => state.viewReducer);
@@ -86,14 +88,18 @@ const Grouped: React.FC = () => {
         }, {})
     }, []);
 
-    const renderData = ( groupedDataJson: GroupedInterface ): void => {
+    const renderData = (groupedDataJson: GroupedInterface): void => {
         AlertTypeData.forEach(alertType => {
             getDataPoints(alertType.id, groupedDataJson[alertType.id].data);
         })
     }
 
-    const getDataPoints = (alertId: string, groupedData: Array<GroupAsset>): void => {
-        let groupedAssets = groupedData;
+    const toggleDetailModal = (data: GroupAsset & { target?: HTMLDivElement, alertId?: string }): void => {
+        console.log('toggleDetailModal');
+        setDetailModal({ ...data })
+    };
+
+    const getDataPoints = (alertId: string, groupedAssets: Array<GroupAsset>): void => {
         let dataPtSize = 3 / 100 + 2 * DATA_PT_MARGIN;
 
         let orbitRadius = radiiArray[alertId];
@@ -120,7 +126,8 @@ const Grouped: React.FC = () => {
             assetsDivArray.push(
                 <div
                     className={`grouped-dataPts__item ${+groupedAssets[idx].asset_count! === 1 ? 'single' : ''}`}
-                    onMouseOver={() => { }}
+                    onMouseOver={(e) => toggleDetailModal({ ...groupedAssets[idx], target: e.target as HTMLDivElement, alertId: alertId, xPos: ORBIT_CENTER_OFFSET_LEFT + xPos, yPos: ORBIT_CENTER_OFFSET_TOP + yPos })}
+                    onMouseOut={() => toggleDetailModal({})}
                     key={`${alertId}${idx}`}
                     style={{
                         left: `${ORBIT_CENTER_OFFSET_LEFT + xPos}%`,
@@ -157,6 +164,7 @@ const Grouped: React.FC = () => {
                 </svg>
             </div>
             <div className="grouped-system">
+                <DetailModal {...detailModal} />
                 <div className="grouped-system__centre">
                     <img src={PLATFORMS_ICON_MAP[view.platformId || '']} alt={view.platformId} />
                 </div>
