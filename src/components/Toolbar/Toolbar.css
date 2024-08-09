@@ -1,7 +1,6 @@
 .toolbar {
     display: flex;
     justify-content: space-between;
-    font-size: 1.2rem;
     container-name: toolbar-container;
     container-type: inline-size;
     user-select: none;
@@ -154,10 +153,8 @@
 }
 
 .toolbar-tabs__divider {
-    height: 12px;
-
-    @container toolbar-container (min-width: 600px) {
-        height: 1.3cqw;
+    @container toolbar-container (min-width: 1px) {
+        height: 2cqw;
     }
 
     &>img {
