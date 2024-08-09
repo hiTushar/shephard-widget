@@ -6,14 +6,13 @@ import './DetailModal.css'
 
 const PATH_MAX_COORDS = { xMin: -50, xMax: 150, yMin: 0, yMax: 100 };
 
-const DetailModal: React.FC<GroupAsset & { target?: HTMLDivElement, alertId?: string }> = (data) => {
+const DetailModal: React.FC<GroupAsset & { alertId?: string, xPos?: number, yPos?: number }> = (data) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
-    const [currentData, setCurrentData] = useState<GroupAsset & { target?: HTMLDivElement, alertId?: string }>();
+    const [currentData, setCurrentData] = useState<GroupAsset & { alertId?: string, xPos?: number, yPos?: number }>();
     const modalRef = useRef<HTMLDivElement>(null);
     const lineRef = useRef<SVGPathElement>(null);
 
     useEffect(() => {
-        console.log('useEffect - ', data);
         if (!_.isEmpty(data)) {
             setIsOpen(true);
             setCurrentData({ ...data }); // to prevent data disappearing when hover is removed
@@ -45,14 +44,25 @@ const DetailModal: React.FC<GroupAsset & { target?: HTMLDivElement, alertId?: st
         )
     }
 
-    const drawLine = (data) => {
+    const drawLine = (data: GroupAsset & { alertId?: string, xPos?: number, yPos?: number }) => {
         let modalX = modalRef.current?.getBoundingClientRect().x!;
         let modalY = modalRef.current?.getBoundingClientRect().y!;
+
+        let strokeColor = AlertTypeData.find(alert => alert.id === data!.alertId)!.dataPtStyle.backgroundColor;
         let modalPosX = PATH_MAX_COORDS.xMin + (PATH_MAX_COORDS.xMax - PATH_MAX_COORDS.xMin) * modalX / window.innerWidth;
         let modalPosY = PATH_MAX_COORDS.yMin + (PATH_MAX_COORDS.yMax - PATH_MAX_COORDS.yMin) * modalY / window.innerHeight;
 
-        lineRef.current?.setAttribute('d', `M ${data.xPos} ${data.yPos} L ${modalPosX} ${modalPosY}`);
-        lineRef.current?.setAttribute('stroke', AlertTypeData.find(alert => alert.id === data!.alertId)!.dataPtStyle.backgroundColor);
+        // let P = Math.abs(data.yPos - modalPosY);
+        // let B = Math.abs(data.xPos - modalPosX);
+        // let theta = Math.atan(P / B);
+        // console.log(theta * 180 / Math.PI);
+
+        // let r = data.target.offsetWidth / 2;
+        // let shiftX = r * Math.cos(theta);
+        // let shiftY = r * Math.sin(theta);
+
+        lineRef.current?.setAttribute('d', `M ${data.xPos! + 1} ${data.yPos! - 1} L ${modalPosX - 5} ${modalPosY} L ${modalPosX} ${modalPosY}`); // that +-1 is the approx correction make the line not overlap the digits, not going into trignometric calculations
+        lineRef.current?.setAttribute('stroke', strokeColor);
     }
 
     console.log(isOpen, currentData);
@@ -63,8 +73,13 @@ const DetailModal: React.FC<GroupAsset & { target?: HTMLDivElement, alertId?: st
                 onAnimationEnd={handleAnimationEnd}
                 onAnimationStart={handleAnimationStart}
             >
-                <svg height="100%" width="100%" viewBox="0 0 100 100" style={{ border: '3px solid #0FF' }}>
-                    <path fill="none" strokeWidth={0.4} strokeDasharray={1} ref={lineRef} />
+                <svg height="100%" width="100%" viewBox="0 0 100 100">
+                    <defs>
+                        <filter id="shadow">
+                            <feDropShadow dx="0" dy="0" stdDeviation="0.5" floodOpacity={0.3} floodColor={'#FFF'} />
+                        </filter>
+                    </defs>
+                    <path fill="none" strokeWidth={0.4} strokeDasharray={1} ref={lineRef} filter="url(#shadow)" />
                 </svg>
                 <div className="detail-modal__box" ref={modalRef}>
                     <Section section='Group' text={currentData!.group_name!} />

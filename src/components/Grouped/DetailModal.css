@@ -1,7 +1,7 @@
 .detail-modal {
     position: absolute;
     inset: 0;
-    z-index: 4;
+    z-index: 5;
     opacity: 0;
     pointer-events: none;
 }
@@ -24,7 +24,7 @@
 .mount-animation {
     animation-name: fadeIn;
     animation-delay: 0.5s;
-    animation-duration: 1s;
+    animation-duration: 2s;
     animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
     animation-fill-mode: forwards;
 }

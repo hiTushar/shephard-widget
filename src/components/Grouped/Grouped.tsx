@@ -29,7 +29,7 @@ const Grouped: React.FC = () => {
     const [dataPts, setDataPts] = useState<GroupPtsInterface>({ 'aged_alerts': [], 'new_alerts': [], 'no_alerts': [] });
     const [groupedData, setGroupedData] = useState<GroupedInterface>({ 'aged_alerts': { 'data': [], 'meta': {} }, 'new_alerts': { 'data': [], 'meta': {} }, 'no_alerts': { 'data': [], 'meta': {} } });
     const [pageControl, setPageControl] = useState<{ [key: string]: Boolean }>({ forward: true, backward: false });
-    const [detailModal, setDetailModal] = useState<GroupAsset & { target?: HTMLDivElement, alertId?: string }>();
+    const [detailModal, setDetailModal] = useState<GroupAsset & { alertId?: string, xPos?: number, yPos?: number }>();
 
     const dispatch = useDispatch();
     const view = useSelector((state: { viewReducer: ViewReducerInterface }) => state.viewReducer);
@@ -94,8 +94,7 @@ const Grouped: React.FC = () => {
         })
     }
 
-    const toggleDetailModal = (data: GroupAsset & { target?: HTMLDivElement, alertId?: string }): void => {
-        console.log('toggleDetailModal');
+    const toggleDetailModal = (data: GroupAsset & { alertId?: string, xPos?: number, yPos?: number }): void => {
         setDetailModal({ ...data })
     };
 
@@ -126,7 +125,7 @@ const Grouped: React.FC = () => {
             assetsDivArray.push(
                 <div
                     className={`grouped-dataPts__item ${+groupedAssets[idx].asset_count! === 1 ? 'single' : ''}`}
-                    onMouseOver={(e) => toggleDetailModal({ ...groupedAssets[idx], target: e.target as HTMLDivElement, alertId: alertId, xPos: ORBIT_CENTER_OFFSET_LEFT + xPos, yPos: ORBIT_CENTER_OFFSET_TOP + yPos })}
+                    onMouseOver={() => toggleDetailModal({ ...groupedAssets[idx], alertId: alertId, xPos: ORBIT_CENTER_OFFSET_LEFT + xPos, yPos: ORBIT_CENTER_OFFSET_TOP + yPos })}
                     onMouseOut={() => toggleDetailModal({})}
                     key={`${alertId}${idx}`}
                     style={{

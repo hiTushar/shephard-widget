@@ -71,9 +71,9 @@
 
 .grouped-system__dataPts {
     position: absolute;
+    z-index: 4;
     width: 50%;
     height: 100%;
-    z-index: 5;
     left: 50%;
     /* top: 2%; */
     transform: translate(-50%, 0);
@@ -82,9 +82,7 @@
 
 .grouped-dataPts__item {
     position: absolute;
-    z-index: 4;
     transform: translate(-50%, -50%) scale(0);
-
     aspect-ratio: 1;
     border-radius: 50%;
     cursor: pointer;
