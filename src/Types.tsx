@@ -21,12 +21,6 @@ interface OverviewIconProps {
     assetDistribution: { [key: string]: number };
 }
 
-interface LegendData {
-    id: string;
-    name: string;
-    desc: string;
-}
-
 interface GroupedProps {
     section: string;
 }
@@ -144,8 +138,7 @@ export type {
     metaInterface, 
     ExpandedProps,
     AlertTypeData,
-    OverviewIconProps, 
-    LegendData, 
+    OverviewIconProps,
     Platform, 
     PlatformAssets, 
     Asset, 

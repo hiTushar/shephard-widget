@@ -1,6 +1,6 @@
-import { AlertTypeData, LegendData } from "../../../Types";
+import { AlertTypeData } from "../../../Types";
 
-const getOrbits = (legendData: Array<LegendData>, radiiArray: { [key: string]: number }): JSX.Element => {
+const getOrbits = (legendData: Array<AlertTypeData>, radiiArray: { [key: string]: number }): JSX.Element => {
     let orbitArray: Array<JSX.Element> = [];
 
     let maxOpacity = 0.5;
