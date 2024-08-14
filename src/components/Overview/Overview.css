@@ -8,17 +8,15 @@
 }
 
 .overview-center {
-    width: 94px;
     aspect-ratio: 1/1;
     position: relative;
     top: 100%;
     left: 50%;
     transform: translate(-50%, -50%);
     background: var(--blue-2);
-    border: 1px solid var(--blue-1);
     border-radius: 50%;
 
-    @container overview-container (min-width: 600px) {
+    @container overview-container (min-width: 1px) {
         width: 16cqw;
         border: 0.17cqw solid var(--blue-1);
     }
@@ -32,22 +30,20 @@
     color: var(--white);
 
     font-size: 15px;
-    @container overview-container (min-width: 600px) {
+    @container overview-container (min-width: 1px) {
         font-size: 2cqw;
         padding-top: 2cqw;
     }
 }
 
 .overview-center__spoke {
-    width: 245px;
-    height: 1px;
     background: linear-gradient(90deg, transparent 19%, var(--blue-1) 20%, transparent);
     transform-origin: 0%;
     position: absolute;
     top: 49%;
     left: 50%;
 
-    @container overview-container (min-width: 600px) {
+    @container overview-container (min-width: 1px) {
         width: 41cqw;
         height: 0.17cqw;
     }

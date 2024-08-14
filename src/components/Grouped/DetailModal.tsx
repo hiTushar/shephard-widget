@@ -4,7 +4,7 @@ import { GroupAsset } from "../../Types"
 import AlertTypeData from '../alertTypeData.json';
 import './DetailModal.css'
 
-const PATH_MAX_COORDS = { xMin: -50, xMax: 150, yMin: 0, yMax: 100 };
+const PATH_MAX_COORDS = { xMin: -50, xMax: 150, yMin: 10, yMax: 100 };
 
 const DetailModal: React.FC<GroupAsset & { alertId?: string, xPos?: number, yPos?: number }> = (data) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -65,7 +65,6 @@ const DetailModal: React.FC<GroupAsset & { alertId?: string, xPos?: number, yPos
         lineRef.current?.setAttribute('stroke', strokeColor);
     }
 
-    console.log(isOpen, currentData);
     return (
         isOpen && (
             <div

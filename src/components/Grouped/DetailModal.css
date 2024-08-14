@@ -14,7 +14,6 @@
 
     @container grouped-container (min-width: 1px) {
         min-width: 20cqw;
-        height: 30cqw;
         right: 5cqw;
         border-radius: calc(1cqw / 6);
         padding: 2cqw;
