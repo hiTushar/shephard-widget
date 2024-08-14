@@ -197,7 +197,7 @@
     aspect-ratio: 1/1;
     border-radius: 50%;
 
-    @container grouped-container (min-width: 600px) {
+    @container grouped-container (min-width: 1px) {
         width: 1.4cqw;
         height: 1.4cqw;
     }
@@ -222,9 +222,14 @@
     cursor: pointer;
     @container grouped-container (min-width: 1px) {
         padding: 0.5cqw 0.6cqw 0.4cqw;
+        width: 4cqw;
+        height: 4cqw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         
         & > img {
-            width: 2cqw;
+            width: 100%;
         }
     }
 

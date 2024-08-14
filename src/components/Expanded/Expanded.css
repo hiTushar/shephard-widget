@@ -83,7 +83,7 @@
     transition: transform 0.2s linear;
     animation: popup 1s cubic-bezier(0.68, -0.55, 0.27, 1.55) 1s 1 forwards;
 
-    @container expanded-container (min-width: 600px) {
+    @container expanded-container (min-width: 1px) {
         width: 1.5cqw;
     }
 
@@ -174,7 +174,7 @@
     aspect-ratio: 1/1;
     border-radius: 50%;
 
-    @container expanded-container (min-width: 600px) {
+    @container expanded-container (min-width: 1px) {
         width: 1.4cqw;
         height: 1.4cqw;
     }
@@ -199,9 +199,14 @@
     cursor: pointer;
     @container expanded-container (min-width: 1px) {
         padding: 0.5cqw 0.6cqw 0.4cqw;
-        
+        width: 4cqw;
+        height: 4cqw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
         & > img {
-            width: 2cqw;
+            width: 100%;
         }
     }
 
