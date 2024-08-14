@@ -1,3 +1,4 @@
+[demo](https://shephard-widget.netlify.app/)  
 # Steps
 1. run the command `npm run build`
 2. a new folder, dist, is created with the build files. Inside dist -> assets, you have the .js and .css files.
