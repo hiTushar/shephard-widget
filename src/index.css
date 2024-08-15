@@ -7,11 +7,11 @@
 .center-widget {
   font-family: "Roboto", sans-serif;
   --white: #FFF;
-  --gray-1: #DBDBDB;
-  --gray-2: #ACB9AC;
-  --gray-3: #6E6E6E;
+  --gray-1: rgb(219, 219, 219);
+  --gray-2: rgb(172, 185, 172);
+  --gray-3: rgb(110, 110, 110);
   --gray-4: rgba(255, 255, 255, 0.1);
-  --gray-5: #9B9B9B;
+  --gray-5: rgb(155, 155, 155);
   --blue-1: rgba(0, 175, 255, 0.30);
   --blue-1-opaque: rgb(15, 68, 92);
   --blue-1-halo: rgb(15, 68, 92, 0.3);

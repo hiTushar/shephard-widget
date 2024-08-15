@@ -127,6 +127,10 @@ interface ViewReducerInterface {
     groupId: string;
 }
 
+interface LoadingReducerInterface {
+    isLoading: boolean;
+}
+
 export type {
     ToolbarProps,
     OverviewProps, 
@@ -146,5 +150,6 @@ export type {
     AlertCountArray, 
     SpotObject, 
     AssetSpotUIInterface,
-    ViewReducerInterface
+    ViewReducerInterface,
+    LoadingReducerInterface
 };

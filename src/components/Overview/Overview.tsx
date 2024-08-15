@@ -1,12 +1,13 @@
 import { useEffect, useMemo, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import './Overview.css';
 import { PLATFORMS_ICON_MAP } from '../../assets/assets';
 import { inRadians, kbmFormatter } from '../../Utils/Utils';
-import { Platform, PlatformAssets, AlertCountArray, ViewReducerInterface } from '../../Types';
+import { Platform, PlatformAssets, AlertCountArray, ViewReducerInterface, LoadingReducerInterface } from '../../Types';
 import OverviewIcon from './OverviewIcon';
-import overviewData from './Data/Data.json';
-import { useDispatch, useSelector } from 'react-redux';
 import { viewChange } from '../../redux/actions/viewActions';
+import Loader from '../Loader/Loader';
+import overviewData from './Data/Data.json';
 
 const CENTER_CIRCLE_RADIUS_PERCENTAGE = 8;
 const LAST_ORBIT_RADIUS_PERCENTAGE = 45;
@@ -18,9 +19,10 @@ const MAX_ICON_SIZE = 8;
 
 const Overview: React.FC = () => {
   const [data, setData] = useState<Array<Platform>>([]);
-  
+
   const dispatch = useDispatch();
   const view = useSelector((state: { viewReducer: ViewReducerInterface }) => state.viewReducer);
+  const { isLoading } = useSelector((state: { loadingReducer: LoadingReducerInterface }) => state.loadingReducer);
 
   useEffect(() => {
     setData(overviewData);
@@ -159,32 +161,36 @@ const Overview: React.FC = () => {
   }
 
   return (
-    <div className="overview">
-      <div className="overview-center">
-        {
-          getSpokes(data.length)
-        }
-        <div className='overview-center__total'>
+    isLoading ? (
+      <Loader />
+    ) : (
+      <div className="overview">
+        <div className="overview-center">
           {
-            kbmFormatter(getTotalAlertCount(data))
+            getSpokes(data.length)
           }
-          <br />
-          ASSETS
+          <div className='overview-center__total'>
+            {
+              kbmFormatter(getTotalAlertCount(data))
+            }
+            <br />
+            ASSETS
+          </div>
+        </div>
+        <div className="overview-orbit">
+          {
+            data.length && (
+              getOrbits(data.length)
+            )
+          }
+          {
+            data.length && (
+              getPlatformIcons(data)
+            )
+          }
         </div>
       </div>
-      <div className="overview-orbit">
-        {
-          data.length && (
-            getOrbits(data.length)
-          )
-        }
-        {
-          data.length && (
-            getPlatformIcons(data)
-          )
-        }
-      </div>
-    </div>
+    )
   )
 }
 

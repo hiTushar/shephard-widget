@@ -1,1 +1,4 @@
-export const VIEW_CHANGE = 'VIEW_CHANGE';
+const VIEW_CHANGE = 'VIEW_CHANGE';
+const DATA_LOADING = 'DATA_LOADING';
+
+export { VIEW_CHANGE, DATA_LOADING };
