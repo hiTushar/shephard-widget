@@ -1,12 +1,14 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import _ from 'lodash';
 import './Expanded.css';
 import { addSvg, minusSvg } from '../../assets/assets';
 import { inRadians, kbmFormatter } from '../../Utils/Utils';
-import alertData from './Data/alertData.json';
-import _ from 'lodash';
 import AlertTypeData from '../alertTypeData.json';
-import { Asset, metaInterface, ViewReducerInterface } from '../../Types';
+import { Asset, DataStatusReducerInterface, metaInterface, ViewReducerInterface } from '../../Types';
+import { changeDataStatus } from '../../redux/actions/dataStatusActions';
+import ApiManager from '../../api/ApiManager';
+import DataStatusScreen from '../DataStatus/DataStatus';
 
 const CENTER_CIRCLE_RADIUS_PERCENTAGE = 10;
 const LAST_ORBIT_RADIUS_PERCENTAGE = 43;
@@ -27,7 +29,10 @@ const Expanded: React.FC = () => {
   const [dataPts, setDataPts] = useState<{ [key: string]: Array<JSX.Element> }>({ 'orbit_a': [], 'orbit_b': [], 'orbit_c': [] });
   const [assetData, setAssetData] = useState<{ data: Array<Asset>, meta: metaInterface }>({ data: [], meta: {} });
   const [pageControl, setPageControl] = useState<{ [key: string]: Boolean }>({ forward: true, backward: false });
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
+  const dispatch = useDispatch();
+  const { dataStatus } = useSelector((state: { dataStatusReducer: DataStatusReducerInterface }) => state.dataStatusReducer);
 
   const radiiArray = useMemo(() => {
     let minRadius = CENTER_CIRCLE_RADIUS_PERCENTAGE;
@@ -38,15 +43,30 @@ const Expanded: React.FC = () => {
 
   useEffect(() => {
     fetchData();
-  }, [view.alertId, view.groupId])
+  }, [view.alertId, view.groupId, currentPage])
 
-  const fetchData = () => {
+  const fetchData = async () => {
     let currentAssetData: Array<Asset> = assetData.data;
     let currentMetaData: metaInterface = assetData.meta;
 
     if (_.isEmpty(currentAssetData) || assetData.meta.currentPage! < assetData.meta.totalPages!) {
-      currentAssetData = _.cloneDeep(alertData.data);
-      currentMetaData = _.cloneDeep(alertData.meta);
+      dispatch(changeDataStatus('LOADING'));
+      try {
+        let result = await ApiManager.getExpandedData(view.platformId, view.alertId, view.groupId, currentPage, ORBIT_A + ORBIT_B + ORBIT_C);
+        if (result.data.length === 0) {
+          dispatch(changeDataStatus('EMPTY'));
+          return;
+        }
+        else {
+          dispatch(changeDataStatus('OK'));
+          currentAssetData = _.cloneDeep(result.data);
+          currentMetaData = _.cloneDeep(result.meta);
+        }
+      }
+      catch {
+        dispatch(changeDataStatus('ERROR'));
+        return;
+      }
     }
 
     if (currentMetaData.currentPage === currentMetaData.totalPages) {
@@ -67,12 +87,12 @@ const Expanded: React.FC = () => {
     }
 
     setAssetData({
-      data: [ ...currentAssetData ],
+      data: [...currentAssetData],
       meta: { ...currentMetaData }
     });
 
     renderData({
-      data: [ ...currentAssetData ],
+      data: [...currentAssetData],
       meta: { ...currentMetaData }
     })
   }
@@ -217,63 +237,67 @@ const Expanded: React.FC = () => {
   }
 
   return (
-    <div className="expanded">
-      <div className="expanded-orbit">
-        <svg height="100%" width="100%" viewBox="0 0 100 100">
-          <path
-            d="M-50,70 Q50,35 150,70"
-            stroke="rgba(255, 255, 255, 0.3)"
-            strokeWidth="0.5"
-            strokeDasharray="1.15 1.5"
-            fill="none"
-          />
-        </svg>
+    dataStatus !== 'OK' ? (
+      <DataStatusScreen status={dataStatus} />
+    ) : (
+      <div className="expanded">
+        <div className="expanded-orbit">
+          <svg height="100%" width="100%" viewBox="0 0 100 100">
+            <path
+              d="M-50,70 Q50,35 150,70"
+              stroke="rgba(255, 255, 255, 0.3)"
+              strokeWidth="0.5"
+              strokeDasharray="1.15 1.5"
+              fill="none"
+            />
+          </svg>
+        </div>
+        <div className="expanded-system">
+          {
+            getOrigin()
+          }
+          <div className="expanded-system__orbits">
+            {
+              getOrbits()
+            }
+          </div>
+          <div className="expanded-system__spokes">
+            {
+              getSpokes(DIVISIONS, PLOT_END_ANGLE)
+            }
+          </div>
+          <div
+            className="expanded-system__dataPts"
+            style={{
+              ...AlertTypeData.find(alert => alert.id === view.alertId)!.haloStyle
+            }}
+          >
+            {
+              dataPts.orbit_a
+            }
+            {
+              dataPts.orbit_b
+            }
+            {
+              dataPts.orbit_c
+            }
+          </div>
+        </div>
+        <div className="expanded-legend">
+          {
+            getLegend(view.alertId)
+          }
+        </div>
+        <div className="expanded-pagination">
+          <div className={`expanded-pagination__button ${pageControl.forward ? '' : 'disabled'}`} onClick={pageControl.forward ? () => { setCurrentPage(prev => prev + 1) } : () => {}}>
+            <img src={addSvg} alt="add" />
+          </div>
+          <div className={`expanded-pagination__button ${pageControl.backward ? '' : 'disabled'}`} onClick={pageControl.backward ? () => { setCurrentPage(prev => prev - 1) } : () => {}}>
+            <img src={minusSvg} alt="minus" />
+          </div>
+        </div>
       </div>
-      <div className="expanded-system">
-        {
-          getOrigin()
-        }
-        <div className="expanded-system__orbits">
-          {
-            getOrbits()
-          }
-        </div>
-        <div className="expanded-system__spokes">
-          {
-            getSpokes(DIVISIONS, PLOT_END_ANGLE)
-          }
-        </div>
-        <div
-          className="expanded-system__dataPts"
-          style={{
-            ...AlertTypeData.find(alert => alert.id === view.alertId)!.haloStyle
-          }}
-        >
-          {
-            dataPts.orbit_a
-          }
-          {
-            dataPts.orbit_b
-          }
-          {
-            dataPts.orbit_c
-          }
-        </div>
-      </div>
-      <div className="expanded-legend">
-        {
-          getLegend(view.alertId)
-        }
-      </div>
-      <div className="expanded-pagination">
-        <div className={`expanded-pagination__button ${pageControl.forward ? '' : 'disabled'}`} onClick={() => {}}>
-          <img src={addSvg} alt="add" />
-        </div>
-        <div className={`expanded-pagination__button ${pageControl.backward ? '' : 'disabled'}`} onClick={() => {}}>
-          <img src={minusSvg} alt="minus" />
-        </div>
-      </div>
-    </div>
+    )
   )
 }
 

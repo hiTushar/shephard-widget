@@ -4,7 +4,7 @@ import './Toolbar.css';
 import alertTypeData from '../alertTypeData.json';
 import { useDispatch, useSelector } from 'react-redux';
 import { viewChange } from '../../redux/actions/viewActions';
-import { LoadingReducerInterface, ViewReducerInterface } from '../../Types';
+import { DataStatusReducerInterface, ViewReducerInterface } from '../../Types';
 
 const PLATFORM_DATA = [
     { platformId: 'linux', platformName: 'Linux' },
@@ -17,7 +17,7 @@ const PLATFORM_DATA = [
 export const Toolbar: React.FC = () => {
     const dispatch = useDispatch();
     const view = useSelector((state: { viewReducer: ViewReducerInterface }) => state.viewReducer);
-    const { isLoading } = useSelector((state: { loadingReducer: LoadingReducerInterface }) => state.loadingReducer);
+    const { dataStatus } = useSelector((state: { dataStatusReducer: DataStatusReducerInterface }) => state.dataStatusReducer);
 
     const platforms = useMemo(() => {
         let temp = PLATFORM_DATA.map((platformData) => ({
@@ -36,7 +36,7 @@ export const Toolbar: React.FC = () => {
     }
 
     return (
-        isLoading ? (
+        dataStatus === 'LOADING' ? (
             <></>
         ) : (
             <div className="toolbar">

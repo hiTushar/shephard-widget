@@ -10,6 +10,8 @@ import addSvg from './add.svg';
 import minusSvg from './minus.svg';
 import leftSvg from './chevron_left.svg';
 import emblemSvg from './emblem.svg';
+import error from './error.png';
+import noData from './no_data.png';
 
 interface PlatformIconMap {
     [key: string]: string;
@@ -35,5 +37,7 @@ export {
     addSvg,
     minusSvg,
     leftSvg,
-    emblemSvg
+    emblemSvg,
+    error,
+    noData
 }

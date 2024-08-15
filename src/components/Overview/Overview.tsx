@@ -3,11 +3,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import './Overview.css';
 import { PLATFORMS_ICON_MAP } from '../../assets/assets';
 import { inRadians, kbmFormatter } from '../../Utils/Utils';
-import { Platform, PlatformAssets, AlertCountArray, ViewReducerInterface, LoadingReducerInterface } from '../../Types';
+import { Platform, PlatformAssets, AlertCountArray, ViewReducerInterface, DataStatusReducerInterface } from '../../Types';
 import OverviewIcon from './OverviewIcon';
 import { viewChange } from '../../redux/actions/viewActions';
-import Loader from '../Loader/Loader';
-import overviewData from './Data/Data.json';
+import { changeDataStatus } from '../../redux/actions/dataStatusActions';
+import ApiManager from '../../api/ApiManager';
+import DataStatusScreen from '../DataStatus/DataStatus';
 
 const CENTER_CIRCLE_RADIUS_PERCENTAGE = 8;
 const LAST_ORBIT_RADIUS_PERCENTAGE = 45;
@@ -22,10 +23,24 @@ const Overview: React.FC = () => {
 
   const dispatch = useDispatch();
   const view = useSelector((state: { viewReducer: ViewReducerInterface }) => state.viewReducer);
-  const { isLoading } = useSelector((state: { loadingReducer: LoadingReducerInterface }) => state.loadingReducer);
+  const { dataStatus } = useSelector((state: { dataStatusReducer: DataStatusReducerInterface }) => state.dataStatusReducer);
 
   useEffect(() => {
-    setData(overviewData);
+    if (data.length === 0) { // to avoid reloading when component is re-mounted
+      dispatch(changeDataStatus('LOADING'));
+      ApiManager.getOverviewData().then((data: Array<Platform>) => {
+        if (data.length === 0) {
+          setData([]);
+          dispatch(changeDataStatus('EMPTY'));
+        }
+        else {
+          setData(data);
+          dispatch(changeDataStatus('OK'));
+        }
+      }).catch(() => {
+        dispatch(changeDataStatus('ERROR'))
+      });
+    }
   }, [])
 
   const radiiArray: Array<number> = useMemo(() => {
@@ -161,8 +176,8 @@ const Overview: React.FC = () => {
   }
 
   return (
-    isLoading ? (
-      <Loader />
+    dataStatus !== 'OK' ? (
+      <DataStatusScreen status={dataStatus} />
     ) : (
       <div className="overview">
         <div className="overview-center">

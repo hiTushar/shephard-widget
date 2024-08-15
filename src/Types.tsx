@@ -44,6 +44,11 @@ interface alertGroupInterface {
     meta: metaInterface;
 }
 
+interface assetGroupInterface {
+    data: Array<Asset>;
+    meta: metaInterface;
+}
+
 interface metaInterface {
     "currentPage"?: number;
     "itemsPerPage"?: number;
@@ -131,6 +136,12 @@ interface LoadingReducerInterface {
     isLoading: boolean;
 }
 
+interface DataStatusReducerInterface {
+    dataStatus: DataStatusType;
+}
+
+type DataStatusType = 'LOADING' | 'OK' | 'EMPTY' |'ERROR';
+
 export type {
     ToolbarProps,
     OverviewProps, 
@@ -138,6 +149,7 @@ export type {
     GroupPtsInterface, 
     GroupedInterface,
     alertGroupInterface,
+    assetGroupInterface,
     GroupAsset, 
     metaInterface, 
     ExpandedProps,
@@ -151,5 +163,7 @@ export type {
     SpotObject, 
     AssetSpotUIInterface,
     ViewReducerInterface,
-    LoadingReducerInterface
+    LoadingReducerInterface,
+    DataStatusType,
+    DataStatusReducerInterface
 };

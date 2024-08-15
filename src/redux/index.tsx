@@ -1,10 +1,10 @@
 import { combineReducers } from "redux";
 import viewReducer from "./reducers/viewReducer";
-import loadingReducer from "./reducers/loadingReducer";
+import dataStatusReducer from "./reducers/dataStatusReducer";
 
 const rootReducer = combineReducers({
     viewReducer,
-    loadingReducer
+    dataStatusReducer
 })
 
 export default rootReducer;

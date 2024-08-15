@@ -4,13 +4,14 @@ import Overview from './components/Overview/Overview';
 import Grouped from './components/Grouped/Grouped';
 import { Toolbar } from './components/Toolbar/Toolbar';
 import Expanded from './components/Expanded/Expanded';
-import { ViewReducerInterface } from './Types';
+import { DataStatusReducerInterface, ViewReducerInterface } from './Types';
 
 function App() {
   const view = useSelector((state: { viewReducer: ViewReducerInterface }) => state.viewReducer);
+  const { dataStatus } = useSelector((state: { dataStatusReducer: DataStatusReducerInterface }) => state.dataStatusReducer);
 
   return (
-    <div className="widget">
+    <div className={`widget ${dataStatus === 'OK' ? 'dotted-bg' : ''}`}>
       <Toolbar />
       {
         view.type === 'platform' && (
