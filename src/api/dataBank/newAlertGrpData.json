@@ -1,0 +1,64 @@
+{
+    "data": [
+        {
+            "group_uuid": "0001",
+            "group_name": "first group2",
+            "group_type": "user",
+            "asset_count": "5"
+        },
+        {
+            "group_uuid": "0022",
+            "group_name": "twenty two group2",
+            "group_type": "user",
+            "asset_count": "1"
+        },
+        {
+            "group_uuid": "0002",
+            "group_name": "second group2",
+            "group_type": "user",
+            "asset_count": "25"
+        },
+        {
+            "group_uuid": "0003",
+            "group_name": "third group2",
+            "group_type": "user",
+            "asset_count": "50"
+        },
+        {
+            "group_uuid": "0004",
+            "group_name": "four group2",
+            "group_type": "user",
+            "asset_count": "100"
+        },
+        {
+            "group_uuid": "0005",
+            "group_name": "five group2",
+            "group_type": "user",
+            "asset_count": "3560"
+        },
+        {
+            "group_uuid": "0006",
+            "group_name": "six group2",
+            "group_type": "user",
+            "asset_count": "700"
+        },
+        {
+            "group_uuid": "0007",
+            "group_name": "seven group2",
+            "group_type": "user",
+            "asset_count": "888"
+        },
+        {
+            "group_uuid": "0017",
+            "group_name": "seventeen group2",
+            "group_type": "user",
+            "asset_count": "1"
+        }
+    ],
+    "meta": {
+        "currentPage": 1,
+        "itemsPerPage": 10,
+        "totalItems": 100,
+        "totalPages": 10
+    }
+}
