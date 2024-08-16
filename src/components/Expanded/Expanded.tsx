@@ -9,6 +9,7 @@ import { Asset, DataStatusReducerInterface, metaInterface, ViewReducerInterface 
 import { changeDataStatus } from '../../redux/actions/dataStatusActions';
 import ApiManager from '../../api/ApiManager';
 import DataStatusScreen from '../DataStatus/DataStatus';
+import DetailModal from './DetailModal';
 
 const CENTER_CIRCLE_RADIUS_PERCENTAGE = 10;
 const LAST_ORBIT_RADIUS_PERCENTAGE = 43;
@@ -30,6 +31,7 @@ const Expanded: React.FC = () => {
   const [assetData, setAssetData] = useState<{ data: Array<Asset>, meta: metaInterface }>({ data: [], meta: {} });
   const [pageControl, setPageControl] = useState<{ [key: string]: Boolean }>({ forward: true, backward: false });
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [detailModal, setDetailModal] = useState<Asset & { alertId?: string, xPos?: number, yPos?: number }>();
 
   const dispatch = useDispatch();
   const { dataStatus } = useSelector((state: { dataStatusReducer: DataStatusReducerInterface }) => state.dataStatusReducer);
@@ -108,6 +110,10 @@ const Expanded: React.FC = () => {
     })
   }
 
+  const toggleDetailModal = (data: Asset & { alertId?: string, xPos?: number, yPos?: number }): void => {
+    setDetailModal({ ...data })
+  };
+
   const getDataPoints = (orbitIdx: number, orbit: string, data: Array<any>): void => {
     let dataPtSize = 3 / 100 + 2 * DATA_PT_MARGIN;
     let orbitRadius = radiiArray[orbitIdx];
@@ -133,7 +139,8 @@ const Expanded: React.FC = () => {
       assetsDivArray.push(
         <div
           className="expanded-dataPts__item"
-          onMouseOver={() => { }}
+          onMouseOver={() => { toggleDetailModal({ ...data[idx], alertId: view.alertId, xPos: ORBIT_CENTER_OFFSET_LEFT + xPos, yPos: ORBIT_CENTER_OFFSET_TOP + yPos }) }}
+          onMouseOut={() => toggleDetailModal({})}
           key={`${orbit}${idx}`}
           style={{
             left: `${ORBIT_CENTER_OFFSET_LEFT + xPos}%`,
@@ -253,6 +260,7 @@ const Expanded: React.FC = () => {
           </svg>
         </div>
         <div className="expanded-system">
+          <DetailModal {...detailModal} />
           {
             getOrigin()
           }
