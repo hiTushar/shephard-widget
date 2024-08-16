@@ -11,7 +11,7 @@
     top: 40%;
     transform: translateY(-50%);
     background-color: var(--bg-2);
-
+    overflow: hidden;
     @container grouped-container (min-width: 1px) {
         min-width: 20cqw;
         right: 5cqw;
