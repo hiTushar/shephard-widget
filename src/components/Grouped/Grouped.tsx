@@ -129,7 +129,7 @@ const Grouped: React.FC = () => {
         sectionSize = sectionSize < dataPtSize ? dataPtSize : sectionSize;
         let angleIncrement = sectionSize / orbitSize * 360
 
-        let minAngle = PLOT_START_ANGLE[alertId];
+        let minAngle = PLOT_START_ANGLE[alertId] + (currentPage - 1) * 5;
         let angleIncrementArray = [];
         for (let idx = 0; idx < groupedAssets.length; idx++) {
             angleIncrementArray.push(minAngle + angleIncrement * idx);

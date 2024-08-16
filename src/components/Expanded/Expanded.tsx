@@ -122,7 +122,7 @@ const Expanded: React.FC = () => {
     sectionSize = sectionSize < dataPtSize ? dataPtSize : sectionSize;
     let angleIncrement = sectionSize / orbitSize * 360
 
-    let minAngle = PLOT_START_ANGLE[orbit];
+    let minAngle = PLOT_START_ANGLE[orbit] + (currentPage - 1) * 5;
     let angleIncrementArray = [];
     for (let idx = 0; idx < data.length; idx++) {
       angleIncrementArray.push(minAngle + angleIncrement * idx);
