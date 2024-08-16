@@ -59,14 +59,14 @@
     }
 }
 
-circle:nth-child(2n) {
+.overview circle:nth-child(2n) {
     transform-origin: 50% 50%;
     animation-name: rotate-clockwise;
     animation-duration: 100s;
     animation-iteration-count: infinite;
 }
 
-circle:nth-child(2n+1) {
+.overview circle:nth-child(2n+1) {
     transform-origin: 50% 50%;
     animation-name: rotate-anticlockwise;
     animation-duration: 100s;

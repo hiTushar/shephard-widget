@@ -255,8 +255,17 @@ const Expanded: React.FC = () => {
               stroke="rgba(255, 255, 255, 0.3)"
               strokeWidth="0.5"
               strokeDasharray="1.15 1.5"
+              strokeDashoffset={1}
               fill="none"
-            />
+            >
+              <animate
+                attributeName="stroke-dashoffset"
+                from="0"
+                to="200"
+                dur="50s"
+                repeatCount="indefinite"
+              />
+            </path>
           </svg>
         </div>
         <div className="expanded-system">
@@ -297,10 +306,10 @@ const Expanded: React.FC = () => {
           }
         </div>
         <div className="expanded-pagination">
-          <div className={`expanded-pagination__button ${pageControl.forward ? '' : 'disabled'}`} onClick={pageControl.forward ? () => { setCurrentPage(prev => prev + 1) } : () => {}}>
+          <div className={`expanded-pagination__button ${pageControl.forward ? '' : 'disabled'}`} onClick={pageControl.forward ? () => { setCurrentPage(prev => prev + 1) } : () => { }}>
             <img src={addSvg} alt="add" />
           </div>
-          <div className={`expanded-pagination__button ${pageControl.backward ? '' : 'disabled'}`} onClick={pageControl.backward ? () => { setCurrentPage(prev => prev - 1) } : () => {}}>
+          <div className={`expanded-pagination__button ${pageControl.backward ? '' : 'disabled'}`} onClick={pageControl.backward ? () => { setCurrentPage(prev => prev - 1) } : () => { }}>
             <img src={minusSvg} alt="minus" />
           </div>
         </div>

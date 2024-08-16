@@ -90,7 +90,15 @@ const DetailModal: React.FC<Asset & { alertId?: string, xPos?: number, yPos?: nu
                             <feDropShadow dx="0" dy="0" stdDeviation="0.5" floodOpacity={0.3} floodColor={'#FFF'} />
                         </filter>
                     </defs>
-                    <path fill="none" strokeWidth={0.4} strokeDasharray={1} ref={lineRef} filter="url(#shadow)" />
+                    <path fill="none" strokeWidth={0.4} strokeDashoffset={1} strokeDasharray={1} ref={lineRef} filter="url(#shadow)">
+                        <animate
+                            attributeName="stroke-dashoffset"
+                            from="200"
+                            to="0"
+                            dur="50s"
+                            repeatCount="indefinite"
+                        />
+                    </path>
                 </svg>
                 <div className="detail-modal__box" ref={modalRef}>
                     <DrawBorder />

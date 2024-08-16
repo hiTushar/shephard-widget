@@ -183,8 +183,17 @@ const Grouped: React.FC = () => {
                             stroke="rgba(255, 255, 255, 0.3)"
                             strokeWidth="0.5"
                             strokeDasharray="1.15 1.5"
+                            strokeDashoffset={1}
                             fill="none"
-                        />
+                        >
+                            <animate
+                                attributeName="stroke-dashoffset"
+                                from="0"
+                                to="200"
+                                dur="50s"
+                                repeatCount="indefinite" 
+                            />
+                        </path>
                     </svg>
                 </div>
                 <div className="grouped-system">
