@@ -1,4 +1,3 @@
-
 .overview-icon {
     /* border: 1px solid red; */
     border-radius: 50%;
@@ -31,15 +30,38 @@
 
     cursor: pointer;
 
+    animation-name: pulsate;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+
+    &:hover {
+        animation-play-state: paused;
+    }
+
     &>img {
         width: 12px;
     }
 
     @container overview-container (min-width: 600px) {
         border: 0.17cqw solid var(--blue-1);
+
         &>img {
             width: 2cqw;
         }
+    }
+}
+
+@keyframes pulsate {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
     }
 }
 
@@ -48,6 +70,7 @@
     color: var(--white);
     text-shadow: 0cqw 0.1cqw 0.25cqw var(--bg-1);
     top: 110%;
+
     @container overview-container (min-width: 600px) {
         font-size: 1.5cqw;
     }

@@ -3,7 +3,7 @@ import { AssetSpotUIInterface, OverviewIconProps, SpotObject } from "../../Types
 import { debounce, jumbleArray, kbmFormatter } from "../../Utils/Utils";
 import './OverviewIcon.css';
 
-const ASSET_SPOT_UI: AssetSpotUIInterface = { 
+const ASSET_SPOT_UI: AssetSpotUIInterface = {
   new_alerts: {
     color: 'rgb(208, 6, 6)',
     sizeFactor: 15
@@ -73,7 +73,7 @@ const OverviewIcon: React.FC<OverviewIconProps> = (props) => {
     ctx.beginPath();
     ctx.moveTo(x, y);
     ctx.arc(x, y, radius, 0, 2 * Math.PI);
-    ctx.fillStyle = fillStyle; 
+    ctx.fillStyle = fillStyle;
     ctx.fill();
     ctx.closePath();
   }
@@ -95,7 +95,7 @@ const OverviewIcon: React.FC<OverviewIconProps> = (props) => {
       style={{
         left: `${leftOffset}cqw`,
         top: `${topOffset}cqw`,
-        width: `${iconSize + 8}cqw`,
+        width: `${iconSize + 8}cqw`
       }}
       ref={iconRef}
       onLoad={() => generateSpots()}
@@ -107,6 +107,7 @@ const OverviewIcon: React.FC<OverviewIconProps> = (props) => {
         className="overview-icon__logo"
         style={{
           width: `${iconSize}cqw`,
+          animationDelay: `${Math.random() * 5}s`,
         }}
         onClick={() => openIcon()}
       >
