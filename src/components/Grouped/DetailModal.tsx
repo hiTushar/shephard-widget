@@ -65,6 +65,18 @@ const DetailModal: React.FC<GroupAsset & { alertId?: string, xPos?: number, yPos
         lineRef.current?.setAttribute('stroke', strokeColor);
     }
 
+    const DrawBorder = () => {
+        let accentColor = AlertTypeData.find(alert => alert.id === currentData!.alertId)!.dataPtStyle.backgroundColor;
+        return (
+            <>
+                <div className="border-top" style={{ background: `linear-gradient(90deg, ${accentColor}, transparent 30%)` }}></div>
+                <div className="border-right" style={{ background: `linear-gradient(0deg, ${accentColor}, transparent 70%)` }}></div>
+                <div className="border-bottom" style={{ background: `linear-gradient(270deg, ${accentColor}, transparent 30%)` }}></div>
+                <div className="border-left" style={{ background: `linear-gradient(180deg, ${accentColor}, transparent 70%)` }}></div>
+            </>
+        )
+    }
+
     return (
         isOpen && (
             <div
@@ -81,6 +93,7 @@ const DetailModal: React.FC<GroupAsset & { alertId?: string, xPos?: number, yPos
                     <path fill="none" strokeWidth={0.4} strokeDasharray={1} ref={lineRef} filter="url(#shadow)" />
                 </svg>
                 <div className="detail-modal__box" ref={modalRef}>
+                    <DrawBorder />
                     <Section section='Group' text={currentData!.group_name!} />
                     <Section section='ID' text={currentData!.group_uuid!} />
                     <Section section='Type' text={currentData!.group_type!} />
