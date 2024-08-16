@@ -34,12 +34,26 @@
     /* border: 1px solid var(--blue-1);
     background: var(--blue-2-opaque); */
 
+    animation:  pulsateExpanded 1s ease-in-out infinite;
+
     @container expanded-container (min-width: 1px) {
         width: 10cqw;
     }
 
     & > img {
         width: 25%;
+    }
+}
+
+@keyframes pulsateExpanded {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.05);
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1);
     }
 }
 
