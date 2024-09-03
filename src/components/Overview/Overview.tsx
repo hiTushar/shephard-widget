@@ -28,13 +28,13 @@ const Overview: React.FC = () => {
   useEffect(() => {
     if (data.length === 0) { // to avoid reloading when component is re-mounted
       dispatch(changeDataStatus('LOADING'));
-      ApiManager.getOverviewData().then((data: Array<Platform>) => {
-        if (data.length === 0) {
+      ApiManager.getOverviewData().then((apiData: {data: Array<Platform>}) => {
+        if (apiData.data.length === 0) {
           setData([]);
           dispatch(changeDataStatus('EMPTY'));
         }
         else {
-          setData(data);
+          setData(apiData.data);
           dispatch(changeDataStatus('OK'));
         }
       }).catch(() => {
@@ -101,15 +101,15 @@ const Overview: React.FC = () => {
   }
 
   const getAlertCount = (assets: PlatformAssets): number => {
-    let total = Object.keys(assets).reduce((acc, assetType) => acc + assets[assetType].length, 0);
+    let total = Object.keys(assets).reduce((acc, assetType) => acc + assets[assetType], 0);
     return total;
   }
 
   const getAssetDistribution = (assets: PlatformAssets): { [key: string]: number } => {
     return {
-      "new_alerts": assets.new_alerts.length,
-      "aged_alerts": assets.aged_alerts.length,
-      "other_assets": assets.other_assets.length
+      "new_alerts": assets.new_alerts,
+      "aged_alerts": assets.aged_alerts,
+      "other_assets": assets.other_assets
     }
   }
 

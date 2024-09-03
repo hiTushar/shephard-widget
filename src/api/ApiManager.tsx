@@ -12,7 +12,7 @@ const BASE_URL = 'xyz/';
 const DEMO = true;
 
 class ApiManager {
-    static getOverviewData(): Promise<Array<Platform>> {
+    static getOverviewData(): Promise<{data: Array<Platform>}> {
         let url = `${BASE_URL}${ENDPOINTS.OVERVIEW()}`;
         if (DEMO) {
             return new Promise((resolve) => {
@@ -24,7 +24,7 @@ class ApiManager {
             })
         }
         
-        return ApiMethods.get<Array<Platform>>(url);
+        return ApiMethods.get<{data: Array<Platform>}>(url);
     }
 
     static getGroupedData(platformId: string, alertType: string, page: number, limit: number): Promise<alertGroupInterface> {

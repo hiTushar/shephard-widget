@@ -89,11 +89,12 @@ interface Platform {
     platformAssets: PlatformAssets;
 }
 
+
 interface PlatformAssets {
-    'new_alerts': Array<Asset>;
-    'aged_alerts': Array<Asset>;
-    'other_assets': Array<Asset>;
-    [key: string]: Array<Asset>;
+    'new_alerts': number;
+    'aged_alerts': number;
+    'no_alerts': number;
+    [key: string]: number;
 }
 
 interface Asset {
