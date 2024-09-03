@@ -26,9 +26,15 @@ const Overview: React.FC = () => {
   const { dataStatus } = useSelector((state: { dataStatusReducer: DataStatusReducerInterface }) => state.dataStatusReducer);
 
   useEffect(() => {
+    console.log('useEffect triggered');
+    debugger;
     if (data.length === 0) { // to avoid reloading when component is re-mounted
       dispatch(changeDataStatus('LOADING'));
+      console.log('data condition check');
+      debugger;
       ApiManager.getOverviewData().then((apiData: {data: Array<Platform>}) => {
+        console.log('promise fulfilled');
+        debugger;
         if (apiData.data.length === 0) {
           setData([]);
           dispatch(changeDataStatus('EMPTY'));
