@@ -29,7 +29,6 @@ class ApiManager {
 
     static getGroupedData(platformId: string, alertType: string, page: number, limit: number): Promise<alertGroupInterface> {
         let url = `${BASE_URL}${ENDPOINTS.GROUPED(platformId, alertType, page, limit)}`;
-        console.log(url);
         if (DEMO) {
             return new Promise((resolve) => {
                 console.log(`Fetching ${alertType} grouped data...`);
@@ -52,7 +51,6 @@ class ApiManager {
 
     static getExpandedData(platformId: string, alertType: string, groupId: string, page: number, limit: number): Promise<assetGroupInterface> {
         let url = `${BASE_URL}${ENDPOINTS.EXPANDED(platformId, alertType, groupId, page, limit)}`;
-        console.log(url);
         if (DEMO) {
             return new Promise((resolve) => {
                 console.log(`Fetching ${alertType} expanded data...`);
