@@ -37,8 +37,8 @@ const Overview: React.FC = () => {
           setData(apiData.data);
           dispatch(changeDataStatus('OK'));
         }
-      }).catch(() => {
-        console.log('Error fetching data');
+      }).catch((e) => {
+        console.log('Error fetching data', e);
         dispatch(changeDataStatus('ERROR'))
       });
     }
