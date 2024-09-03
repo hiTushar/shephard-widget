@@ -38,6 +38,7 @@ const Overview: React.FC = () => {
           dispatch(changeDataStatus('OK'));
         }
       }).catch(() => {
+        console.log('Error fetching data');
         dispatch(changeDataStatus('ERROR'))
       });
     }
