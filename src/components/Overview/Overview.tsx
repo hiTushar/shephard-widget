@@ -115,8 +115,8 @@ const Overview: React.FC = () => {
 
   const getPlatformIcons = (data: Array<Platform>): Array<JSX.Element> => {
     let alertCountArray: Array<AlertCountArray> = data.map((platform) => ({
-      platformId: platform.platformId,
-      assetCount: getAlertCount(platform.platformAssets)
+      platformId: platform.platform_id,
+      assetCount: getAlertCount(platform.platform_assets)
     })).sort((a, b) => a.assetCount - b.assetCount);
 
     let minAssetCount = alertCountArray[0].assetCount;
@@ -125,8 +125,8 @@ const Overview: React.FC = () => {
     let maxOrbitRadiusIndex = data.length - 1;
 
     return data.map((platform: Platform, idx: number) => {
-      const { platformId, platformName, platformAssets } = platform;
-      let assetCount = alertCountArray.find(alert => alert.platformId === platformId)!.assetCount;
+      const { platform_id, platform_name, platform_assets } = platform;
+      let assetCount = alertCountArray.find(alert => alert.platformId === platform_id)!.assetCount;
 
       /**
        * Basic formula: 
@@ -155,20 +155,20 @@ const Overview: React.FC = () => {
           leftOffset={ORBIT_CENTER_OFFSET + xPosition}
           topOffset={ORBIT_CENTER_OFFSET - yPosition}
           iconSize={iconSize}
-          openIcon={() => openIcon(platformId)}
-          imgSrc={PLATFORMS_ICON_MAP[platformId]}
-          platformId={platformId}
-          platformName={platformName}
-          assetCount={getAlertCount(platformAssets)}
-          assetDistribution={getAssetDistribution(platformAssets)}
-          key={platform.platformId}
+          openIcon={() => openIcon(platform_id)}
+          imgSrc={PLATFORMS_ICON_MAP[platform_id]}
+          platformId={platform_id}
+          platformName={platform_name}
+          assetCount={getAlertCount(platform_assets)}
+          assetDistribution={getAssetDistribution(platform_assets)}
+          key={platform.platform_id}
         />
       )
     })
   }
 
   const getTotalAlertCount = (data: Array<Platform>): number => {
-    return data.reduce((acc, platform) => acc + getAlertCount(platform.platformAssets), 0);
+    return data.reduce((acc, platform) => acc + getAlertCount(platform.platform_assets), 0);
   }
 
   const openIcon = (platformId: string) => {

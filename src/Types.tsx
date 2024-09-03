@@ -84,9 +84,9 @@ interface AlertTypeData {
 }
 
 interface Platform {
-    platformId: string;
-    platformName: string;
-    platformAssets: PlatformAssets;
+    platform_id: string;
+    platform_name: string;
+    platform_assets: PlatformAssets;
 }
 
 

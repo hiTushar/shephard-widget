@@ -1,45 +1,45 @@
 {
     "data": [
         {
-            "platformId": "linux",
-            "platformName": "Linux",
-            "platformAssets": {
+            "platform_id": "linux",
+            "platform_name": "Linux",
+            "platform_assets": {
                 "new_alerts": 12,
                 "aged_alerts": 12,
                 "no_alerts": 45
             }
         },
         {
-            "platformId": "windows",
-            "platformName": "Windows",
-            "platformAssets": {
+            "platform_id": "windows",
+            "platform_name": "Windows",
+            "platform_assets": {
                 "new_alerts": 34,
                 "aged_alerts": 54,
                 "no_alerts": 54
             }
         },
         {
-            "platformId": "ios",
-            "platformName": "IOS",
-            "platformAssets": {
+            "platform_id": "ios",
+            "platform_name": "IOS",
+            "platform_assets": {
                 "new_alerts": 34,
                 "aged_alerts": 25,
                 "no_alerts": 10
             }
         },
         {
-            "platformId": "macos",
-            "platformName": "Mac OS",
-            "platformAssets": {
+            "platform_id": "macos",
+            "platform_name": "Mac OS",
+            "platform_assets": {
                 "new_alerts": 45,
                 "aged_alerts": 87,
                 "no_alerts": 12
             }
         },
         {
-            "platformId": "android",
-            "platformName": "Android",
-            "platformAssets": {
+            "platform_id": "android",
+            "platform_name": "Android",
+            "platform_assets": {
                 "new_alerts": 45,
                 "aged_alerts": 12,
                 "no_alerts": 90
