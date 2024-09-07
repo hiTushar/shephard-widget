@@ -13,7 +13,7 @@
     background-color: var(--bg-2);
     overflow: hidden;
     @container grouped-container (min-width: 1px) {
-        min-width: 20cqw;
+        width: 20cqw;
         right: 5cqw;
         border-radius: calc(1cqw / 6);
         padding: 2cqw;
@@ -107,7 +107,7 @@
     flex-direction: column;
     justify-content: space-evenly;
     padding-block: 1cqw;
-
+    overflow-wrap: break-word;
 }
 
 .container__title {

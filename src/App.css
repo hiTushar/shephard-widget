@@ -1,6 +1,6 @@
 .widget {
   width: 100%;
-  min-width: 600px;
+  /* min-width: 600px; */
   aspect-ratio: 20 / 11;
   display: flex;
   flex-direction: column;

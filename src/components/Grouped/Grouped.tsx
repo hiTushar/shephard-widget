@@ -146,7 +146,7 @@ const Grouped: React.FC = () => {
 
             assetsDivArray.push(
                 <div
-                    className={`grouped-dataPts__item ${+groupedAssets[idx].asset_count! === 1 ? 'single' : ''}`}
+                    className={`grouped-dataPts__item ${+groupedAssets[idx].asset_count! === 0 ? 'empty' : ''}`}
                     onMouseOver={() => toggleDetailModal({ ...groupedAssets[idx], alertId: alertId, xPos: ORBIT_CENTER_OFFSET_LEFT + xPos, yPos: ORBIT_CENTER_OFFSET_TOP + yPos })}
                     onMouseOut={() => toggleDetailModal({})}
                     key={`${alertId}${idx}`}
@@ -154,12 +154,13 @@ const Grouped: React.FC = () => {
                         left: `${ORBIT_CENTER_OFFSET_LEFT + xPos}%`,
                         top: `${ORBIT_CENTER_OFFSET_TOP + yPos}%`,
                         animationDelay: `${Math.random() * 2}s`,
+                        cursor: +groupedAssets[idx].asset_count! > 0 ? 'pointer' : 'default',
                         ...AlertTypeData.find(alert => alert.id === alertId)!.dataPtStyle
                     }}
                     onMouseEnter={() => { }}
-                    onClick={() => openExpandedView(alertId, groupedAssets[idx].group_uuid!)}
+                    onClick={+groupedAssets[idx].asset_count! > 1 ? () => openExpandedView(alertId, groupedAssets[idx].group_uuid!) : () => {}}
                 >
-                    {+groupedAssets[idx].asset_count! > 1 && kbmFormatter(+groupedAssets[idx].asset_count!)}
+                    {+groupedAssets[idx].asset_count! > 0 && kbmFormatter(+groupedAssets[idx].asset_count!)}
                 </div>
             )
         }

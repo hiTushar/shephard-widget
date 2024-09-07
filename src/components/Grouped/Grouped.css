@@ -99,7 +99,6 @@
     transform: translate(-50%, -50%) scale(0);
     aspect-ratio: 1;
     border-radius: 50%;
-    cursor: pointer;
 
     display: flex;
     justify-content: center;
@@ -121,7 +120,7 @@
         transform: translate(-50%, -50%) scale(1.1)!important;
     }
 
-    &.single {
+    &.empty {
         @container grouped-container (min-width: 1px) {
             min-width: 1.5cqw;
         }
