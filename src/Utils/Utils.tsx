@@ -49,4 +49,19 @@ const debounce = (func: Function, debounceTime: number) => {
     }
 }
 
-export { commaFormatter, inRadians, kbmFormatter, jumbleArray, throttle, debounce }
+const loadScript = (url: string, id: string, callback: Function) => {
+    let script: HTMLScriptElement = document.createElement('script');
+    script.id = id;
+    script.src = url;
+    script.onload = callback as any;
+    document.body.appendChild(script);
+}
+
+const removeScript = (id: string) => {
+    let scriptTag = document.getElementById(id);
+    if (scriptTag) {
+        scriptTag.remove();
+    }
+}
+
+export { removeScript, loadScript, commaFormatter, inRadians, kbmFormatter, jumbleArray, throttle, debounce }

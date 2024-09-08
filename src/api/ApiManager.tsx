@@ -20,7 +20,7 @@ class ApiManager {
                 setTimeout(() => {
                     console.log('Data fetched!');
                     resolve(overviewData);
-                }, 3000)
+                }, 1500)
             })
         }
         
@@ -42,7 +42,7 @@ class ApiManager {
                     } else {
                         resolve(noAlertGrpData);
                     }
-                }, 3000)
+                }, 1500)
             })
         }
         
@@ -57,7 +57,7 @@ class ApiManager {
                 setTimeout(() => {
                     console.log('Data fetched!');
                     resolve(assetLevelData);
-                }, 1000)
+                }, 1500)
             })
         }
         
